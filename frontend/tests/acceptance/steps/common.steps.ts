@@ -39,3 +39,12 @@ Then('I should see {string} text', async ({ page }, text: string) => {
 Then('I should see {string} heading', async ({ page }, title: string) => {
   await expect(page.getByRole('heading', { name: title })).toBeVisible();
 });
+
+Then('I should see {string} placeholder', async ({ page }, placeholder: string) => {
+  await expect(page.getByPlaceholder(placeholder)).toBeVisible();
+});
+
+When('I chose {string} option for dropdown with current value {string}', async ({ page }, option: string, currentSelectValue: string) => {
+await page.getByText(currentSelectValue).click();
+await page.getByText(option, { exact: true }).click();
+});
