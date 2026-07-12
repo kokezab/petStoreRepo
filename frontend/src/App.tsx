@@ -1,30 +1,16 @@
-import { useFindPetsByStatus, useGetPetById } from '@/api/generated/pet/pet'
-
-function PetById({ id }: { id: number }) {
-  const { data, isLoading, error } = useGetPetById(id);
-
-  if (isLoading) return <div>Loading pets...</div>
-  if (error) return <div>Error loading pets</div>
-
-  return (
-    <div>
-      <h1>{data?.name}</h1>
-    </div>
-  )
-}
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router';
+import { NavBar } from '@/features/navigation/NavBar';
 
 export default function App() {
-  const { data, isLoading, error } = useFindPetsByStatus({ status: ['available'] });
-
-  if (isLoading) return <div>Loading pets...</div>
-  if (error) return <div>Error loading pets</div>
-
   return (
-    <div>
-      <PetById id={1} />
-      {data?.map((pet) => (
-        <h2>{pet.name}</h2>
-      ))}
-    </div>
-  )
+    <BrowserRouter>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<Navigate to="/pets" replace />} />
+        <Route path="/pets" element={<div>Pets page placeholder</div>} />
+        <Route path="/pets/:id" element={<div>Pet detail placeholder</div>} />
+        <Route path="/inventory" element={<div>Inventory page placeholder</div>} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
