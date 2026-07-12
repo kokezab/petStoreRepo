@@ -41,8 +41,8 @@ Explicitly out of scope (deferred to a later pass):
   unset key would, so flags still evaluate to `false`.
 - `src/main.tsx` wraps `<App />` in `<FlagProvider config={{ url: config.unleashUrl, clientKey:
   config.unleashClientKey, appName: 'frontend' }}>` (matching the app name in `package.json`).
-  Placed inside `QueryClientProvider`,
-  outermost relative to `App`. The client's own *fetch* failures (e.g. Unleash not running
+  `FlagProvider` is outermost, wrapping `QueryClientProvider`, which wraps `App`. The client's
+  own *fetch* failures (e.g. Unleash not running
   locally) are handled internally by the library — flags simply evaluate to `false`, no app
   crash. A missing/empty `clientKey` is different: it fails at construction time, synchronously,
   which is why the fallback above must be non-empty.
@@ -84,23 +84,27 @@ gitignore change is needed.
   `**/api/frontend**` with `{ toggles: [{ name: 'pet-creation', enabled: false, ... }] }` by
   default, so every existing scenario gets a deterministic, network-free flag state without
   having to know about Unleash.
-- New `mockFeatureFlag(page, { petCreation }: { petCreation: boolean })` — overrides the
-  `**/api/frontend**` route for scenarios that need the flag on.
-- New `mockAddPet(page)` — mocks `POST **/pet` to return a fixed pet
-  (`{ id: 6, name: <submitted>, category: <submitted>, status: <submitted>, photoUrls: [], tags:
-  [] }`), and `mockAddPetError(page)` for the failure-path scenario.
+- New `mockFeatureFlag(page, flags: Record<string, boolean>)` — overrides the `**/api/frontend**`
+  route for scenarios that need the flag on.
+- `mockPetApi` also seeds a per-call mutable pet list and mocks `POST **/pet` against it directly
+  (not a standalone `mockAddPet` helper — folding it into `mockPetApi` lets a created pet share
+  state with the `findByStatus` mock, so it reappears in a subsequent list refetch), returning a
+  fixed pet (`{ id: 6, name: <submitted>, category: <submitted>, status: <submitted>, photoUrls:
+  [], tags: [] }`). `mockAddPetError(page)` stays a separate override for the failure-path
+  scenario.
 
 ### `tests/acceptance/features/pet-creation.feature`
 
-Tag `@pet-creation`, same `Background` as the other pet features. Scenarios (continuing the
-`AT-N` numbering from `pet-detail.feature`, which ends at AT-10):
+Tag `@pet-creation`, same `Background` as the other pet features. Scenarios (the `AT-N` numbering
+is global across the whole suite, not per-file; AT-14 was already used by `navigation.feature`,
+so this feature starts at AT-15):
 
-- **AT-11** — Add pet button hidden when the flag is disabled
-- **AT-12** — Add pet button visible and opens the form when the flag is enabled
-- **AT-13** — Submitting a valid form closes it and shows the new pet in the list
-- **AT-14** — Empty required fields show inline validation errors and send no request
-- **AT-15** — An API failure on submit shows an error and keeps the form open
-- **AT-16** — Cancelling closes the form without creating a pet
+- **AT-15** — Add pet button hidden when the flag is disabled
+- **AT-16** — Add pet button visible and opens the form when the flag is enabled
+- **AT-17** — Submitting a valid form closes it and shows the new pet in the list
+- **AT-18** — Empty required fields show inline validation errors and send no request
+- **AT-19** — An API failure on submit shows an error and keeps the form open
+- **AT-20** — Cancelling closes the form without creating a pet
 
 ### `tests/acceptance/steps/pet-creation.steps.ts`
 
