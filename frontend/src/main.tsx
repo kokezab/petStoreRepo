@@ -6,9 +6,11 @@ import App from './App.tsx'
 
 const queryClient = new QueryClient({
   defaultOptions: {
-    // Read-only browsing UI: surface errors immediately rather than retrying
-    // silently for several seconds before the error state appears.
-    queries: { retry: false },
+    // One quick retry keeps some resilience to transient network blips for real
+    // users, without react-query's default 3-attempt exponential backoff (up to
+    // ~7s) leaving the UI on a stale/loading state far longer than a failure
+    // warrants.
+    queries: { retry: 1, retryDelay: 300 },
   },
 });
 
