@@ -32,13 +32,20 @@ Explicitly out of scope (deferred to a later pass):
 - `src/config.ts` gains:
   ```ts
   unleashUrl: import.meta.env.VITE_UNLEASH_URL || 'http://localhost:4242/api/frontend',
-  unleashClientKey: import.meta.env.VITE_UNLEASH_CLIENT_KEY || '',
+  unleashClientKey: import.meta.env.VITE_UNLEASH_CLIENT_KEY || 'local-dev-unconfigured',
   ```
+  The fallback must be a non-empty placeholder, not `''` — `unleash-proxy-client` throws
+  synchronously at construction (`if (!clientKey) throw ...`) if it's empty, which crashes the
+  whole app with no error boundary. A non-empty placeholder lets the client construct; any request
+  it makes still fails/401s against a real server (or is intercepted by test mocks) exactly like an
+  unset key would, so flags still evaluate to `false`.
 - `src/main.tsx` wraps `<App />` in `<FlagProvider config={{ url: config.unleashUrl, clientKey:
   config.unleashClientKey, appName: 'frontend' }}>` (matching the app name in `package.json`).
   Placed inside `QueryClientProvider`,
-  outermost relative to `App`. The client's own fetch failures (e.g. Unleash not running locally)
-  are handled internally by the library — flags simply evaluate to `false`, no app crash.
+  outermost relative to `App`. The client's own *fetch* failures (e.g. Unleash not running
+  locally) are handled internally by the library — flags simply evaluate to `false`, no app
+  crash. A missing/empty `clientKey` is different: it fails at construction time, synchronously,
+  which is why the fallback above must be non-empty.
 - `src/lib/feature-flags.ts`: thin wrapper —
   ```ts
   import { useFlag } from '@unleash/proxy-client-react';
