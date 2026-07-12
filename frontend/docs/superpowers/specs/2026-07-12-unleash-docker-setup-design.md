@@ -12,7 +12,7 @@ later, when specific flags are needed.
 [Unleash](https://www.getunleash.io/) — the most widely adopted open-source feature-flag engine.
 Reasons:
 
-- Official Docker image (`unleash/unleash`) and Postgres backing store, both well documented.
+- Official Docker image (`unleashorg/unleash-server`) and Postgres backing store, both well documented.
 - Free self-hosted tier has no artificial limits on flags/environments.
 - First-party SDKs (including JS/React) available for future app integration.
 - Low operational footprint: two containers (Unleash + Postgres), no extra services required.
@@ -55,7 +55,7 @@ sits alongside the app rather than being part of it.
 
 ### `unleash`
 
-- Image: `unleash/unleash`.
+- Image: `unleashorg/unleash-server`.
 - Env:
   - `DATABASE_URL` (built from the same Postgres credentials, pointing at the `postgres` service).
   - `DATABASE_SSL=false` (local dev, no TLS).
