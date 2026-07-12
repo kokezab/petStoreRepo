@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Pet + Store browse — wireframes</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #f5f5f7;
+      --bg-secondary: #ffffff;
+      --bg-tertiary: #e5e5e7;
+      --border: #d1d1d6;
+      --text-primary: #1d1d1f;
+      --text-secondary: #86868b;
+      --text-tertiary: #aeaeb2;
+      --accent: #0071e3;
+      --success: #34c759;
+      --error: #ff3b30;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #1d1d1f;
+        --bg-secondary: #2d2d2f;
+        --bg-tertiary: #3d3d3f;
+        --border: #424245;
+        --text-primary: #f5f5f7;
+        --text-secondary: #86868b;
+        --text-tertiary: #636366;
+        --accent: #0a84ff;
+      }
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.5;
+      padding: 2rem;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    h2 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+    h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .subtitle { color: var(--text-secondary); margin-bottom: 1.5rem; }
+    .section { margin-bottom: 2rem; }
+    .label { font-size: 0.7rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+
+    .mockup {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    .mockup-header {
+      background: var(--bg-tertiary);
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+    }
+    .mockup-body { padding: 1.5rem; }
+
+    .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0; }
+    .pros, .cons { background: var(--bg-secondary); border-radius: 8px; padding: 1rem; }
+    .pros h4 { color: var(--success); font-size: 0.85rem; margin-bottom: 0.5rem; }
+    .cons h4 { color: var(--error); font-size: 0.85rem; margin-bottom: 0.5rem; }
+
+    .placeholder {
+      background: var(--bg-tertiary);
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-tertiary);
+    }
+
+    .mock-nav { background: var(--accent); color: white; padding: 0.75rem 1rem; display: flex; gap: 1.5rem; font-size: 0.9rem; border-radius: 8px; }
+    .mock-button { background: var(--accent); color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.85rem; cursor: default; }
+    body a { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<h2>Pet + Store browse — page wireframes</h2>
+<p class="subtitle">Three pages, covering AT-1 through AT-14.</p>
+
+<div class="mockup">
+  <div class="mockup-header">/pets — Pet List (AT-1, AT-2, AT-3)</div>
+  <div class="mockup-body">
+    <div class="mock-nav">🐾 Petstore &nbsp;|&nbsp; <b>Pets</b> &nbsp;|&nbsp; Inventory</div>
+    <div style="display:flex;gap:8px;margin:16px 0;">
+      <button class="mock-button" style="opacity:1;font-weight:600;">Available</button>
+      <button class="mock-button" style="opacity:0.5;">Pending</button>
+      <button class="mock-button" style="opacity:0.5;">Sold</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+      <div class="placeholder" style="padding:12px;text-align:left;">
+        <div style="background:#ddd;height:80px;border-radius:4px;margin-bottom:8px;"></div>
+        <b>Bella</b><br/><span class="label">available</span>
+      </div>
+      <div class="placeholder" style="padding:12px;text-align:left;">
+        <div style="background:#ddd;height:80px;border-radius:4px;margin-bottom:8px;"></div>
+        <b>Max</b><br/><span class="label">available</span>
+      </div>
+      <div class="placeholder" style="padding:12px;text-align:left;">
+        <div style="background:#ddd;height:80px;border-radius:4px;margin-bottom:8px;"></div>
+        <b>Luna</b><br/><span class="label">available</span>
+      </div>
+    </div>
+    <p class="subtitle" style="margin-top:16px;">Each card links to /pets/:id (AT-7)</p>
+  </div>
+</div>
+
+<div class="section">
+  <div class="pros-cons">
+    <div class="pros"><h4>Loading (AT-4)</h4><div class="placeholder">Spinner + "Loading pets..."</div></div>
+    <div class="cons"><h4>Empty (AT-5)</h4><div class="placeholder">"No pets found for this status"</div></div>
+  </div>
+  <div class="placeholder" style="margin-top:8px;">Error (AT-6): "Something went wrong loading pets."</div>
+</div>
+
+<div class="mockup" style="margin-top:32px;">
+  <div class="mockup-header">/pets/:id — Pet Detail (AT-7, AT-8, AT-10)</div>
+  <div class="mockup-body">
+    <div class="mock-nav">🐾 Petstore &nbsp;|&nbsp; Pets &nbsp;|&nbsp; Inventory</div>
+    <p style="margin:12px 0;"><a href="#">&larr; Back to list</a></p>
+    <div style="display:flex;gap:20px;">
+      <div style="background:#ddd;width:160px;height:160px;border-radius:4px;flex-shrink:0;"></div>
+      <div style="text-align:left;">
+        <h3 style="margin:0 0 8px 0;">Bella</h3>
+        <p class="label">status: available</p>
+        <p class="label">category: Dogs</p>
+        <p class="label">tags: friendly, small</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="placeholder">Not found (AT-9): "We couldn't find that pet."</div>
+</div>
+
+<div class="mockup" style="margin-top:32px;">
+  <div class="mockup-header">/inventory — Store Inventory (AT-11)</div>
+  <div class="mockup-body">
+    <div class="mock-nav">🐾 Petstore &nbsp;|&nbsp; Pets &nbsp;|&nbsp; <b>Inventory</b></div>
+    <h3 style="margin-top:16px;">Store Inventory</h3>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+      <div class="placeholder"><div class="label">Available</div><h2 style="margin:4px 0;">128</h2></div>
+      <div class="placeholder"><div class="label">Pending</div><h2 style="margin:4px 0;">14</h2></div>
+      <div class="placeholder"><div class="label">Sold</div><h2 style="margin:4px 0;">57</h2></div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="pros-cons">
+    <div class="pros"><h4>Loading (AT-12)</h4><div class="placeholder">Spinner + "Loading inventory..."</div></div>
+    <div class="cons"><h4>Error (AT-13)</h4><div class="placeholder">"Something went wrong loading inventory."</div></div>
+  </div>
+</div>
+
+<p class="subtitle" style="margin-top:24px;">Nav bar (top of every page) covers AT-14 — click Pets/Inventory to switch.</p>
+
+</body>
+</html>
