@@ -6,7 +6,7 @@
 
 **Architecture:** A `docker-compose.yml` at the repo root defines two services — `postgres` (data store) and `unleash` (flag engine + admin UI), on a private compose network. Config comes from a gitignored `.env`, seeded from a committed `.env.example`. A root `README.md` documents how to start it, log in, and find the dev API token.
 
-**Tech Stack:** Docker, Docker Compose v2, `postgres:16-alpine`, `unleashorg/unleash-server` (official image).
+**Tech Stack:** Docker, Docker Compose v2, `postgres:16-alpine`, `unleashorg/unleash-server:8` (official image).
 
 ## Global Constraints
 
@@ -68,7 +68,7 @@ services:
       - unleash_net
 
   unleash:
-    image: unleashorg/unleash-server
+    image: unleashorg/unleash-server:8
     restart: unless-stopped
     ports:
       - "4242:4242"
