@@ -11,10 +11,11 @@
     "generate:api": "orval",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:acceptance": "bddgen && playwright test"
+    "test:acceptance": "bddgen && playwright test --grep @settings"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.2",
+    "antd": "^6.5.0",
     "axios": "^1.18.1",
     "qs": "^6.15.3",
     "react": "^19.2.7",
