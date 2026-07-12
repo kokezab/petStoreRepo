@@ -1,7 +1,6 @@
 import { renderHook } from '@testing-library/react';
-import { vi } from 'vitest';
-
 import { useFlag } from '@unleash/proxy-client-react';
+import { vi } from 'vitest';
 
 import { useFeatureFlag } from './feature-flags';
 
