@@ -1,5 +1,6 @@
 import type { Page, Route } from '@playwright/test';
-import { pets, inventoryCounts } from '../fixtures/pets';
+
+import { inventoryCounts,pets } from '../fixtures/pets';
 
 const PET_BY_ID_PATTERN = /\/pet\/\d+(\?.*)?$/;
 

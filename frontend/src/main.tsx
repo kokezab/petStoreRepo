@@ -1,8 +1,10 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import './index.css'
-import App from './App.tsx'
+import { StrictMode } from 'react';
+
+import './index.css';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { createRoot } from 'react-dom/client';
+
+import App from './App.tsx';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,7 +31,10 @@ async function enableMocking() {
       new Promise((resolve) => setTimeout(resolve, 2000)),
     ]);
   } catch (error) {
-    console.error('MSW failed to start; requests will hit the real network / Playwright mocks.', error);
+    console.error(
+      'MSW failed to start; requests will hit the real network / Playwright mocks.',
+      error,
+    );
   }
 }
 
@@ -40,5 +45,5 @@ enableMocking().then(() => {
         <App />
       </QueryClientProvider>
     </StrictMode>,
-  )
-})
+  );
+});

@@ -1,5 +1,6 @@
 import { expect } from '@playwright/test';
 import { createBdd } from 'playwright-bdd';
+
 import { inventoryCounts, type PetStatus } from '../fixtures/pets';
 import { mockInventoryDelayed, mockInventoryError } from '../support/mock-api';
 

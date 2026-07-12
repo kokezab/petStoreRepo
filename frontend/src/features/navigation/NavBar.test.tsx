@@ -1,5 +1,6 @@
 import { render, screen, within } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
+
 import { NavBar } from './NavBar';
 
 describe('NavBar', () => {

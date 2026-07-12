@@ -2,8 +2,10 @@ import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router';
 import { vi } from 'vitest';
-import { useFindPetsByStatus } from '@/api/generated/pet/pet';
+
 import type { Pet } from '@/api/generated/models';
+import { useFindPetsByStatus } from '@/api/generated/pet/pet';
+
 import { PetListPage } from './PetListPage';
 
 vi.mock('@/api/generated/pet/pet', () => ({

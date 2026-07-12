@@ -1,7 +1,9 @@
 import { useState } from 'react';
+
 import { Link } from 'react-router';
-import { useFindPetsByStatus } from '@/api/generated/pet/pet';
+
 import type { FindPetsByStatusStatusItem } from '@/api/generated/models';
+import { useFindPetsByStatus } from '@/api/generated/pet/pet';
 
 const STATUS_OPTIONS: FindPetsByStatusStatusItem[] = ['available', 'pending', 'sold'];
 
@@ -14,7 +16,7 @@ export function PetListPage() {
       <label>
         Status filter
         <select
-          aria-label="Status filter"
+          aria-label='Status filter'
           value={status}
           onChange={(event) => setStatus(event.target.value as FindPetsByStatusStatusItem)}
         >
@@ -27,16 +29,16 @@ export function PetListPage() {
       </label>
 
       {isLoading ? (
-        <p role="status" aria-label="Loading pets">
+        <p role='status' aria-label='Loading pets'>
           Loading pets…
         </p>
       ) : null}
-      {error ? <p role="alert">Failed to load pets.</p> : null}
+      {error ? <p role='alert'>Failed to load pets.</p> : null}
       {!isLoading && !error && data?.length === 0 && <p>No pets found</p>}
       {!isLoading && !error && data && data.length > 0 && (
-        <ul aria-label="Pets" role="list">
+        <ul aria-label='Pets' role='list'>
           {data.map((pet) => (
-            <li key={pet.id} role="listitem">
+            <li key={pet.id} role='listitem'>
               <Link to={`/pets/${pet.id}`}>{pet.name}</Link>
             </li>
           ))}

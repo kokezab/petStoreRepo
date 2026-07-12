@@ -1,0 +1,6 @@
+dist
+node_modules
+package.json
+package-lock.json
+src/api/generated
+tests/acceptance/.features-gen
