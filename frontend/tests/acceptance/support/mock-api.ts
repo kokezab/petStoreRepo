@@ -1,6 +1,6 @@
 import type { Page, Route } from '@playwright/test';
 
-import { inventoryCounts, pets, type Pet } from '../fixtures/pets';
+import { inventoryCounts, type Pet, pets } from '../fixtures/pets';
 
 const PET_BY_ID_PATTERN = /\/pet\/\d+(\?.*)?$/;
 
@@ -11,7 +11,9 @@ export async function mockPetApi(page: Page): Promise<void> {
     const url = new URL(route.request().url());
     const statuses = url.searchParams.getAll('status');
     const matched =
-      statuses.length > 0 ? petsInMemory.filter((pet) => statuses.includes(pet.status)) : petsInMemory;
+      statuses.length > 0
+        ? petsInMemory.filter((pet) => statuses.includes(pet.status))
+        : petsInMemory;
     await route.fulfill({ json: matched });
   });
 
@@ -19,7 +21,10 @@ export async function mockPetApi(page: Page): Promise<void> {
     const id = Number(new URL(route.request().url()).pathname.split('/').pop());
     const pet = petsInMemory.find((p) => p.id === id);
     if (!pet) {
-      await route.fulfill({ status: 404, json: { code: 404, type: 'error', message: 'Pet not found' } });
+      await route.fulfill({
+        status: 404,
+        json: { code: 404, type: 'error', message: 'Pet not found' },
+      });
       return;
     }
     await route.fulfill({ json: pet });
@@ -74,7 +79,10 @@ export async function mockAddPetError(page: Page): Promise<void> {
       await route.fallback();
       return;
     }
-    await route.fulfill({ status: 500, json: { code: 500, type: 'error', message: 'Internal server error' } });
+    await route.fulfill({
+      status: 500,
+      json: { code: 500, type: 'error', message: 'Internal server error' },
+    });
   });
 }
 
@@ -93,7 +101,10 @@ export async function mockPetListEmpty(page: Page, status: string): Promise<void
 
 export async function mockPetListError(page: Page): Promise<void> {
   await page.route('**/pet/findByStatus**', async (route: Route) => {
-    await route.fulfill({ status: 500, json: { code: 500, type: 'error', message: 'Internal server error' } });
+    await route.fulfill({
+      status: 500,
+      json: { code: 500, type: 'error', message: 'Internal server error' },
+    });
   });
 }
 
@@ -106,7 +117,10 @@ export async function mockPetListDelayed(page: Page, delayMs: number): Promise<v
 
 export async function mockInventoryError(page: Page): Promise<void> {
   await page.route('**/store/inventory', async (route: Route) => {
-    await route.fulfill({ status: 500, json: { code: 500, type: 'error', message: 'Internal server error' } });
+    await route.fulfill({
+      status: 500,
+      json: { code: 500, type: 'error', message: 'Internal server error' },
+    });
   });
 }
 
