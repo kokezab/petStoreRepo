@@ -16,6 +16,7 @@ export default defineConfig({
   },
   use: {
     baseURL: 'http://localhost:5173',
+    serviceWorkers: 'block',
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
