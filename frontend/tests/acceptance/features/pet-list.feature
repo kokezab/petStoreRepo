@@ -26,6 +26,7 @@ Feature: Pet list browsing
 
   Scenario: AT-5 Empty state when a filter has no matches
     Given the mocked API returns no pets for status "sold"
+    And I am on the "/pets" page
     When I select the "sold" status filter
     Then I should see an empty-state message
 
