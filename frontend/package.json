@@ -11,7 +11,7 @@
     "generate:api": "orval",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:acceptance": "bddgen && playwright test --grep @settings",
+    "test:acceptance": "bddgen && playwright test --grep @",
     "test:ui": "playwright test --ui"
   },
   "dependencies": {
