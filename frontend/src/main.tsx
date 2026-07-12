@@ -2,7 +2,10 @@ import { StrictMode } from 'react';
 
 import './index.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { FlagProvider } from '@unleash/proxy-client-react';
 import { createRoot } from 'react-dom/client';
+
+import { config } from '@/config';
 
 import App from './App.tsx';
 
@@ -15,6 +18,12 @@ const queryClient = new QueryClient({
     queries: { retry: 1, retryDelay: 300 },
   },
 });
+
+const unleashConfig = {
+  url: config.unleashUrl,
+  clientKey: config.unleashClientKey,
+  appName: 'frontend',
+};
 
 async function enableMocking() {
   if (!import.meta.env.DEV) return;
@@ -41,9 +50,11 @@ async function enableMocking() {
 enableMocking().then(() => {
   createRoot(document.getElementById('root')!).render(
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
+      <FlagProvider config={unleashConfig}>
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
+      </FlagProvider>
     </StrictMode>,
   );
 });
