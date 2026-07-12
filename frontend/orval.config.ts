@@ -10,7 +10,7 @@ export default defineConfig({
       schemas: './src/api/generated/models',
       client: 'react-query',
       httpClient: 'axios',
-      mock: false,
+      mock: true,
       mode: 'tags-split',
       override: {
         mutator: {
