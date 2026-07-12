@@ -33,6 +33,9 @@ project setup).
   - A `<nav>` landmark (`role="navigation"`) containing links named exactly `"Pets"` and `"Inventory"`.
   - On `/pets`: a status filter control exposed as `role="combobox"` with accessible name
     `"Status filter"`, whose `selectOption` values are `"available"`, `"pending"`, `"sold"`.
+  - `/pets` defaults to `status=available` on initial load with no filter interaction (drives the
+    `GET /pet/findByStatus` query) — AT-1 asserts exactly the fixture's 2 available pets, which only
+    holds if the default query is `available`, not an unfiltered "all pets" request.
   - The pet list is a `role="list"` element named `"Pets"`, containing `role="listitem"` entries; each
     item contains a `role="link"` named with the pet's name (linking to `/pets/:id`).
   - A loading indicator is `role="status"`, named `"Loading pets"` on `/pets` and `"Loading inventory"`
