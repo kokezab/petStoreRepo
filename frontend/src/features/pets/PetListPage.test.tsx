@@ -1,11 +1,11 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router';
 import { vi } from 'vitest';
 
 import type { Pet } from '@/api/generated/models';
-import { useFindPetsByStatus, useAddPet } from '@/api/generated/pet/pet';
+import { useAddPet, useFindPetsByStatus } from '@/api/generated/pet/pet';
 
 import { PetListPage } from './PetListPage';
 

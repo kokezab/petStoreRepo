@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+
 import { AddPetForm } from './AddPetForm';
 
 describe('AddPetForm', () => {
@@ -8,12 +9,7 @@ describe('AddPetForm', () => {
     const onSubmit = vi.fn().mockResolvedValue(undefined);
     const user = userEvent.setup();
 
-    render(
-      <AddPetForm
-        onSubmit={onSubmit}
-        isLoading={false}
-      />
-    );
+    render(<AddPetForm onSubmit={onSubmit} isLoading={false} />);
 
     await user.type(screen.getByLabelText('Name'), 'Buddy');
     await user.type(screen.getByLabelText('Category'), 'Dog');
@@ -34,12 +30,7 @@ describe('AddPetForm', () => {
     const onSubmit = vi.fn();
     const user = userEvent.setup();
 
-    render(
-      <AddPetForm
-        onSubmit={onSubmit}
-        isLoading={false}
-      />
-    );
+    render(<AddPetForm onSubmit={onSubmit} isLoading={false} />);
 
     await user.click(screen.getByRole('button', { name: 'Save' }));
 
@@ -47,13 +38,7 @@ describe('AddPetForm', () => {
   });
 
   it('displays submission error message', () => {
-    render(
-      <AddPetForm
-        onSubmit={vi.fn()}
-        isLoading={false}
-        error="Error adding pet"
-      />
-    );
+    render(<AddPetForm onSubmit={vi.fn()} isLoading={false} error='Error adding pet' />);
 
     expect(screen.getByText('Error adding pet')).toBeVisible();
   });

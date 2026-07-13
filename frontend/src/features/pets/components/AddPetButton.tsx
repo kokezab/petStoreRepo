@@ -1,6 +1,7 @@
-import { useModalStore } from '@/stores/useModalStore';
 import { useFlag } from '@unleash/proxy-client-react';
 import { Button } from 'antd';
+
+import { useModalStore } from '@/stores/useModalStore';
 
 export function AddPetButton() {
   const isPetCreationEnabled = useFlag('pet-creation');

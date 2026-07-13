@@ -1,6 +1,6 @@
+import { Alert, Button, Form, Input, Select, Space } from 'antd';
+
 import type { PetStatus } from '@/api/generated/models';
-import { Alert, Button, Space } from 'antd';
-import { useRef } from 'react';
 
 type AddPetFormValues = {
   name: string;
@@ -12,17 +12,28 @@ interface AddPetFormProps {
   onSubmit: (values: AddPetFormValues) => Promise<void>;
   isLoading: boolean;
   error?: string | null;
+  onCancel?: () => void;
 }
 
-export function AddPetForm({ onSubmit, isLoading, error }: AddPetFormProps) {
-  const nameRef = useRef<HTMLInputElement>(null);
-  const categoryRef = useRef<HTMLInputElement>(null);
-  const statusRef = useRef<HTMLSelectElement>(null);
+const options: { value: PetStatus; label: string }[] = [
+  {
+    value: 'available',
+    label: 'available',
+  },
+  {
+    value: 'pending',
+    label: 'pending',
+  },
+  {
+    value: 'sold',
+    label: 'sold',
+  },
+];
 
+export function AddPetForm({ onSubmit, isLoading, error, onCancel }: AddPetFormProps) {
+  const [form] = Form.useForm<AddPetFormValues>();
   const handleSubmit = async () => {
-    const name = nameRef.current?.value.trim();
-    const category = categoryRef.current?.value.trim();
-    const status = statusRef.current?.value as PetStatus;
+    const { name, category, status } = await form.validateFields();
 
     if (!name) return;
     if (!category) return;
@@ -32,47 +43,40 @@ export function AddPetForm({ onSubmit, isLoading, error }: AddPetFormProps) {
   };
 
   return (
-    <Space direction="vertical" style={{ width: '100%' }} size="large">
-      {error && <Alert type="error" message={error} showIcon />}
-      <div>
-        <label htmlFor="name" style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>Name</label>
-        <input
-          id="name"
-          type="text"
-          ref={nameRef}
-          placeholder="Pet name"
-          required
-          style={{ width: '100%', padding: '8px 12px', border: '1px solid #d9d9d9', borderRadius: '4px' }}
-        />
-      </div>
-      <div>
-        <label htmlFor="category" style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>Category</label>
-        <input
-          id="category"
-          type="text"
-          ref={categoryRef}
-          placeholder="Pet category"
-          required
-          style={{ width: '100%', padding: '8px 12px', border: '1px solid #d9d9d9', borderRadius: '4px' }}
-        />
-      </div>
-      <div>
-        <label htmlFor="status" style={{ display: 'block', marginBottom: 8, fontWeight: 500 }}>Status</label>
-        <select
-          id="status"
-          ref={statusRef}
-          required
-          style={{ width: '100%', padding: '8px 12px', border: '1px solid #d9d9d9', borderRadius: '4px' }}
+    <Space orientation='vertical' style={{ width: '100%' }} size='large'>
+      {error && <Alert type='error' title={error} showIcon />}
+      <Form<AddPetFormValues> form={form} layout='vertical'>
+        <Form.Item
+          name='name'
+          label='Name'
+          rules={[{ required: true, message: 'Name is required' }]}
         >
-          <option value="">Select status</option>
-          <option value="available">Available</option>
-          <option value="pending">Pending</option>
-          <option value="sold">Sold</option>
-        </select>
-      </div>
-      <Button type="primary" block onClick={handleSubmit} loading={isLoading}>
-        Save
-      </Button>
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name='category'
+          label='Category'
+          rules={[{ required: true, message: 'Category is required' }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
+          name='status'
+          label='Status'
+          rules={[{ required: true, message: 'Status is required' }]}
+        >
+          <Select options={options} />
+        </Form.Item>
+
+        <Form.Item style={{ marginBottom: 0 }}>
+          <Space style={{ width: '100%', justifyContent: 'flex-end' }}>
+            <Button onClick={onCancel}>Cancel</Button>
+            <Button type='primary' onClick={handleSubmit} loading={isLoading}>
+              Save
+            </Button>
+          </Space>
+        </Form.Item>
+      </Form>
     </Space>
   );
 }

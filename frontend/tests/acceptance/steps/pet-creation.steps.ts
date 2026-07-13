@@ -2,6 +2,7 @@ import { expect } from '@playwright/test';
 import { createBdd } from 'playwright-bdd';
 
 import { mockAddPetError, mockFeatureFlag } from '../support/mock-api';
+import { selectAntDesignOption } from '../support/playwright-helpers';
 
 const { Given, When, Then } = createBdd();
 
@@ -46,7 +47,7 @@ When(
     const dialog = page.getByRole('dialog', { name: 'Add pet' });
     await dialog.getByRole('textbox', { name: 'Name' }).fill(name);
     await dialog.getByRole('textbox', { name: 'Category' }).fill(category);
-    await dialog.getByRole('combobox', { name: 'Status' }).selectOption(status);
+    await selectAntDesignOption(dialog, page, 'Status', status);
   },
 );
 
