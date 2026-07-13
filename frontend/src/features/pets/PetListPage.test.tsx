@@ -1,18 +1,27 @@
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { MemoryRouter } from 'react-router';
 import { vi } from 'vitest';
 
 import type { Pet } from '@/api/generated/models';
-import { useFindPetsByStatus } from '@/api/generated/pet/pet';
+import { useFindPetsByStatus, useAddPet } from '@/api/generated/pet/pet';
 
 import { PetListPage } from './PetListPage';
 
 vi.mock('@/api/generated/pet/pet', () => ({
   useFindPetsByStatus: vi.fn(),
+  useAddPet: vi.fn(),
+  getFindPetsByStatusQueryKey: vi.fn(),
 }));
 
 const mockedUseFindPetsByStatus = vi.mocked(useFindPetsByStatus);
+const mockedUseAddPet = vi.mocked(useAddPet);
+
+mockedUseAddPet.mockReturnValue({
+  mutate: vi.fn(),
+  isPending: false,
+} as unknown as ReturnType<typeof useAddPet>);
 
 const bella: Pet = { id: 1, name: 'Bella', photoUrls: [], status: 'available' };
 const max: Pet = { id: 2, name: 'Max', photoUrls: [], status: 'available' };
@@ -37,10 +46,13 @@ function mockStatus(
 }
 
 function renderPage() {
+  const queryClient = new QueryClient();
   render(
-    <MemoryRouter>
-      <PetListPage />
-    </MemoryRouter>,
+    <QueryClientProvider client={queryClient}>
+      <MemoryRouter>
+        <PetListPage />
+      </MemoryRouter>
+    </QueryClientProvider>,
   );
 }
 

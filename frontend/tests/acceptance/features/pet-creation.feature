@@ -26,9 +26,7 @@ Feature: Pet creation
     And the pet list should include a pet named "Buddy"
 
   Scenario: AT-18 Empty required fields show validation errors
-    Given the "pet-creation" feature flag is enabled
-    And I am on the "/pets" page
-    When I click the "Add pet" button
+    Given the pet-creation common flow
     And I submit the pet creation form without filling it in
     Then I should see a "Name is required" validation message
     And I should see a "Category is required" validation message
@@ -45,9 +43,7 @@ Feature: Pet creation
     And the "Add pet" form should still be open
 
   Scenario: AT-20 Cancelling the form closes it without creating a pet
-    Given the "pet-creation" feature flag is enabled
-    And I am on the "/pets" page
-    When I click the "Add pet" button
+    Given the pet-creation common flow
     And I fill in the pet creation form with name "Buddy", category "Dogs" and status "available"
     And I cancel the pet creation form
     Then the "Add pet" form should close
