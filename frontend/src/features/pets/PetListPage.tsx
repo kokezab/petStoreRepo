@@ -5,6 +5,9 @@ import { Link } from 'react-router';
 import type { FindPetsByStatusStatusItem } from '@/api/generated/models';
 import { useFindPetsByStatus } from '@/api/generated/pet/pet';
 
+import { AddPetButton } from './components/AddPetButton';
+import { AddPetModal } from './components/AddPetModal';
+
 const STATUS_OPTIONS: FindPetsByStatusStatusItem[] = ['available', 'pending', 'sold'];
 
 export function PetListPage() {
@@ -44,6 +47,9 @@ export function PetListPage() {
           ))}
         </ul>
       )}
+
+      <AddPetButton />
+      <AddPetModal />
     </div>
   );
 }

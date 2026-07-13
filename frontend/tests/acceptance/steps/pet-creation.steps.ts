@@ -17,6 +17,13 @@ Given('the mocked API returns an error for adding a pet', async ({ page }) => {
   await mockAddPetError(page);
 });
 
+Given('the pet-creation common flow', async ({ page }) => {
+   await mockFeatureFlag(page, { 'pet-creation': true });
+   await page.goto('/pets');
+   await expect(page.getByRole('button', { name: 'Add pet' })).toBeVisible();
+   await page.getByRole('button', { name: 'Add pet' }).click();
+});
+
 Then('I should not see an {string} button', async ({ page }, name: string) => {
   await expect(page.getByRole('button', { name })).toHaveCount(0);
 });

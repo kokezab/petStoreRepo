@@ -9,17 +9,17 @@ Feature: Pet creation
     When I navigate to "/pets"
     Then I should not see an "Add pet" button
 
-  Scenario: AT-16 Add pet button visible and opens the form when the feature flag is enabled
+  Scenario: AT-15.5 Add pet button visible when the feature flag is enabled
     Given the "pet-creation" feature flag is enabled
     When I navigate to "/pets"
     Then I should see an "Add pet" button
-    When I click the "Add pet" button
+
+  Scenario: AT-16 Add pet button visible and opens the form when the feature flag is enabled
+    Given the pet-creation common flow
     Then I should see the "Add pet" form
 
   Scenario: AT-17 Submitting a valid form adds the pet to the list
-    Given the "pet-creation" feature flag is enabled
-    And I am on the "/pets" page
-    When I click the "Add pet" button
+    Given the pet-creation common flow
     And I fill in the pet creation form with name "Buddy", category "Dogs" and status "available"
     And I submit the pet creation form
     Then the "Add pet" form should close
