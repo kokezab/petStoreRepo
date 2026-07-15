@@ -13,7 +13,8 @@ export default function App() {
     <BrowserRouter>
       <NavBar />
       <Routes>
-        <Route path='/' element={<Navigate to='/pets' replace />} />
+        {/* <Route path='/' element={<Navigate to='/pets' replace />} /> */}
+        <Route path='/' element={<PetListPage />} />
         <Route path='/pets' element={<PetListPage />} />
         <Route path='/pets/:id' element={<PetDetailsPage />} />
         <Route path='/inventory' element={<InventoryPage />} />
