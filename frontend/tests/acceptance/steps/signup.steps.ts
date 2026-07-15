@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { createBdd, DataTable } from 'playwright-bdd';
-const { Given, When, Then } = createBdd();
+const { Then } = createBdd();
 
 Then('I should see a {string} form', async ({ page }, name: string) => {
   await expect(page.getByRole('form', { name })).toBeVisible();
@@ -15,7 +15,7 @@ function toLabel(field: string): string {
 Then('the form should have the following fields:', async ({ page }, dataTable: DataTable) => {
   const form = page.getByRole('form', { name: 'Sign Up' });
 
-  for (const { Field, Type, Required } of dataTable.hashes()) {
+  for (const { Field, Type } of dataTable.hashes()) {
     const field = form.getByLabel(toLabel(Field));
 
     await expect(field).toBeVisible();
