@@ -6,6 +6,7 @@ import { PetListPage } from '@/features/pets/PetListPage';
 import { InventoryPage } from './features/inventory/InventoryPage';
 import { PetDetailsPage } from './features/pet-details/PetDetailsPage';
 import { SettingsPage } from './features/settings/SettingsPage';
+import { SignupPage } from './features/signup/SignupPage';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
         <Route path='/pets/:id' element={<PetDetailsPage />} />
         <Route path='/inventory' element={<InventoryPage />} />
         <Route path='/settings' element={<SettingsPage />} />
+        <Route path='/signup' element={<SignupPage />} />
       </Routes>
     </BrowserRouter>
   );
