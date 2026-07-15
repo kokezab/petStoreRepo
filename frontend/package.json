@@ -16,7 +16,7 @@
     "generate:api": "orval",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:acceptance": "bddgen && playwright test --grep @pet-crea",
+    "test:acceptance": "bddgen && playwright test --grep @sig",
     "test:ui": "playwright test --ui"
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "@unleash/proxy-client-react": "^6.0.0",
     "antd": "^6.5.0",
     "axios": "^1.18.1",
+    "immer": "^11.1.11",
     "qs": "^6.15.3",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
