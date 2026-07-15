@@ -53,7 +53,6 @@ export function SignupPage() {
         >
           <Input />
         </Form.Item>
-
       </Form>
     </div>
   );
