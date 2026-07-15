@@ -22,7 +22,7 @@ const queryClient = new QueryClient({
 const unleashConfig = {
   url: config.unleashUrl,
   clientKey: config.unleashClientKey,
-  appName: 'frontend',
+  appName: config.unleashAppName,
 };
 
 async function enableMocking() {
