@@ -46,7 +46,7 @@ export function SignupPage() {
           <Input />
         </Form.Item>
         <Form.Item
-            required
+          required
           name='phone'
           label='Phone'
           rules={[{ required: true, message: 'Phone is required' }]}
