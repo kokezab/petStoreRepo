@@ -1,4 +1,4 @@
-import { Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 
 export function SignupPage() {
   return (
@@ -52,6 +52,11 @@ export function SignupPage() {
           rules={[{ required: true, message: 'Phone is required' }]}
         >
           <Input />
+        </Form.Item>
+        <Form.Item>
+          <Button type='primary' htmlType='submit'>
+            Sign Up
+          </Button>
         </Form.Item>
       </Form>
     </div>
