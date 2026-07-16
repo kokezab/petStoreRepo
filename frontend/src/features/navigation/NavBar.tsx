@@ -7,6 +7,7 @@ export function NavBar() {
       <nav>
         <NavLink to='/pets'>Pets</NavLink>
         <NavLink to='/inventory'>Inventory</NavLink>
+        {/* pipeline smoke test */}
       </nav>
     </>
   );
