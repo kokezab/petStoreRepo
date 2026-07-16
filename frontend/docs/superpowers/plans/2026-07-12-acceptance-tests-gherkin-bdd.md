@@ -18,7 +18,7 @@ project setup).
 
 ## Global Constraints
 
-- Runtime target: this repo's existing Vite dev server on `http://localhost:5173` (Vite's default
+- Runtime target: this repo's existing Vite dev server on `http://localhost:5200` (Vite's default
   port; nothing in `vite.config.ts` overrides it). Acceptance tests run against `vite dev`, not a
   production build, so `import.meta.env.DEV` is `true` and the app's MSW worker starts — though as
   described below, Playwright's own route interception pre-empts it for every mocked endpoint, so the
@@ -94,11 +94,11 @@ export default defineConfig({
   testDir,
   webServer: {
     command: 'npm run dev',
-    url: 'http://localhost:5173',
+    url: 'http://localhost:5200',
     reuseExistingServer: !process.env.CI,
   },
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:5200',
   },
   projects: [
     { name: 'chromium', use: { ...devices['Desktop Chrome'] } },
