@@ -32,6 +32,8 @@ jobs:
         run: |
           url=$(vercel deploy --prebuilt --token="$VERCEL_TOKEN" 2>/dev/null)
           echo "url=$url" >> "$GITHUB_OUTPUT"
+      - name: Point staging alias at the latest preview
+        run: vercel alias set "${{ steps.deploy.outputs.url }}" petstore-staging.vercel.app --token="$VERCEL_TOKEN"
 
   e2e:
     needs: deploy-preview
@@ -78,5 +80,3 @@ jobs:
         run: npm install -g vercel
       - name: Promote tested preview to production
         run: vercel promote "${{ needs.deploy-preview.outputs.url }}" --token="$VERCEL_TOKEN" --yes
-      - name: Point staging alias at the last known-good preview
-        run: vercel alias set "${{ needs.deploy-preview.outputs.url }}" petstore-staging.vercel.app --token="$VERCEL_TOKEN"
