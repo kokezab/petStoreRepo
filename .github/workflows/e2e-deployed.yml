@@ -5,33 +5,42 @@ on:
     branches: [main]
 
 permissions:
-  deployments: read
   contents: read
 
 jobs:
-  wait-for-deployment:
+  deploy-preview:
     runs-on: ubuntu-latest
     outputs:
-      url: ${{ steps.wait.outputs.url }}
+      url: ${{ steps.deploy.outputs.url }}
     defaults:
       run:
         working-directory: frontend
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: 22
-      - name: Wait for Vercel deployment to succeed
-        id: wait
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/wait-for-vercel-deployment.mjs
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      - name: Pull Vercel project settings
+        run: vercel pull --yes --environment=preview --token="$VERCEL_TOKEN"
+      - name: Build project
+        run: vercel build --token="$VERCEL_TOKEN"
+      - name: Deploy prebuilt preview
+        id: deploy
+        run: |
+          url=$(vercel deploy --prebuilt --token="$VERCEL_TOKEN")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
 
   e2e:
-    needs: wait-for-deployment
+    needs: deploy-preview
     runs-on: ubuntu-latest
     env:
-      E2E_BASE_URL: ${{ needs.wait-for-deployment.outputs.url }}
+      E2E_BASE_URL: ${{ needs.deploy-preview.outputs.url }}
     defaults:
       run:
         working-directory: frontend
@@ -46,7 +55,7 @@ jobs:
         run: npm ci
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
-      - name: Run e2e tests against deployed app
+      - name: Run e2e tests against preview deployment
         run: npm run test:e2e
       - name: Upload Playwright report
         if: failure()
@@ -55,3 +64,23 @@ jobs:
           name: playwright-report
           path: frontend/playwright-report/
           retention-days: 14
+
+  promote-production:
+    needs: [deploy-preview, e2e]
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+      - name: Promote tested preview to production
+        run: vercel promote "${{ needs.deploy-preview.outputs.url }}" --token="$VERCEL_TOKEN" --yes
