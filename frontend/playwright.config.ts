@@ -7,15 +7,21 @@ const testDir = defineBddConfig({
   outputDir: 'tests/acceptance/.features-gen',
 });
 
+const deployedBaseURL = process.env.E2E_BASE_URL;
+
 export default defineConfig({
   testDir,
-  webServer: {
-    command: 'npm run dev',
-    url: 'http://localhost:5200',
-    reuseExistingServer: !process.env.CI,
-  },
+  ...(deployedBaseURL
+    ? {}
+    : {
+        webServer: {
+          command: 'npm run dev',
+          url: 'http://localhost:5200',
+          reuseExistingServer: !process.env.CI,
+        },
+      }),
   use: {
-    baseURL: 'http://localhost:5200',
+    baseURL: deployedBaseURL ?? 'http://localhost:5200',
     serviceWorkers: 'block',
   },
   projects: [

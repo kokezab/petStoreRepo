@@ -1,0 +1,57 @@
+name: E2E against deployed app
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  deployments: read
+  contents: read
+
+jobs:
+  wait-for-deployment:
+    runs-on: ubuntu-latest
+    outputs:
+      url: ${{ steps.wait.outputs.url }}
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Wait for Vercel deployment to succeed
+        id: wait
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/wait-for-vercel-deployment.mjs
+
+  e2e:
+    needs: wait-for-deployment
+    runs-on: ubuntu-latest
+    env:
+      E2E_BASE_URL: ${{ needs.wait-for-deployment.outputs.url }}
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+      - name: Run e2e tests against deployed app
+        run: npm run test:e2e
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: frontend/playwright-report/
+          retention-days: 14
