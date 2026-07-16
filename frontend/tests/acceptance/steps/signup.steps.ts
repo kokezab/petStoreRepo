@@ -42,7 +42,7 @@ Then(
   'validation errors are displayed next to the empty required fields \\(username, password, email)',
   async ({ page }) => {
     const form = page.getByRole('form', { name: 'Sign Up' });
-    await expect(form.getByText('Username is required')).toBeVisible();
+    await expect(form.getByText('Username is requiredddd')).toBeVisible();
     await expect(form.getByText('Password is required')).toBeVisible();
     await expect(form.getByText('Email is required')).toBeVisible();
   },
