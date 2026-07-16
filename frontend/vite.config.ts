@@ -14,6 +14,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'),
     },
   },
+  server: {
+    port: 5200,
+  },
   define: {
     __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
   },

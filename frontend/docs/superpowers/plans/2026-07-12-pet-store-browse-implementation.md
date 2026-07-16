@@ -16,7 +16,7 @@ Library, TypeScript (ESM, matches existing `"type": "module"` project setup).
 
 ## Global Constraints
 
-- Runtime target: existing Vite dev server on `http://localhost:5173` — unchanged.
+- Runtime target: existing Vite dev server on `http://localhost:5200` — unchanged.
 - New runtime dependency: `react-router` (latest major is 8.x; peer deps require
   `react >=19.2.7` / `react-dom >=19.2.7`, already satisfied by this project's installed
   `react@^19.2.7`). Import `BrowserRouter`, `Routes`, `Route`, `Navigate`, `Link`, `NavLink`,
