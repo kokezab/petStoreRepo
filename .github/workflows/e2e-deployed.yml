@@ -78,3 +78,5 @@ jobs:
         run: npm install -g vercel
       - name: Promote tested preview to production
         run: vercel promote "${{ needs.deploy-preview.outputs.url }}" --token="$VERCEL_TOKEN" --yes
+      - name: Point staging alias at the last known-good preview
+        run: vercel alias set "${{ needs.deploy-preview.outputs.url }}" petstore-staging.vercel.app --token="$VERCEL_TOKEN"
