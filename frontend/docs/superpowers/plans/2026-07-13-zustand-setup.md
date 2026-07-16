@@ -357,7 +357,7 @@ Expected output: No TypeScript errors
 npm run dev
 ```
 
-Expected output: Dev server starts without errors. Open http://localhost:5173 in browser and verify the app loads.
+Expected output: Dev server starts without errors. Open http://localhost:5200 in browser and verify the app loads.
 
 - [ ] **Step 5: Commit**
 
@@ -383,7 +383,7 @@ Keep the dev server running.
 
 - [ ] **Step 2: Open browser and navigate to the app**
 
-Open http://localhost:5173 in your browser. The app should load without errors.
+Open http://localhost:5200 in your browser. The app should load without errors.
 
 - [ ] **Step 3: Verify demo section renders**
 

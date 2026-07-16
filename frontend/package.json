@@ -17,8 +17,9 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:acceptance": "bddgen && playwright test --grep @sig",
+    "test:e2e": "playwright test",
     "test:ui": "playwright test --ui",
-    "prepare": "git config core.hooksPath .husky"
+    "prepare": "node -e \"try{require('child_process').execSync('git config core.hooksPath .husky',{stdio:'ignore'})}catch(e){}\""
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.2",
