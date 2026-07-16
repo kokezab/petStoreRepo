@@ -16,7 +16,7 @@
     "generate:api": "orval",
     "test": "vitest run",
     "test:watch": "vitest",
-    "test:acceptance": "bddgen && playwright test --grep @sig",
+    "test:acceptance": "bddgen && playwright test --grep @",
     "test:e2e": "playwright test",
     "test:ui": "playwright test --ui",
     "prepare": "node -e \"try{require('child_process').execSync('git config core.hooksPath .husky',{stdio:'ignore'})}catch(e){}\""
