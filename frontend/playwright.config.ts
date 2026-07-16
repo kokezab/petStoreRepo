@@ -11,11 +11,11 @@ export default defineConfig({
   testDir,
   webServer: {
     command: 'npm run dev',
-    url: 'http://localhost:5173',
+    url: 'http://localhost:5200',
     reuseExistingServer: !process.env.CI,
   },
   use: {
-    baseURL: 'http://localhost:5173',
+    baseURL: 'http://localhost:5200',
     serviceWorkers: 'block',
   },
   projects: [
