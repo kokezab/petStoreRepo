@@ -39,7 +39,15 @@ export async function waitForDeploymentUrl({
       `${GITHUB_API}/repos/${owner}/${repo}/deployments?sha=${sha}&per_page=100`,
       { headers },
     );
+    if (!deploymentsRes.ok) {
+      throw new Error(
+        `GitHub API request failed: ${deploymentsRes.status} ${deploymentsRes.statusText}`,
+      );
+    }
     const deployments = await deploymentsRes.json();
+    if (!Array.isArray(deployments)) {
+      throw new Error('GitHub API returned an unexpected response for deployments list');
+    }
 
     if (deployments.length === 0) {
       await sleepImpl(delayMs);
@@ -52,7 +60,15 @@ export async function waitForDeploymentUrl({
       `${GITHUB_API}/repos/${owner}/${repo}/deployments/${deployment.id}/statuses`,
       { headers },
     );
+    if (!statusesRes.ok) {
+      throw new Error(
+        `GitHub API request failed: ${statusesRes.status} ${statusesRes.statusText}`,
+      );
+    }
     const statuses = await statusesRes.json();
+    if (!Array.isArray(statuses)) {
+      throw new Error('GitHub API returned an unexpected response for deployment statuses list');
+    }
 
     if (statuses.length === 0) {
       await sleepImpl(delayMs);
@@ -62,6 +78,9 @@ export async function waitForDeploymentUrl({
     const latestStatus = statuses[0];
 
     if (latestStatus.state === 'success') {
+      if (!latestStatus.target_url) {
+        throw new Error('Vercel deployment succeeded but reported no target_url');
+      }
       return latestStatus.target_url;
     }
 
