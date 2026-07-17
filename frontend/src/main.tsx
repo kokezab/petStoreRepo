@@ -4,6 +4,7 @@ import './index.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { FlagProvider } from '@unleash/proxy-client-react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router';
 
 import { config } from '@/config';
 
@@ -52,7 +53,9 @@ enableMocking().then(() => {
     <StrictMode>
       <FlagProvider config={unleashConfig}>
         <QueryClientProvider client={queryClient}>
-          <App />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </QueryClientProvider>
       </FlagProvider>
     </StrictMode>,
