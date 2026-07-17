@@ -78,5 +78,9 @@ jobs:
           node-version: 22
       - name: Install Vercel CLI
         run: npm install -g vercel
-      - name: Promote tested preview to production
-        run: vercel promote "${{ needs.deploy-preview.outputs.url }}" --token="$VERCEL_TOKEN" --yes
+      - name: Pull Vercel project settings
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+      - name: Build project for production
+        run: vercel build --prod --token="$VERCEL_TOKEN"
+      - name: Deploy prebuilt production build
+        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
