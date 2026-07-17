@@ -18,7 +18,9 @@ Then(
   'I should see pet counts grouped by {string}, {string}, and {string}',
   async ({ page }, status1: string, status2: string, status3: string) => {
     for (const status of [status1, status2, status3] as PetStatus[]) {
-      await expect(page.getByText(new RegExp(`${status}.*${inventoryCounts[status]}`, 'i'))).toBeVisible();
+      await expect(
+        page.getByText(new RegExp(`${status}.*${inventoryCounts[status]}`, 'i')),
+      ).toBeVisible();
     }
   },
 );

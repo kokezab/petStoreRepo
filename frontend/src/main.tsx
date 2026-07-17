@@ -29,6 +29,7 @@ const unleashConfig = {
 
 async function enableMocking() {
   if (!import.meta.env.DEV) return;
+  if (import.meta.env.VITE_API_MOCKING === 'false') return;
 
   const { worker } = await import('./mocks/browser');
   // Playwright's acceptance suite blocks service workers (so its own page.route()

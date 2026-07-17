@@ -7,9 +7,7 @@ Then('I should see a {string} form', async ({ page }, name: string) => {
 });
 
 function toLabel(field: string): string {
-  return field
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/^./, (c) => c.toUpperCase());
+  return field.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (c) => c.toUpperCase());
 }
 
 Then('the form should have the following fields:', async ({ page }, dataTable: DataTable) => {
@@ -25,18 +23,21 @@ Then('the form should have the following fields:', async ({ page }, dataTable: D
 
 let userCreateRequestSent = false;
 
-When('the user attempts to submit the form with one or more required fields empty', async ({ page }) => {
-  userCreateRequestSent = false;
-  await page.route('**/user', (route) => {
-    if (route.request().method() === 'POST') {
-      userCreateRequestSent = true;
-    }
-    return route.fallback();
-  });
+When(
+  'the user attempts to submit the form with one or more required fields empty',
+  async ({ page }) => {
+    userCreateRequestSent = false;
+    await page.route('**/user', (route) => {
+      if (route.request().method() === 'POST') {
+        userCreateRequestSent = true;
+      }
+      return route.fallback();
+    });
 
-  const form = page.getByRole('form', { name: 'Sign Up' });
-  await form.getByRole('button', { name: 'Sign Up' }).click();
-});
+    const form = page.getByRole('form', { name: 'Sign Up' });
+    await form.getByRole('button', { name: 'Sign Up' }).click();
+  },
+);
 
 Then(
   'validation errors are displayed next to the empty required fields \\(username, password, email)',

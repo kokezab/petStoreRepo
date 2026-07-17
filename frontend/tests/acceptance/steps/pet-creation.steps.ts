@@ -19,10 +19,10 @@ Given('the mocked API returns an error for adding a pet', async ({ page }) => {
 });
 
 Given('the pet-creation common flow', async ({ page }) => {
-   await mockFeatureFlag(page, { 'pet-creation': true });
-   await page.goto('/pets');
-   await expect(page.getByRole('button', { name: 'Add pet' })).toBeVisible();
-   await page.getByRole('button', { name: 'Add pet' }).click();
+  await mockFeatureFlag(page, { 'pet-creation': true });
+  await page.goto('/pets');
+  await expect(page.getByRole('button', { name: 'Add pet' })).toBeVisible();
+  await page.getByRole('button', { name: 'Add pet' }).click();
 });
 
 Then('I should not see an {string} button', async ({ page }, name: string) => {
@@ -60,7 +60,10 @@ When('I submit the pet creation form without filling it in', async ({ page }) =>
 });
 
 When('I cancel the pet creation form', async ({ page }) => {
-  await page.getByRole('dialog', { name: 'Add pet' }).getByRole('button', { name: 'Cancel' }).click();
+  await page
+    .getByRole('dialog', { name: 'Add pet' })
+    .getByRole('button', { name: 'Cancel' })
+    .click();
 });
 
 Then('the {string} form should close', async ({ page }, name: string) => {
