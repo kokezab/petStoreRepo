@@ -33,13 +33,14 @@ const options: { value: PetStatus; label: string }[] = [
 export function AddPetForm({ onSubmit, isLoading, error, onCancel }: AddPetFormProps) {
   const [form] = Form.useForm<AddPetFormValues>();
   const handleSubmit = async () => {
-    const { name, category, status } = await form.validateFields();
+    let values: AddPetFormValues;
+    try {
+      values = await form.validateFields();
+    } catch {
+      return;
+    }
 
-    if (!name) return;
-    if (!category) return;
-    if (!status) return;
-
-    await onSubmit({ name, category, status });
+    await onSubmit(values);
   };
 
   return (

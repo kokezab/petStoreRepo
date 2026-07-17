@@ -13,7 +13,8 @@ describe('AddPetForm', () => {
 
     await user.type(screen.getByLabelText('Name'), 'Buddy');
     await user.type(screen.getByLabelText('Category'), 'Dog');
-    await user.selectOptions(screen.getByLabelText('Status'), 'available');
+    await user.click(screen.getByLabelText('Status'));
+    await user.click(await screen.findByTitle('available'));
 
     await user.click(screen.getByRole('button', { name: 'Save' }));
 
