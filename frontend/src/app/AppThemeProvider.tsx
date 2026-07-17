@@ -15,9 +15,7 @@ export function AppThemeProvider({ children }: { children: ReactNode }) {
   const fontSize = useThemeStore((state) => state.preferences.fontSize);
   const density = useThemeStore((state) => state.preferences.layout.density);
 
-  const algorithms = [
-    theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm,
-  ];
+  const algorithms = [theme === 'dark' ? antdTheme.darkAlgorithm : antdTheme.defaultAlgorithm];
   if (density === 'compact') {
     algorithms.push(antdTheme.compactAlgorithm);
   }
