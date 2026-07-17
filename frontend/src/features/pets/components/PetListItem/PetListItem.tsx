@@ -1,6 +1,7 @@
 import type { Pet } from '@/api/generated/models';
-import { List } from 'antd';
+import { Card, List, Tag } from 'antd';
 import { Link } from 'react-router';
+import { PetStatusTag } from '../PetStatusTag/PetStatusTag';
 
 interface PetListItemProps {
   pet: Pet;
@@ -9,7 +10,10 @@ interface PetListItemProps {
 export function PetListItem({ pet }: PetListItemProps) {
   return (
     <List.Item key={pet.id}>
-      <Link to={`/pets/${pet.id}`}>{pet.name}</Link>
+      <Card>      
+        <Link to={`/pets/${pet.id}`}>{pet.name}</Link>
+        <PetStatusTag status={pet.status} />
+      </Card>
     </List.Item>
   );
 }

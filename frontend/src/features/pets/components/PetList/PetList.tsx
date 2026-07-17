@@ -1,6 +1,6 @@
 import type { Pet } from '@/api/generated/models';
 import { List } from 'antd';
-import { PetListItem } from '../PetListItem';
+import { PetListItem } from '../PetListItem/PetListItem';
 
 interface PetListProps {
   data: Pet[];
