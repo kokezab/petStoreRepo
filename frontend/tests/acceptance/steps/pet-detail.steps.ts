@@ -9,7 +9,7 @@ const { Given, When, Then } = createBdd();
 // "the first pet card" deterministically means Bella (id 1) across these scenarios.
 const firstAvailablePet = pets[0];
 
-Given('I am on a pet\'s detail page', async ({ page }) => {
+Given("I am on a pet's detail page", async ({ page }) => {
   await page.goto(`/pets/${firstAvailablePet.id}`);
 });
 
@@ -21,7 +21,7 @@ When('I click {string}', async ({ page }, text: string) => {
   await page.getByRole('link', { name: text }).click();
 });
 
-Then('I should be on that pet\'s detail page', async ({ page }) => {
+Then("I should be on that pet's detail page", async ({ page }) => {
   await expect(page).toHaveURL(`/pets/${firstAvailablePet.id}`);
 });
 
@@ -33,7 +33,7 @@ Then('I should see its name, status, category, photo, and tags', async ({ page }
   await expect(page.getByText(firstAvailablePet.tags[0].name)).toBeVisible();
 });
 
-Then('I should see pet {string}\'s detail', async ({ page }, id: string) => {
+Then("I should see pet {string}'s detail", async ({ page }, id: string) => {
   const pet = pets.find((p) => p.id === Number(id));
   if (!pet) throw new Error(`No fixture pet with id ${id}`);
   await expect(page.getByRole('heading', { name: pet.name, level: 1 })).toBeVisible();

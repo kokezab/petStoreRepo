@@ -22,17 +22,26 @@ When('I select the {string} status filter', async ({ page }, status: string) => 
   await page.getByRole('combobox', { name: 'Status filter' }).selectOption(status);
 });
 
-Then('the pet list should show only pets with status {string}', async ({ page }, status: string) => {
-  const expected = pets.filter((pet) => pet.status === status);
-  const list = page.getByRole('list', { name: 'Pets' });
-  await expect(list.getByRole('listitem')).toHaveCount(expected.length);
-  for (const pet of expected) {
-    await expect(list.getByRole('link', { name: pet.name })).toBeVisible();
-  }
-});
+Then(
+  'the pet list should show only pets with status {string}',
+  async ({ page }, status: string) => {
+    const expected = pets.filter((pet) => pet.status === status);
+    const list = page.getByRole('list', { name: 'Pets' });
+    await expect(list.getByRole('listitem')).toHaveCount(expected.length);
+    for (const pet of expected) {
+      await expect(list.getByRole('link', { name: pet.name })).toBeVisible();
+    }
+  },
+);
 
 Then('each pet should be listed by name', async ({ page }) => {
-  await expect(page.getByRole('list', { name: 'Pets' }).getByRole('listitem').first()).toBeVisible();
+  await expect(
+    page.getByRole('list', { name: 'Pets' }).getByRole('listitem').first(),
+  ).toBeVisible();
+});
+
+Then('each pet should have a photo', async ({ page }) => {
+  await expect(page.getByRole('list', { name: 'Pets' }).getByRole('img').first()).toBeVisible();
 });
 
 Then('I should see an empty-state message', async ({ page }) => {

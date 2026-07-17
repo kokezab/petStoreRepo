@@ -1,5 +1,6 @@
-import type { Pet, PetStatus } from '@/api/generated/models';
 import { Tag } from 'antd';
+
+import type { Pet, PetStatus } from '@/api/generated/models';
 
 interface PetStatusTagProps {
   status: Pet['status'];
@@ -8,7 +9,7 @@ interface PetStatusTagProps {
 const STATUS_COLORS: Record<PetStatus, string> = {
   available: 'green',
   pending: 'orange',
-  sold: 'red',  
+  sold: 'red',
 };
 
 export function PetStatusTag({ status }: PetStatusTagProps) {
