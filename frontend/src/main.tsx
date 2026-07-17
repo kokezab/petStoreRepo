@@ -6,6 +6,7 @@ import { FlagProvider } from '@unleash/proxy-client-react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 
+import { AppThemeProvider } from '@/app/AppThemeProvider';
 import { config } from '@/config';
 
 import App from './App.tsx';
@@ -53,9 +54,11 @@ enableMocking().then(() => {
     <StrictMode>
       <FlagProvider config={unleashConfig}>
         <QueryClientProvider client={queryClient}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
+          <AppThemeProvider>
+            <BrowserRouter>
+              <App />
+            </BrowserRouter>
+          </AppThemeProvider>
         </QueryClientProvider>
       </FlagProvider>
     </StrictMode>,
