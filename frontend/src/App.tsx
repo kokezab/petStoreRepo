@@ -1,8 +1,8 @@
 import { Layout } from 'antd';
 import { Route, Routes } from 'react-router';
 
-import { NavBar } from '@/features/navigation/NavBar';
-import { PetListPage } from '@/features/pets/PetListPage';
+import { NavBar } from '@/features/navigation/NavBar/NavBar';
+import { PetListPage } from '@/features/pets/PetListPage/PetListPage';
 
 import { InventoryPage } from './features/inventory/InventoryPage';
 import { PetDetailsPage } from './features/pet-details/PetDetailsPage';

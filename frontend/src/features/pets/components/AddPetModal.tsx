@@ -7,7 +7,7 @@ import type { PetStatus } from '@/api/generated/models';
 import { getFindPetsByStatusQueryKey, useAddPet } from '@/api/generated/pet/pet';
 import { useModalStore } from '@/stores/useModalStore';
 
-import { AddPetForm } from './AddPetForm';
+import { AddPetForm } from './AddPetForm/AddPetForm';
 
 type AddPetFormValues = {
   name: string;
