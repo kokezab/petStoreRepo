@@ -1,12 +1,11 @@
 import { useState } from 'react';
 
-import { Link } from 'react-router';
-
 import type { FindPetsByStatusStatusItem } from '@/api/generated/models';
 import { useFindPetsByStatus } from '@/api/generated/pet/pet';
 
 import { AddPetButton } from './components/AddPetButton';
 import { AddPetModal } from './components/AddPetModal';
+import { PetList } from './components/PetList/PetList';
 
 const STATUS_OPTIONS: FindPetsByStatusStatusItem[] = ['available', 'pending', 'sold'];
 
@@ -37,17 +36,7 @@ export function PetListPage() {
         </p>
       ) : null}
       {error ? <p role='alert'>Failed to load pets.</p> : null}
-      {!isLoading && !error && data?.length === 0 && <p>No pets found</p>}
-      {!isLoading && !error && data && data.length > 0 && (
-        <ul aria-label='Pets' role='list'>
-          {data.map((pet) => (
-            <li key={pet.id} role='listitem'>
-              <Link to={`/pets/${pet.id}`}>{pet.name}</Link>
-            </li>
-          ))}
-        </ul>
-      )}
-
+      {!isLoading && !error && <PetList data={data ?? []} noDataMessage='No pets found' isLoading={isLoading} />}
       <AddPetButton />
       <AddPetModal />
     </div>

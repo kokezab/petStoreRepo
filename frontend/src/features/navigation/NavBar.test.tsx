@@ -3,6 +3,10 @@ import { MemoryRouter } from 'react-router';
 
 import { NavBar } from './NavBar';
 
+// NavBar reads the build-time-injected __BUILD_TIME__ global, which vite defines
+// at build time but is not present under vitest.
+vi.stubGlobal('__BUILD_TIME__', 'test');
+
 describe('NavBar', () => {
   it('renders Pets and Inventory links inside a navigation landmark', () => {
     render(
