@@ -22,6 +22,7 @@
     "prepare": "node -e \"try{require('child_process').execSync('git config core.hooksPath .husky',{stdio:'ignore'})}catch(e){}\""
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.3.3",
     "@tanstack/react-query": "^5.101.2",
     "@unleash/proxy-client-react": "^6.0.0",
     "antd": "^6.5.0",
@@ -31,6 +32,7 @@
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router": "^8.2.0",
+    "tailwindcss": "^4.3.3",
     "unleash-proxy-client": "^3.8.0",
     "zustand": "^5.0.14"
   },
