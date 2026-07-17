@@ -1,5 +1,5 @@
-@import 'tailwindcss/utilities';
-@import 'tailwindcss/theme';
+@import "tailwindcss/theme.css";
+@import "tailwindcss/utilities.css";
 
 :root {
   --text: #6b6375;
