@@ -3,7 +3,9 @@ import { MemoryRouter } from 'react-router';
 
 import App from './App';
 
-vi.mock('@/features/pets/PetListPage', () => ({ PetListPage: () => <div>Pets Page</div> }));
+vi.mock('@/features/pets/PetListPage/PetListPage', () => ({
+  PetListPage: () => <div>Pets Page</div>,
+}));
 vi.mock('@/features/inventory/InventoryPage', () => ({
   InventoryPage: () => <div>Inventory Page</div>,
 }));

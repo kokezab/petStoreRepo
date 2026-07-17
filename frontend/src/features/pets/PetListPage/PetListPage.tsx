@@ -3,9 +3,7 @@ import { useState } from 'react';
 import type { FindPetsByStatusStatusItem } from '@/api/generated/models';
 import { useFindPetsByStatus } from '@/api/generated/pet/pet';
 
-import { AddPetButton } from './components/AddPetButton';
-import { AddPetModal } from './components/AddPetModal';
-import { PetList } from './components/PetList/PetList';
+import { AddPetButton, AddPetModal, PetList } from '../components';
 
 const STATUS_OPTIONS: FindPetsByStatusStatusItem[] = ['available', 'pending', 'sold'];
 
@@ -36,7 +34,9 @@ export function PetListPage() {
         </p>
       ) : null}
       {error ? <p role='alert'>Failed to load pets.</p> : null}
-      {!isLoading && !error && <PetList data={data ?? []} noDataMessage='No pets found' isLoading={isLoading} />}
+      {!isLoading && !error && (
+        <PetList data={data ?? []} noDataMessage='No pets found' isLoading={isLoading} />
+      )}
       <AddPetButton />
       <AddPetModal />
     </div>

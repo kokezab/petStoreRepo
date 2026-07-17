@@ -6,7 +6,7 @@ import { FlagProvider } from '@unleash/proxy-client-react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 
-import { AppThemeProvider } from '@/app/AppThemeProvider';
+import { AppThemeProvider } from '@/app/AppThemeProvider/AppThemeProvider';
 import { config } from '@/config';
 
 import App from './App.tsx';
