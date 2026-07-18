@@ -3,4 +3,5 @@ export const config = {
   unleashUrl: import.meta.env.VITE_UNLEASH_URL || 'http://localhost:4242/api/frontend',
   unleashClientKey: import.meta.env.VITE_UNLEASH_CLIENT_KEY || 'local-dev-unconfigured',
   unleashAppName: import.meta.env.VITE_UNLEASH_APP_NAME || 'frontend',
+  i18nLoadPath: import.meta.env.VITE_I18N_LOAD_PATH || '/locales/{{lng}}/translation.json',
 };

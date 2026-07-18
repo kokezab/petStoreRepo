@@ -1,3 +1,6 @@
+import { Suspense } from 'react';
+
+import '@/lib/i18n';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { FlagProvider } from '@unleash/proxy-client-react';
 import { App as AntdApp } from 'antd';
@@ -22,7 +25,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
         <AppThemeProvider>
           <AntdApp>
             <AntdMessageBridge />
-            <BrowserRouter>{children}</BrowserRouter>
+            <Suspense fallback={null}>
+              <BrowserRouter>{children}</BrowserRouter>
+            </Suspense>
           </AntdApp>
         </AppThemeProvider>
       </QueryClientProvider>
