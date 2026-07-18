@@ -2,7 +2,7 @@ import { Alert, Button, Form, Input, Select, Space } from 'antd';
 
 import type { PetStatus } from '@/api/generated/models';
 
-type AddPetFormValues = {
+export type AddPetFormValues = {
   name: string;
   category: string;
   status: PetStatus;

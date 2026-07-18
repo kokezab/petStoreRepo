@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import type { FindPetsByStatusStatusItem } from '@/api/generated/models';
 import { useFindPetsByStatus } from '@/api/generated/pet/pet';
+import { QueryState } from '@/components/QueryState/QueryState';
 
 import { AddPetButton, AddPetModal, PetList } from '../components';
 
@@ -28,15 +29,15 @@ export function PetListPage() {
         </select>
       </label>
 
-      {isLoading ? (
-        <p role='status' aria-label='Loading pets'>
-          Loading pets…
-        </p>
-      ) : null}
-      {error ? <p role='alert'>Failed to load pets.</p> : null}
-      {!isLoading && !error && (
-        <PetList data={data ?? []} noDataMessage='No pets found' isLoading={isLoading} />
-      )}
+      <QueryState
+        isLoading={isLoading}
+        error={error}
+        data={data}
+        loadingLabel='Loading pets'
+        errorFallback='Failed to load pets.'
+      >
+        {(pets) => <PetList data={pets} noDataMessage='No pets found' isLoading={false} />}
+      </QueryState>
       <AddPetButton />
       <AddPetModal />
     </div>

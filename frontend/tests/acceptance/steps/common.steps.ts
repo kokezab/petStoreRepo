@@ -30,7 +30,13 @@ Then('I should be back on the {string} page', async ({ page }, path: string) => 
 });
 
 Then('I should see an error message instead of a blank page', async ({ page }) => {
-  await expect(page.getByRole('alert')).toBeVisible();
+  // Locally-renderable errors (4xx) show an inline role="alert" message
+  // (see QueryState/useApiError); 5xx/network failures escalate to the
+  // nearest RouteErrorBoundary, which renders an antd `Result` heading
+  // instead (see main.tsx / query-client.ts).
+  const inlineAlert = page.getByRole('alert');
+  const boundaryFallback = page.getByText('Something went wrong');
+  await expect(inlineAlert.or(boundaryFallback)).toBeVisible();
 });
 
 Then('I should see {string} text', async ({ page }, text: string) => {
