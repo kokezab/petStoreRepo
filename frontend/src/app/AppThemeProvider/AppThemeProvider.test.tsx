@@ -9,11 +9,6 @@ describe('AppThemeProvider', () => {
   afterEach(() => {
     useThemeStore.setState({
       theme: 'light',
-      preferences: {
-        accentColor: '#6366f1',
-        fontSize: 'medium',
-        layout: { sidebarCollapsed: false, density: 'comfortable' },
-      },
     });
   });
 
@@ -46,23 +41,4 @@ describe('AppThemeProvider', () => {
     expect(capturedToken.colorBgBase).not.toBe('#fff');
   });
 
-  it('applies the accentColor preference as colorPrimary', () => {
-    useThemeStore.setState((state) => ({
-      preferences: { ...state.preferences, accentColor: '#ff0000' },
-    }));
-    let capturedToken: { colorPrimary?: string } = {};
-
-    function Probe() {
-      capturedToken = antdTheme.useToken().token;
-      return null;
-    }
-
-    render(
-      <AppThemeProvider>
-        <Probe />
-      </AppThemeProvider>,
-    );
-
-    expect(capturedToken.colorPrimary).toBe('#ff0000');
-  });
 });

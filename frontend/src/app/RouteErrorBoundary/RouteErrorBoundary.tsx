@@ -1,7 +1,6 @@
-import type { ReactNode } from 'react';
-
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { Button, Result } from 'antd';
+import type { ReactNode } from 'react';
 
 import { ErrorBoundary } from '@/app/ErrorBoundary/ErrorBoundary';
 

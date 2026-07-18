@@ -1,19 +1,16 @@
 import { useState } from 'react';
 
-import { Button, Select } from 'antd';
+import { Select } from 'antd';
+
+import { ThemeToggle } from '@/components/ThemeToggle/ThemeToggle';
 
 export function SettingsPage() {
-  const [darkMode, setDarkMode] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
 
   return (
     <div>
       <h2>{selectedLanguage === 'en' ? 'Settings' : 'Podešavanja'}</h2>
-      <Button onClick={toggleDarkMode}>{darkMode ? 'Light mode' : 'Dark mode'}</Button>
+      <ThemeToggle />
 
       <Select
         value={selectedLanguage}

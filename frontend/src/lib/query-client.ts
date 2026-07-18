@@ -1,7 +1,7 @@
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 
-import { getApiErrorMessage, isBoundaryWorthyError } from '@/lib/api-error';
 import { showErrorMessage } from '@/lib/antd-message-bridge';
+import { getApiErrorMessage, isBoundaryWorthyError } from '@/lib/api-error';
 
 // Queries/mutations opt out with `meta: { skipGlobalErrorToast: true }` when
 // they already render their own inline error state (see useApiError).

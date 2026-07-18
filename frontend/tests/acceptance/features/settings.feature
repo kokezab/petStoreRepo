@@ -18,6 +18,17 @@ Feature: Settings
     When I click on dark mode toggle
     Then I should see "light mode" text
 
+  Scenario: Clicking dark mode toggle should visually apply dark theme
+    Given I am on the "settings" page
+    When I click on dark mode toggle
+    Then the page should visually match the "dark" theme
+
+  Scenario: Clicking dark mode toggle when dark mode is on should visually apply dark theme
+    Given I am on the "settings" page
+    And I click on dark mode toggle
+    When I click on dark mode toggle
+    Then the page should visually match the "light" theme
+
   Scenario: Selecting Serbian language should result in content being translated
     Given I am on the "settings" page
     When I chose "Serbian" option for dropdown with current value "English"
