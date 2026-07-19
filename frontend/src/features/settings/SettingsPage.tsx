@@ -1,8 +1,7 @@
 import { useState } from 'react';
 
 import { Select } from 'antd';
-
-import { ThemeToggle } from '@/components/ThemeToggle/ThemeToggle';
+import { ThemeToggle } from './components/ThemeToggle/ThemeToggle';
 
 export function SettingsPage() {
   const [selectedLanguage, setSelectedLanguage] = useState('en');

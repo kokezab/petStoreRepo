@@ -17,16 +17,12 @@ export function ThemeToggle() {
     applySystemThemePreferenceIfUnset();
   }, []);
 
-  const onChange = () => {
-    toggleTheme();
-  };
-
   return (
     <Switch
       checkedChildren='Dark mode'
       unCheckedChildren='Light mode'
       checked={isDarkMode}
-      onChange={onChange}
+      onChange={toggleTheme}
     />
   );
 }
