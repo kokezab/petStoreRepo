@@ -11,8 +11,8 @@ export function SettingsPage() {
   return (
     <div>
       <button onClick={() => setLocale('en')}>English</button>
-      <button onClick={() => setLocale('es')}>Serbian</button>
-      {t('welcome')}
+      <button onClick={() => setLocale('sr')}>Serbian</button>
+      {t('cancel')}
 
       <h2>{selectedLanguage === 'en' ? 'Settings' : 'Podešavanja'}</h2>
       <ThemeToggle />
