@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 
 type Language = 'en' | 'sr';
 
@@ -17,21 +11,13 @@ interface LanguageContextType {
   loading: boolean;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(
-  undefined
-);
+const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({
-  children,
-}: {
-  children: ReactNode;
-}) {
+export function LanguageProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Language>('en');
   const [loading, setLoading] = useState(true);
 
-  const [translations, setTranslations] = useState<
-    Record<Language, TranslationMap>
-  >({
+  const [translations, setTranslations] = useState<Record<Language, TranslationMap>>({
     en: {},
     sr: {},
   });
@@ -51,11 +37,13 @@ export function LanguageProvider({
 
     const languageId = language === 'en' ? 1 : 3;
 
-    const response = await fetch(`https://dash.enpay.rs/localization/getByLanguageId/${languageId}`);
+    const response = await fetch(
+      `https://dash.enpay.rs/localization/getByLanguageId/${languageId}`,
+    );
 
     const json: TranslationMap = await response.json();
 
-    setTranslations(prev => ({
+    setTranslations((prev) => ({
       ...prev,
       [language]: json,
     }));
@@ -63,10 +51,7 @@ export function LanguageProvider({
     setLoading(false);
   }
 
-  function t(
-    key: string,
-    variables?: Record<string, string | number>
-  ) {
+  function t(key: string, variables?: Record<string, string | number>) {
     let message = translations[locale][key] ?? key;
 
     if (variables) {
@@ -95,10 +80,7 @@ export function LanguageProvider({
 export function useTranslation() {
   const context = useContext(LanguageContext);
 
-  if (!context)
-    throw new Error(
-      'useTranslation must be used within LanguageProvider'
-    );
+  if (!context) throw new Error('useTranslation must be used within LanguageProvider');
 
   return context;
 }
