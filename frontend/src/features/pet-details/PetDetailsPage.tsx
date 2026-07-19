@@ -7,7 +7,11 @@ import { QueryState } from '@/components/QueryState/QueryState';
 export function PetDetailsPage() {
   const { id } = useParams<{ id: string }>();
 
-  const { data: pet, isLoading, error } = useGetPetById(Number(id), {
+  const {
+    data: pet,
+    isLoading,
+    error,
+  } = useGetPetById(Number(id), {
     query: { meta: { skipGlobalErrorToast: true } },
   });
 

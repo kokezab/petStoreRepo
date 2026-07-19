@@ -40,5 +40,4 @@ describe('AppThemeProvider', () => {
     // Antd's dark algorithm sets colorBgBase to a dark value; default/light is '#fff'.
     expect(capturedToken.colorBgBase).not.toBe('#fff');
   });
-
 });
