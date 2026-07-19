@@ -1,55 +1,104 @@
-// locales/en.ts
-export const en = {
-  welcome: 'Welcome to our app!',
-  logout: 'Log Out',
-  items_count: 'You have {{count}} items.',
-};
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from 'react';
 
-// locales/es.ts
-export const es = {
-  welcome: '¡Bienvenido a nuestra aplicación!',
-  logout: 'Cerrar sesión',
-  items_count: 'Tienes {{count}} artículos.',
-};
+type Language = 'en' | 'sr';
 
-// context/LanguageContext.tsx
-import { createContext, useState, useContext, type ReactNode } from 'react';
-
-const translations = { en, es };
-type Language = keyof typeof translations;
+type TranslationMap = Record<string, string>;
 
 interface LanguageContextType {
   locale: Language;
   setLocale: (lang: Language) => void;
-  t: (key: keyof typeof en, variables?: Record<string, string | number>) => string;
+  t: (key: string, variables?: Record<string, string | number>) => string;
+  loading: boolean;
 }
 
-const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
+const LanguageContext = createContext<LanguageContextType | undefined>(
+  undefined
+);
 
-export const LanguageProvider = ({ children }: { children: ReactNode }) => {
-  // Read initial device language or defaults from localStorage if available
+export function LanguageProvider({
+  children,
+}: {
+  children: ReactNode;
+}) {
   const [locale, setLocale] = useState<Language>('en');
+  const [loading, setLoading] = useState(true);
 
-  // Simple key interpolation engine for dynamic values
-  const t = (key: keyof typeof en, variables?: Record<string, string | number>) => {
-    let message = translations[locale][key] || translations['en'][key] || String(key);
+  const [translations, setTranslations] = useState<
+    Record<Language, TranslationMap>
+  >({
+    en: {},
+    sr: {},
+  });
+
+  useEffect(() => {
+    loadLanguage(locale);
+  }, [locale]);
+
+  async function loadLanguage(language: Language) {
+    // Skip if already loaded
+    if (Object.keys(translations[language]).length > 0) {
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+
+    const languageId = language === 'en' ? 1 : 3;
+
+    const response = await fetch(`https://dash.enpay.rs/localization/getByLanguageId/${languageId}`);
+
+    const json: TranslationMap = await response.json();
+
+    setTranslations(prev => ({
+      ...prev,
+      [language]: json,
+    }));
+
+    setLoading(false);
+  }
+
+  function t(
+    key: string,
+    variables?: Record<string, string | number>
+  ) {
+    let message = translations[locale][key] ?? key;
 
     if (variables) {
-      Object.entries(variables).forEach(([varKey, varValue]) => {
-        message = message.replace(`{{${varKey}}}`, String(varValue));
+      Object.entries(variables).forEach(([k, v]) => {
+        message = message.replace(`{{${k}}}`, String(v));
       });
     }
+
     return message;
-  };
+  }
 
   return (
-    <LanguageContext.Provider value={{ locale, setLocale, t }}>{children}</LanguageContext.Provider>
+    <LanguageContext.Provider
+      value={{
+        locale,
+        setLocale,
+        t,
+        loading,
+      }}
+    >
+      {children}
+    </LanguageContext.Provider>
   );
-};
+}
 
-// Custom hook for easier consumer component injections
-export const useTranslation = () => {
+export function useTranslation() {
   const context = useContext(LanguageContext);
-  if (!context) throw new Error('useTranslation must be used within a LanguageProvider');
+
+  if (!context)
+    throw new Error(
+      'useTranslation must be used within LanguageProvider'
+    );
+
   return context;
-};
+}
