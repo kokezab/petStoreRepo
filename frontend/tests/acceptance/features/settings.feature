@@ -34,6 +34,6 @@ Feature: Settings
 
   Scenario: Selecting Serbian language translates visible text
     Given I am on the "settings" page
-    When I chose "Serbian" option for dropdown with current value "English"
+    When I chose dropdown "Select language" value "Serbian"
     Then I should see "Podešavanja" heading
     Then I should see "Jezik" text

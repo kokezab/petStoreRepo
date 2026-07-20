@@ -74,7 +74,8 @@ describe('PetListPage', () => {
     const user = userEvent.setup();
 
     mockStatus('pending');
-    await user.selectOptions(screen.getByRole('combobox', { name: 'Status filter' }), 'pending');
+    await user.click(screen.getByRole('combobox', { name: 'Status filter' }));
+    await user.click(await screen.findByTitle('pending', { selector: 'div.ant-select-item' }));
 
     expect(mockedUseFindPetsByStatus).toHaveBeenCalledWith({ status: ['pending'] });
     const list = screen.getByRole('list', { name: 'Pets' });
@@ -87,7 +88,8 @@ describe('PetListPage', () => {
     const user = userEvent.setup();
 
     mockStatus('sold');
-    await user.selectOptions(screen.getByRole('combobox', { name: 'Status filter' }), 'sold');
+    await user.click(screen.getByRole('combobox', { name: 'Status filter' }));
+    await user.click(await screen.findByTitle('sold', { selector: 'div.ant-select-item' }));
 
     expect(mockedUseFindPetsByStatus).toHaveBeenCalledWith({ status: ['sold'] });
   });

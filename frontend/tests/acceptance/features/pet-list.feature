@@ -12,12 +12,12 @@ Feature: Pet list browsing
 
   Scenario: AT-2 Filtering by pending status
     Given I am on the "/pets" page
-    When I select the "pending" status filter
+    When I chose dropdown "Status filter" value "pending"
     Then the pet list should show only pets with status "pending"
 
   Scenario: AT-3 Filtering by sold status
     Given I am on the "/pets" page
-    When I select the "sold" status filter
+    When I chose dropdown "Status filter" value "sold"
     Then the pet list should show only pets with status "sold"
 
   Scenario: AT-4 Loading indicator while pets are loading
@@ -28,7 +28,7 @@ Feature: Pet list browsing
   Scenario: AT-5 Empty state when a filter has no matches
     Given the mocked API returns no pets for status "sold"
     And I am on the "/pets" page
-    When I select the "sold" status filter
+    When I chose dropdown "Status filter" value "sold"
     Then I should see an empty-state message
 
   Scenario: AT-6 Error state when the pet list request fails
