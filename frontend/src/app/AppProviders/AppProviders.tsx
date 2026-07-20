@@ -11,7 +11,6 @@ import { AntdMessageBridge } from '@/app/AntdMessageBridge/AntdMessageBridge';
 import { AppThemeProvider } from '@/app/AppThemeProvider/AppThemeProvider';
 import { config } from '@/config';
 import { queryClient } from '@/lib/query-client';
-import { LanguageProvider } from '@/loc/loc';
 
 const unleashConfig = {
   url: config.unleashUrl,
@@ -21,19 +20,17 @@ const unleashConfig = {
 
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
-    <LanguageProvider>
-      <FlagProvider config={unleashConfig}>
-        <QueryClientProvider client={queryClient}>
-          <AppThemeProvider>
-            <AntdApp>
-              <AntdMessageBridge />
-              <Suspense fallback={null}>
-                <BrowserRouter>{children}</BrowserRouter>
-              </Suspense>
-            </AntdApp>
-          </AppThemeProvider>
-        </QueryClientProvider>
-      </FlagProvider>
-    </LanguageProvider>
+    <FlagProvider config={unleashConfig}>
+      <QueryClientProvider client={queryClient}>
+        <AppThemeProvider>
+          <AntdApp>
+            <AntdMessageBridge />
+            <Suspense fallback={null}>
+              <BrowserRouter>{children}</BrowserRouter>
+            </Suspense>
+          </AntdApp>
+        </AppThemeProvider>
+      </QueryClientProvider>
+    </FlagProvider>
   );
 }
