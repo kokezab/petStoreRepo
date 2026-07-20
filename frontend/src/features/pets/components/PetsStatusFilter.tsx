@@ -5,9 +5,9 @@ import { Select } from 'antd';
 const STATUS_OPTIONS: FindPetsByStatusStatusItem[] = ['available', 'pending', 'sold'];
 
 const options = STATUS_OPTIONS.map((option) => ({
-    value: option,
-    label: option,
-}))
+  value: option,
+  label: option,
+}));
 
 export function PetsStatusFilter() {
   const status = usePetsFilterStore((state) => state.status);
@@ -21,7 +21,8 @@ export function PetsStatusFilter() {
         aria-label='Status filter'
         value={status}
         onChange={(value) => setStatus(value)}
-        options={options} />
+        options={options}
+      />
     </>
   );
 }

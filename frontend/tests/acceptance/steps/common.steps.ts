@@ -52,6 +52,6 @@ Then('I should see {string} placeholder', async ({ page }, placeholder: string) 
 });
 
 When('I chose dropdown {string} value {string}', async ({ page }, name: string, option: string) => {
-    await page.getByRole('combobox', { name }).click();
-    await page.getByTitle(option).click();
+  await page.getByRole('combobox', { name }).click();
+  await page.getByTitle(option).click();
 });
