@@ -21,7 +21,6 @@ export default function App() {
       <NavBar />
       <Layout.Content className='mx-auto w-full max-w-5xl px-6 py-8'>
         <Routes>
-          {/* <Route path='/' element={<Navigate to='/pets' replace />} /> */}
           <Route path='/' element={withRouteErrorBoundary(<PetListPage />)} />
           <Route path='/pets' element={withRouteErrorBoundary(<PetListPage />)} />
           <Route path='/pets/:id' element={withRouteErrorBoundary(<PetDetailsPage />)} />

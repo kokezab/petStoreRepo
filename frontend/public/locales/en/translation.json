@@ -1,3 +1,7 @@
 {
-  "about": "About"
+  "about": "About",
+  "settings": "Settings",
+  "en": "English",
+  "sr": "Serbian",
+  "language": "Language"
 }
