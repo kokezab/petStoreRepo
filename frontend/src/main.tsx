@@ -10,10 +10,8 @@ import App from './App.tsx';
 
 enableMocking().then(() => {
   createRoot(document.getElementById('root')!).render(
-    <StrictMode>
       <AppProviders>
         <App />
       </AppProviders>
-    </StrictMode>,
   );
 });
