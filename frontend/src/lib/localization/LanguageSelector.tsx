@@ -25,7 +25,9 @@ export function LanguageSelector() {
   return (
     <div>
       <label>{t('language')}</label>
-      <Select<Language> value={language} onChange={onChange} options={options} />
+      <Select<Language>
+        role='combobox'
+        aria-label='Select language' value={language} onChange={onChange} options={options} />
     </div>
   );
 }

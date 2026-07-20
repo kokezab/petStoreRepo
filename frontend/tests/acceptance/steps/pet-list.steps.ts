@@ -19,7 +19,8 @@ Given('the mocked API returns an error for the pet list request', async ({ page 
 });
 
 When('I select the {string} status filter', async ({ page }, status: string) => {
-  await page.getByRole('combobox', { name: 'Status filter' }).selectOption(status);
+  await page.getByRole('combobox', { name: 'Status filter' }).click();
+  await page.getByRole('option', { name: status, exact: true }).click({ force: true });
 });
 
 Then(
