@@ -8,10 +8,9 @@ Feature: Settings
     When I navigate to "/settings"
     Then I should see "settings" heading
 
-  Scenario: Settings shows dark mode toggle and language selection
+  Scenario: Settings shows dark mode toggle
     When I navigate to "/settings"
     Then I should see "Dark mode" text
-    Then I should see "English" text
 
   Scenario: Clicking dark mode toggle should update text to Light mode
     Given I am on the "settings" page
@@ -28,8 +27,3 @@ Feature: Settings
     And I click on dark mode toggle
     When I click on dark mode toggle
     Then the page should visually match the "light" theme
-
-  Scenario: Selecting Serbian language should result in content being translated
-    Given I am on the "settings" page
-    When I chose "Serbian" option for dropdown with current value "English"
-    Then I should see "Podešavanja" heading

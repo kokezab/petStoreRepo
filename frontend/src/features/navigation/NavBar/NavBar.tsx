@@ -7,6 +7,7 @@ const { Text } = Typography;
 const navItems = [
   { key: '/pets', label: <NavLink to='/pets'>Pets</NavLink> },
   { key: '/inventory', label: <NavLink to='/inventory'>Inventory</NavLink> },
+  { key: '/settings', label: <NavLink to='/settings'>Settings</NavLink> },
 ];
 
 export function NavBar() {
