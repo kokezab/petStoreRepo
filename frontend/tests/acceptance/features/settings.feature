@@ -27,3 +27,13 @@ Feature: Settings
     And I click on dark mode toggle
     When I click on dark mode toggle
     Then the page should visually match the "light" theme
+
+  Scenario: Settings shows language selector
+    When I navigate to "/settings"
+    Then I should see "Language" text
+
+  Scenario: Selecting Serbian language translates visible text
+    Given I am on the "settings" page
+    When I chose "Serbian" option for dropdown with current value "English"
+    Then I should see "Podešavanja" heading
+    Then I should see "Jezik" text

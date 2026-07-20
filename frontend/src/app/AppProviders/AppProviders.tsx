@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import '@/lib/i18n';
+import '@/lib/localization/i18n';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { FlagProvider } from '@unleash/proxy-client-react';
 import { App as AntdApp } from 'antd';
