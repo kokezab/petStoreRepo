@@ -29,6 +29,10 @@ Then('I should be back on the {string} page', async ({ page }, path: string) => 
   await expect(page).toHaveURL(path);
 });
 
+Then('I should be redirected to {string}', async ({ page }, path: string) => {
+  await expect(page).toHaveURL(path);
+});
+
 Then('I should see an error message instead of a blank page', async ({ page }) => {
   // Locally-renderable errors (4xx) show an inline role="alert" message
   // (see QueryState/useApiError); 5xx/network failures escalate to the

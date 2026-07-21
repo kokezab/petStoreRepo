@@ -10,6 +10,7 @@ import { InventoryPage } from './features/inventory/InventoryPage';
 import { PetDetailsPage } from './features/pet-details/PetDetailsPage';
 import { SettingsPage } from './features/settings/SettingsPage';
 import { SignupPage } from './features/signup/SignupPage';
+import { LoginPage } from './features/login/LoginPage';
 
 function withRouteErrorBoundary(element: ReactNode) {
   return <RouteErrorBoundary>{element}</RouteErrorBoundary>;
@@ -27,6 +28,7 @@ export default function App() {
           <Route path='/inventory' element={withRouteErrorBoundary(<InventoryPage />)} />
           <Route path='/settings' element={withRouteErrorBoundary(<SettingsPage />)} />
           <Route path='/signup' element={withRouteErrorBoundary(<SignupPage />)} />
+          <Route path='/login' element={withRouteErrorBoundary(<LoginPage />)} />
         </Routes>
       </Layout.Content>
       <Layout.Footer className='text-center text-sm' />

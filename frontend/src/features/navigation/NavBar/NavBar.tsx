@@ -8,6 +8,7 @@ const navItems = [
   { key: '/pets', label: <NavLink to='/pets'>Pets</NavLink> },
   { key: '/inventory', label: <NavLink to='/inventory'>Inventory</NavLink> },
   { key: '/settings', label: <NavLink to='/settings'>Settings</NavLink> },
+  { key: '/login', label: <NavLink to='/login'>Login</NavLink> },
 ];
 
 export function NavBar() {
