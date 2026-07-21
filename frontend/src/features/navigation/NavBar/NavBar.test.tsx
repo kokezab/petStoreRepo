@@ -25,5 +25,6 @@ describe('NavBar', () => {
       'href',
       '/settings',
     );
+    expect(within(nav).getByRole('link', { name: 'Login' })).toHaveAttribute('href', '/login');
   });
 });

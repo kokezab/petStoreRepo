@@ -15,6 +15,11 @@ vi.mock('@/api/generated/pet/pet', () => ({
   getFindPetsByStatusQueryKey: vi.fn(),
 }));
 
+vi.mock('@/lib/feature-flags', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/lib/feature-flags')>()),
+  useFeatureFlag: vi.fn().mockReturnValue(true),
+}));
+
 const mockedUseFindPetsByStatus = vi.mocked(useFindPetsByStatus);
 const mockedUseAddPet = vi.mocked(useAddPet);
 

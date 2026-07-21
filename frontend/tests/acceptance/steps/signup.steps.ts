@@ -10,22 +10,25 @@ function toLabel(field: string): string {
   return field.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (c) => c.toUpperCase());
 }
 
-Then('the form should have the following fields:', async ({ page }, dataTable: DataTable) => {
-  const form = page.getByRole('form', { name: 'Sign Up' });
+Then(
+  'the form {string} should have the following fields:',
+  async ({ page }, name: string, dataTable: DataTable) => {
+    const form = page.getByRole('form', { name });
 
-  for (const { Field, Type } of dataTable.hashes()) {
-    const field = form.getByLabel(toLabel(Field));
+    for (const { Field, Type } of dataTable.hashes()) {
+      const field = form.getByLabel(toLabel(Field));
 
-    await expect(field).toBeVisible();
-    await expect(field).toHaveAttribute('type', Type);
-  }
-});
+      await expect(field).toBeVisible();
+      await expect(field).toHaveAttribute('type', Type);
+    }
+  },
+);
 
 let userCreateRequestSent = false;
 
 When(
-  'the user attempts to submit the form with one or more required fields empty',
-  async ({ page }) => {
+  'the user attempts to submit {string} form with one or more required fields empty',
+  async ({ page }, name: string) => {
     userCreateRequestSent = false;
     await page.route('**/user', (route) => {
       if (route.request().method() === 'POST') {
@@ -34,8 +37,8 @@ When(
       return route.fallback();
     });
 
-    const form = page.getByRole('form', { name: 'Sign Up' });
-    await form.getByRole('button', { name: 'Sign Up' }).click();
+    const form = page.getByRole('form', { name });
+    await form.getByRole('button', { name }).click();
   },
 );
 

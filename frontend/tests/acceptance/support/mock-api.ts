@@ -86,6 +86,15 @@ export async function mockAddPetError(page: Page): Promise<void> {
   });
 }
 
+export async function mockLoginError(page: Page): Promise<void> {
+  await page.route('**/user/login**', async (route: Route) => {
+    await route.fulfill({
+      status: 400,
+      json: { code: 400, type: 'error', message: 'Invalid username/password supplied' },
+    });
+  });
+}
+
 export async function mockPetListEmpty(page: Page, status: string): Promise<void> {
   // Registered after mockPetApi's route for the same URL, so Playwright runs this handler first;
   // route.fallback() hands non-matching statuses back to the earlier (baseline) handler.
