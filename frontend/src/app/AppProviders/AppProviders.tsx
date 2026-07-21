@@ -5,12 +5,15 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { FlagProvider } from '@unleash/proxy-client-react';
 import { App as AntdApp } from 'antd';
 import type { ReactNode } from 'react';
+import { Provider as ReduxProvider } from 'react-redux';
 import { BrowserRouter } from 'react-router';
 
 import { AntdMessageBridge } from '@/app/AntdMessageBridge/AntdMessageBridge';
 import { AppThemeProvider } from '@/app/AppThemeProvider/AppThemeProvider';
 import { config } from '@/config';
 import { queryClient } from '@/lib/query-client';
+
+import { store } from './store';
 
 const unleashConfig = {
   url: config.unleashUrl,
@@ -20,17 +23,19 @@ const unleashConfig = {
 
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
-    <FlagProvider config={unleashConfig}>
-      <QueryClientProvider client={queryClient}>
-        <AppThemeProvider>
-          <AntdApp>
-            <AntdMessageBridge />
-            <Suspense fallback={null}>
-              <BrowserRouter>{children}</BrowserRouter>
-            </Suspense>
-          </AntdApp>
-        </AppThemeProvider>
-      </QueryClientProvider>
-    </FlagProvider>
+    <ReduxProvider store={store}>
+      <FlagProvider config={unleashConfig}>
+        <QueryClientProvider client={queryClient}>
+          <AppThemeProvider>
+            <AntdApp>
+              <AntdMessageBridge />
+              <Suspense fallback={null}>
+                <BrowserRouter>{children}</BrowserRouter>
+              </Suspense>
+            </AntdApp>
+          </AppThemeProvider>
+        </QueryClientProvider>
+      </FlagProvider>
+    </ReduxProvider>
   );
 }

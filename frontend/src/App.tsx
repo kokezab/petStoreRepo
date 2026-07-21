@@ -1,5 +1,5 @@
-import { PetListPage } from "./features/pets/PetListPage/PetListPage";
+import { PetListPage } from './features/pets/PetListPage/PetListPage';
 
 export default function App() {
-  return <PetListPage />
+  return <PetListPage />;
 }
