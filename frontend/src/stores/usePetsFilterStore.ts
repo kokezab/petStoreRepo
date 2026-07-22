@@ -1,5 +1,6 @@
-import type { FindPetsByStatusStatusItem } from '@/api/generated/models';
 import { create } from 'zustand';
+
+import type { FindPetsByStatusStatusItem } from '@/api/generated/models';
 
 interface PetsFilterState {
   status: FindPetsByStatusStatusItem;

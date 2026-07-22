@@ -1,6 +1,7 @@
+import { Select } from 'antd';
+
 import type { FindPetsByStatusStatusItem } from '@/api/generated/models';
 import { usePetsFilterActions, usePetsFilterStore } from '@/stores/usePetsFilterStore';
-import { Select } from 'antd';
 
 const STATUS_OPTIONS: FindPetsByStatusStatusItem[] = ['available', 'pending', 'sold'];
 

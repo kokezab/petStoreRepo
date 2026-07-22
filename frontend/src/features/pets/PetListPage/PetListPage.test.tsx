@@ -80,6 +80,7 @@ describe('PetListPage', () => {
 
     mockStatus('pending');
     await user.click(screen.getByRole('combobox', { name: 'Status filter' }));
+    // @ts-expect-error Selecting "pending"
     await user.click(await screen.findByTitle('pending', { selector: 'div.ant-select-item' }));
 
     expect(mockedUseFindPetsByStatus).toHaveBeenCalledWith({ status: ['pending'] });
@@ -94,6 +95,7 @@ describe('PetListPage', () => {
 
     mockStatus('sold');
     await user.click(screen.getByRole('combobox', { name: 'Status filter' }));
+    // @ts-expect-error Selecting "sold"
     await user.click(await screen.findByTitle('sold', { selector: 'div.ant-select-item' }));
 
     expect(mockedUseFindPetsByStatus).toHaveBeenCalledWith({ status: ['sold'] });
