@@ -25,4 +25,6 @@ jobs:
             (e.g. issue-${{ github.event.issue.number }}).
             Commit the work, push the branch, and open a pull request
             that references this issue (Closes #${{ github.event.issue.number }}).
-          claude_args: "--max-turns 15"
+          claude_args: |
+            --max-turns 30
+            --allowedTools "Bash,Edit,Write,Read,Glob,Grep"
