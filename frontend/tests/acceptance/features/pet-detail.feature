@@ -23,3 +23,7 @@ Feature: Pet detail
     Given I am on a pet's detail page
     When I click "back to list"
     Then I should be back on the "/pets" page
+
+  Scenario: AT-11 "Details for pet" label is not shown on the details page
+    Given I am on the pet details page for pet "112233"
+    Then the label "Details for pet" should not be displayed
