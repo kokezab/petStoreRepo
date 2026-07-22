@@ -7,10 +7,10 @@ import { NavBar } from '@/features/navigation/NavBar/NavBar';
 import { PetListPage } from '@/features/pets/PetListPage/PetListPage';
 
 import { InventoryPage } from './features/inventory/InventoryPage';
+import { LoginPage } from './features/login/LoginPage';
 import { PetDetailsPage } from './features/pet-details/PetDetailsPage';
 import { SettingsPage } from './features/settings/SettingsPage';
 import { SignupPage } from './features/signup/SignupPage';
-import { LoginPage } from './features/login/LoginPage';
 
 function withRouteErrorBoundary(element: ReactNode) {
   return <RouteErrorBoundary>{element}</RouteErrorBoundary>;

@@ -1,12 +1,9 @@
-import { useState } from 'react';
-
-import type { FindPetsByStatusStatusItem } from '@/api/generated/models';
 import { useFindPetsByStatus } from '@/api/generated/pet/pet';
 import { QueryState } from '@/components/QueryState/QueryState';
+import { usePetsFilterStore } from '@/stores/usePetsFilterStore';
 
 import { AddPetButton, AddPetModal, PetList } from '../components';
 import { PetsStatusFilter } from '../components/PetsStatusFilter';
-import { usePetsFilterStore } from '@/stores/usePetsFilterStore';
 
 export function PetListPage() {
   const status = usePetsFilterStore((state) => state.status);
