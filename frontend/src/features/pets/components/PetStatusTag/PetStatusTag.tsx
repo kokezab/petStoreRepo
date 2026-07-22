@@ -7,9 +7,9 @@ interface PetStatusTagProps {
 }
 
 const STATUS_COLORS: Record<PetStatus, string> = {
-  available: 'green',
-  pending: 'orange',
-  sold: 'red',
+  available: '#52c41a',
+  pending: '#faad14',
+  sold: '#f5222d',
 };
 
 export function PetStatusTag({ status }: PetStatusTagProps) {
