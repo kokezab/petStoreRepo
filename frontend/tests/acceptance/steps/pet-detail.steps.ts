@@ -48,22 +48,11 @@ Then('the app should not crash', async ({ page }) => {
 });
 
 Given('I am on the pet details page for pet {string}', async ({ page }, id: string) => {
-  // 112233 is not in the shared fixtures, so mock it here to render a full detail page.
-  await page.route(new RegExp(`/pet/${id}(\\?.*)?$`), async (route) => {
-    await route.fulfill({
-      json: {
-        id: Number(id),
-        name: 'Buddy',
-        status: 'available',
-        category: { id: 1, name: 'Dogs' },
-        photoUrls: ['https://example.com/buddy.jpg'],
-        tags: [{ id: 1, name: 'friendly' }],
-      },
-    });
-  });
+  const pet = pets.find((p) => p.id === Number(id));
+  if (!pet) throw new Error(`No fixture pet with id ${id}`);
   await page.goto(`/pets/${id}`);
   // Wait for the detail page to finish loading before asserting on its content.
-  await expect(page.getByRole('heading', { name: 'Buddy', level: 1 })).toBeVisible();
+  await expect(page.getByRole('heading', { name: pet.name, level: 1 })).toBeVisible();
 });
 
 Then('the label {string} should not be displayed', async ({ page }, label: string) => {
