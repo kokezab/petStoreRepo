@@ -15,12 +15,33 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - id: build_prompt
+        run: |
+          if [[ "${{ contains(github.event.issue.labels.*.name, 'ATDD') }}" == "true" ]]; then
+            MODE_INSTRUCTIONS='Follow ATDD for this issue:
+          1. In frontend/, write or update a Gherkin .feature file under tests/acceptance/features covering this issue'"'"'s acceptance criteria.
+          2. Run `npm run test:acceptance` (from frontend/). This will report any missing step definitions.
+          3. If steps are missing, write them (do not implement the feature behavior yet, just enough for the scenario to run and fail on the real assertion).
+          4. Re-run `npm run test:acceptance` to confirm the scenario runs and fails for the right reason (missing implementation, not missing steps).
+          5. Only then implement the feature so the acceptance test passes. Re-run `npm run test:acceptance` to confirm it is green.'
+          else
+            MODE_INSTRUCTIONS=""
+          fi
+          {
+            echo "mode_instructions<<EOF"
+            echo "$MODE_INSTRUCTIONS"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
       - uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
           prompt: |
             Read this issue's title and body. The app code lives in the
             frontend/ directory (see frontend/CLAUDE.md for conventions).
+
+            ${{ steps.build_prompt.outputs.mode_instructions }}
+
             Implement the requested change on a new branch
             (e.g. issue-${{ github.event.issue.number }}).
             Commit the work, push the branch, and open a pull request
