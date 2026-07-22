@@ -1,0 +1,26 @@
+name: Claude Auto-Implement
+on:
+  issues:
+    types: [assigned]
+
+jobs:
+  claude-implement:
+    if: github.event.issue.assignee.login == 'kokezab'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Read this issue's title and body. Implement the requested change
+            on a new branch (e.g. issue-${{ github.event.issue.number }}),
+            following the repo's existing conventions (see CLAUDE.md).
+            Commit the work, push the branch, and open a pull request
+            that references this issue (Closes #${{ github.event.issue.number }}).
+          claude_args: "--max-turns 15"
