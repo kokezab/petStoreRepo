@@ -46,3 +46,15 @@ Then('I should see a {string} message', async ({ page }, text: string) => {
 Then('the app should not crash', async ({ page }) => {
   await expect(page.locator('body')).toBeVisible();
 });
+
+Given('I am on the pet details page for pet {string}', async ({ page }, id: string) => {
+  const pet = pets.find((p) => p.id === Number(id));
+  if (!pet) throw new Error(`No fixture pet with id ${id}`);
+  await page.goto(`/pets/${id}`);
+  // Wait for the detail page to finish loading before asserting on its content.
+  await expect(page.getByRole('heading', { name: pet.name, level: 1 })).toBeVisible();
+});
+
+Then('the label {string} should not be displayed', async ({ page }, label: string) => {
+  await expect(page.getByText(new RegExp(label, 'i'))).toHaveCount(0);
+});
