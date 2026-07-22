@@ -30,7 +30,7 @@ export function PetDetailsPage() {
         {(pet) => (
           <>
             <h1>Details for pet {id}</h1>
-            <h1>{pet.name}</h1>
+            <h1 className='uppercase'>{pet.name}</h1>
             <h2>{pet.status}</h2>
             <h3>{pet.category?.name}</h3>
             <h3>{pet.tags?.map((tag) => tag.name).join(', ')}</h3>
