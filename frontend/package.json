@@ -15,11 +15,11 @@
     "check": "tsc -b && eslint . && steiger ./src && prettier --check \"src/**/*.{ts,tsx,css,json}\" \"tests/**/*.{ts,tsx}\" \"*.json\"",
     "generate:api": "orval",
     "lint:fsd": "steiger ./src",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:acceptance": "bddgen && playwright test --grep @",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest",
     "test:e2e": "bddgen && playwright test",
-    "test:ui": "playwright test --ui",
+    "test:e2e:ui": "bddgen && playwright test --ui",
+    "test:e2e:acceptance": "bddgen && playwright test --grep @",
     "prepare": "node -e \"try{require('child_process').execSync('git config core.hooksPath .husky',{stdio:'ignore'})}catch(e){}\""
   },
   "dependencies": {

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { theme as antdTheme } from 'antd';
 
-import { useThemeStore } from '@/stores/useThemeStore';
+import { useThemeStore } from '@/shared/lib/theme/useThemeStore';
 
 import { AppThemeProvider } from './AppThemeProvider';
 

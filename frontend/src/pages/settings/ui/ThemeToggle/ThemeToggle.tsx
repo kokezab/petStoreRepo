@@ -6,7 +6,7 @@ import {
   applySystemThemePreferenceIfUnset,
   useTheme,
   useThemeActions,
-} from '@/stores/useThemeStore';
+} from '@/shared/lib/theme/useThemeStore';
 
 export function ThemeToggle() {
   const theme = useTheme();

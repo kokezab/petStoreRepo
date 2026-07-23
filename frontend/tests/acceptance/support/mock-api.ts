@@ -16,7 +16,7 @@ export async function mockPetApi(page: Page): Promise<void> {
     const statuses = url.searchParams.getAll('status');
     const matched =
       statuses.length > 0
-        ? petsInMemory.filter((pet) => statuses.includes(pet.status))
+        ? petsInMemory.filter((pet) => pet.status !== undefined && statuses.includes(pet.status))
         : petsInMemory;
     await route.fulfill({ json: matched });
   });

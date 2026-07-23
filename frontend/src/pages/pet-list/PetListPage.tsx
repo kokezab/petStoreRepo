@@ -1,7 +1,7 @@
 import { QueryState } from '@/components/QueryState/QueryState';
 import { useFindPetsByStatus } from '@/entities/pet';
-import { usePetsFilterStore } from '@/stores/usePetsFilterStore';
 
+import { usePetsFilterStore } from './model/usePetsFilterStore';
 import { AddPetButton, AddPetModal, PetList, PetsStatusFilter } from './ui';
 
 export function PetListPage() {
