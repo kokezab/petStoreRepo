@@ -28,17 +28,17 @@ Then('I should see a {string} button', async ({ page }, name: string) => {
 When(
   'I fill in the order form with pet id {string}, quantity {string}, ship date {string} and status {string}',
   async ({ page }, petId: string, quantity: string, shipDate: string, status: string) => {
-    const dialog = page.getByRole('dialog', { name: 'Create order' });
-    await dialog.getByRole('spinbutton', { name: 'Pet' }).fill(petId);
-    await dialog.getByRole('spinbutton', { name: 'Quantity' }).fill(quantity);
-    await dialog.getByLabel('Ship date').fill(shipDate);
-    await selectAntDesignOption(dialog, page, 'Status', status);
+    const form = page.getByRole('form', { name: 'Create order' });
+    await form.getByRole('spinbutton', { name: 'Pet' }).fill(petId);
+    await form.getByRole('spinbutton', { name: 'Quantity' }).fill(quantity);
+    await form.getByLabel('Ship date').fill(shipDate);
+    await selectAntDesignOption(form, page, 'Status', status);
   },
 );
 
 When('I submit the order form', async ({ page }) => {
   await page
-    .getByRole('dialog', { name: 'Create order' })
+    .getByRole('form', { name: 'Create order' })
     .getByRole('button', { name: 'Save' })
     .click();
 });
@@ -49,14 +49,14 @@ Then('I should see a confirmation for the created order', async ({ page }) => {
 
 Given('I submit the order form without filling it in', async ({ page }) => {
   await page
-    .getByRole('dialog', { name: 'Create order' })
+    .getByRole('form', { name: 'Create order' })
     .getByRole('button', { name: 'Save' })
     .click();
 });
 
 When('I cancel the order form', async ({ page }) => {
   await page
-    .getByRole('dialog', { name: 'Create order' })
+    .getByRole('form', { name: 'Create order' })
     .getByRole('button', { name: 'Cancel' })
     .click();
 });

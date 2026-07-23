@@ -46,7 +46,7 @@ export function AddPetForm({ onSubmit, isLoading, error, onCancel }: AddPetFormP
   return (
     <Space orientation='vertical' style={{ width: '100%' }} size='large'>
       {error && <Alert type='error' title={error} showIcon />}
-      <Form<AddPetFormValues> form={form} layout='vertical'>
+      <Form<AddPetFormValues> form={form} layout='vertical' aria-label='Add pet'>
         <Form.Item
           name='name'
           label='Name'
