@@ -4,6 +4,16 @@ Feature: Order creation
   Background:
     Given the pet store app is running with mocked API data
 
+  Scenario: AT-20.1 Create order link hidden when the feature flag is disabled
+    Given the "order-creation" feature flag is disabled
+    When I navigate to "/pets"
+    Then I should not see a "Orders" link
+
+  Scenario: AT-20.2 Create order link visible when the feature flag is enabled
+    Given the "order-creation" feature flag is enabled
+    When I navigate to "/pets"
+    Then I should see a "Orders" link
+
   Scenario: AT-21 Create order entry point hidden when the feature flag is disabled
     Given the "order-creation" feature flag is disabled
     When I navigate to "/orders"

@@ -6,14 +6,6 @@ import { selectAntDesignOption } from '../support/playwright-helpers';
 
 const { Given, When, Then } = createBdd();
 
-Given('the {string} feature flag is enabled', async ({ page }, flagName: string) => {
-  await mockFeatureFlag(page, { [flagName]: true });
-});
-
-Given('the {string} feature flag is disabled', async ({ page }, flagName: string) => {
-  await mockFeatureFlag(page, { [flagName]: false });
-});
-
 Given('the mocked API returns an error for adding a pet', async ({ page }) => {
   await mockAddPetError(page);
 });
