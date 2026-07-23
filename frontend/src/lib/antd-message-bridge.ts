@@ -9,3 +9,7 @@ export function setMessageApi(api: MessageInstance) {
 export function showErrorMessage(content: string) {
   messageApi?.error(content);
 }
+
+export function showSuccessMessage(content: string) {
+  messageApi?.success(content);
+}

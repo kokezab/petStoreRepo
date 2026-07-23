@@ -38,9 +38,9 @@ Then('I should see an error message instead of a blank page', async ({ page }) =
   // (see QueryState/useApiError); 5xx/network failures escalate to the
   // nearest RouteErrorBoundary, which renders an antd `Result` heading
   // instead (see main.tsx / query-client.ts).
-  const inlineAlert = page.getByRole('alert');
-  const boundaryFallback = page.getByText('Something went wrong');
-  await expect(inlineAlert.or(boundaryFallback)).toBeVisible();
+
+  const alert = page.getByRole('alert').or(page.getByText('Something went wrong')).first();
+  await expect(alert).toBeVisible();
 });
 
 Then('I should see {string} text', async ({ page }, text: string) => {
