@@ -3,21 +3,21 @@ import { MemoryRouter } from 'react-router';
 
 import { AppRoutes } from './AppRoutes';
 
-vi.mock('@/features/pets/PetListPage/PetListPage', () => ({
+vi.mock('@/pages/pet-list', () => ({
   PetListPage: () => <div>Pets Page</div>,
 }));
-vi.mock('@/features/inventory/InventoryPage', () => ({
+vi.mock('@/pages/inventory', () => ({
   InventoryPage: () => <div>Inventory Page</div>,
 }));
-vi.mock('@/features/pet-details/PetDetailsPage', () => ({
+vi.mock('@/pages/pet-details', () => ({
   PetDetailsPage: () => <div>Pet Details</div>,
 }));
-vi.mock('@/features/settings/SettingsPage', () => ({
+vi.mock('@/pages/settings', () => ({
   SettingsPage: () => <div>Settings Page</div>,
 }));
-vi.mock('@/features/signup/SignupPage', () => ({ SignupPage: () => <div>Signup Page</div> }));
-vi.mock('@/features/login/LoginPage', () => ({ LoginPage: () => <div>Login Page</div> }));
-vi.mock('@/features/oders/OrdersPage', () => ({ OrdersPage: () => <div>Orders Page</div> }));
+vi.mock('@/pages/signup', () => ({ SignupPage: () => <div>Signup Page</div> }));
+vi.mock('@/pages/login', () => ({ LoginPage: () => <div>Login Page</div> }));
+vi.mock('@/pages/orders', () => ({ OrdersPage: () => <div>Orders Page</div> }));
 
 const { useFeatureFlagMock } = vi.hoisted(() => ({ useFeatureFlagMock: vi.fn() }));
 vi.mock('@/lib/feature-flags', () => ({ useFeatureFlag: useFeatureFlagMock }));

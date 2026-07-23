@@ -1,16 +1,16 @@
 import { create } from 'zustand';
 
-import type { FindPetsByStatusStatusItem } from '@/api/generated/models';
+import type { PetStatus } from '@/entities/pet';
 
 interface PetsFilterState {
-  status: FindPetsByStatusStatusItem;
-  actions: { setStatus: (status: FindPetsByStatusStatusItem) => void };
+  status: PetStatus;
+  actions: { setStatus: (status: PetStatus) => void };
 }
 
 export const usePetsFilterStore = create<PetsFilterState>((set) => ({
   status: 'available',
   actions: {
-    setStatus: (status: FindPetsByStatusStatusItem) => set({ status }),
+    setStatus: (status: PetStatus) => set({ status }),
   },
 }));
 

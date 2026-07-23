@@ -1,7 +1,7 @@
 import { Layout } from 'antd';
 
 import { AppRoutes } from '@/app/AppRoutes/AppRoutes';
-import { NavBar } from '@/features/navigation/NavBar/NavBar';
+import { NavBar } from '@/widgets/nav-bar';
 
 export default function App() {
   return (
