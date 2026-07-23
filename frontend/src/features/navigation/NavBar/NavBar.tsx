@@ -1,3 +1,4 @@
+import { useFeatureFlag } from '@/lib/feature-flags';
 import { Layout, Menu, Typography } from 'antd';
 import { NavLink, useLocation } from 'react-router';
 
@@ -13,6 +14,12 @@ const navItems = [
 
 export function NavBar() {
   const location = useLocation();
+
+  const isOrderCreationFlagEnabled = useFeatureFlag('order-creation');
+
+  const items = isOrderCreationFlagEnabled
+    ? [...navItems, { key: '/orders', label: <NavLink to='/orders'>Orders</NavLink> }]
+    : navItems;
 
   return (
     <Header
@@ -34,7 +41,7 @@ export function NavBar() {
           theme='dark'
           mode='horizontal'
           selectedKeys={[location.pathname]}
-          items={navItems}
+          items={items}
           style={{ minWidth: 0 }}
         />
       </nav>

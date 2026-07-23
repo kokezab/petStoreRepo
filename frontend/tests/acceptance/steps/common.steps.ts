@@ -1,7 +1,7 @@
 import { expect } from '@playwright/test';
 import { createBdd } from 'playwright-bdd';
 
-import { mockPetApi } from '../support/mock-api';
+import { mockFeatureFlag, mockPetApi } from '../support/mock-api';
 
 export const { Given, When, Then } = createBdd();
 
@@ -58,4 +58,20 @@ Then('I should see {string} placeholder', async ({ page }, placeholder: string) 
 When('I chose dropdown {string} value {string}', async ({ page }, name: string, option: string) => {
   await page.getByRole('combobox', { name }).click();
   await page.getByTitle(option).click();
+});
+
+Then('I should not see a {string} link', async ({ page }, name: string) => {
+  await expect(page.getByRole('link', { name })).toHaveCount(0);
+});
+
+Then('I should see a {string} link', async ({ page }, name: string) => {
+  await expect(page.getByRole('link', { name })).toBeVisible();
+});
+
+Given('the {string} feature flag is enabled', async ({ page }, flagName: string) => {
+  await mockFeatureFlag(page, { [flagName]: true });
+});
+
+Given('the {string} feature flag is disabled', async ({ page }, flagName: string) => {
+  await mockFeatureFlag(page, { [flagName]: false });
 });

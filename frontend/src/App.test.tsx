@@ -3,19 +3,9 @@ import { MemoryRouter } from 'react-router';
 
 import App from './App';
 
-vi.mock('@/features/pets/PetListPage/PetListPage', () => ({
-  PetListPage: () => <div>Pets Page</div>,
+vi.mock('@/app/AppRoutes/AppRoutes', () => ({
+  AppRoutes: () => <div>Routed Page</div>,
 }));
-vi.mock('@/features/inventory/InventoryPage', () => ({
-  InventoryPage: () => <div>Inventory Page</div>,
-}));
-vi.mock('@/features/pet-details/PetDetailsPage', () => ({
-  PetDetailsPage: () => <div>Pet Details</div>,
-}));
-vi.mock('@/features/settings/SettingsPage', () => ({
-  SettingsPage: () => <div>Settings Page</div>,
-}));
-vi.mock('@/features/signup/SignupPage', () => ({ SignupPage: () => <div>Signup Page</div> }));
 
 // NavBar (unmocked here, per this test's intent to verify the real navigation
 // landmark) reads the build-time-injected __BUILD_TIME__ global, which vite defines
@@ -33,7 +23,7 @@ describe('App', () => {
 
     expect(screen.getByRole('navigation')).toBeInTheDocument();
     expect(screen.getByRole('main')).toBeInTheDocument();
-    expect(screen.getByText('Pets Page')).toBeInTheDocument();
+    expect(screen.getByText('Routed Page')).toBeInTheDocument();
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
   });
 });
