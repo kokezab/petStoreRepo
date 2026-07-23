@@ -2,14 +2,14 @@ import type { ReactNode } from 'react';
 import { Route, Routes } from 'react-router';
 
 import { RouteErrorBoundary } from '@/app/RouteErrorBoundary/RouteErrorBoundary';
-import { InventoryPage } from '@/features/inventory/InventoryPage';
-import { LoginPage } from '@/features/login/LoginPage';
-import { OrdersPage } from '@/features/oders/OrdersPage';
-import { PetDetailsPage } from '@/features/pet-details/PetDetailsPage';
-import { PetListPage } from '@/features/pets/PetListPage/PetListPage';
-import { SettingsPage } from '@/features/settings/SettingsPage';
-import { SignupPage } from '@/features/signup/SignupPage';
 import { useFeatureFlag } from '@/lib/feature-flags';
+import { InventoryPage } from '@/pages/inventory';
+import { LoginPage } from '@/pages/login';
+import { OrdersPage } from '@/pages/orders';
+import { PetDetailsPage } from '@/pages/pet-details';
+import { PetListPage } from '@/pages/pet-list';
+import { SettingsPage } from '@/pages/settings';
+import { SignupPage } from '@/pages/signup';
 
 function withRouteErrorBoundary(element: ReactNode) {
   return <RouteErrorBoundary>{element}</RouteErrorBoundary>;
