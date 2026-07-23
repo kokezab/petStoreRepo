@@ -1,25 +1,30 @@
-import { Button, Form } from 'antd';
+import { showSuccessMessage } from '@/lib/antd-message-bridge';
+import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
+
+import {
+  CreateOrderForm,
+  type CreateOrderFormValues,
+} from './components/CreateOrderForm/CreateOrderForm';
+import { useCreateOrder } from './hooks/useCreateOrder';
 
 export function OrdersPage() {
-  const onFinish = () => {};
+  const isOrderCreationEnabled = useFeatureFlag(FEATURE_FLAGS.orderCreation);
+  const { createOrder, isPending, error } = useCreateOrder();
+
+  const handleSubmit = async (values: CreateOrderFormValues) => {
+    try {
+      await createOrder(values);
+      showSuccessMessage('Order created successfully');
+    } catch {
+      // Failure is surfaced via `error`.
+    }
+  };
 
   return (
     <div>
-      <button>Create order</button>
-
-      <Form aria-label='Create order' onFinish={onFinish}>
-        <Form.Item
-          name='name'
-          label='Name'
-          rules={[{ required: true, message: 'Pet is required' }]}
-        >
-          <input />
-        </Form.Item>
-
-        <Form.Item name='Save'>
-          <Button htmlType='submit'>Save</Button>
-        </Form.Item>
-      </Form>
+      {isOrderCreationEnabled && (
+        <CreateOrderForm onSubmit={handleSubmit} isLoading={isPending} error={error} />
+      )}
     </div>
   );
 }

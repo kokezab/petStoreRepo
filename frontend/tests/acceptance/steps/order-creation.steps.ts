@@ -13,8 +13,7 @@ Given('the mocked API returns an error for creating an order', async ({ page }) 
 Given('the order-creation common flow', async ({ page }) => {
   await mockFeatureFlag(page, { 'order-creation': true });
   await page.goto('/orders');
-  await expect(page.getByRole('button', { name: 'Create order' })).toBeVisible();
-  await page.getByRole('button', { name: 'Create order' }).click();
+  await expect(page.getByRole('form', { name: 'Create order' })).toBeVisible();
 });
 
 Then('I should not see a {string} button', async ({ page }, name: string) => {
@@ -29,7 +28,8 @@ When(
   'I fill in the order form with pet id {string}, quantity {string}, ship date {string} and status {string}',
   async ({ page }, petId: string, quantity: string, shipDate: string, status: string) => {
     const form = page.getByRole('form', { name: 'Create order' });
-    await form.getByRole('spinbutton', { name: 'Pet' }).fill(petId);
+
+    await form.getByRole('spinbutton', { name: 'Pet Id' }).fill(petId);
     await form.getByRole('spinbutton', { name: 'Quantity' }).fill(quantity);
     await form.getByLabel('Ship date').fill(shipDate);
     await selectAntDesignOption(form, page, 'Status', status);
@@ -39,7 +39,7 @@ When(
 When('I submit the order form', async ({ page }) => {
   await page
     .getByRole('form', { name: 'Create order' })
-    .getByRole('button', { name: 'Save' })
+    .getByRole('button', { name: 'Create order' })
     .click();
 });
 
@@ -50,7 +50,7 @@ Then('I should see a confirmation for the created order', async ({ page }) => {
 Given('I submit the order form without filling it in', async ({ page }) => {
   await page
     .getByRole('form', { name: 'Create order' })
-    .getByRole('button', { name: 'Save' })
+    .getByRole('button', { name: 'Create order' })
     .click();
 });
 
