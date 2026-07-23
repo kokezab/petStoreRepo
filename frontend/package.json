@@ -12,8 +12,9 @@
     "format:check": "prettier --check \"src/**/*.{ts,tsx,css,json}\" \"tests/**/*.{ts,tsx}\" \"*.json\"",
     "format": "prettier --write \"src/**/*.{ts,tsx,css,json}\" \"tests/**/*.{ts,tsx}\" \"*.json\"",
     "format:lint": "npm run format && npm run lint",
-    "check": "tsc -b && eslint . && prettier --check \"src/**/*.{ts,tsx,css,json}\" \"tests/**/*.{ts,tsx}\" \"*.json\"",
+    "check": "tsc -b && eslint . && steiger ./src && prettier --check \"src/**/*.{ts,tsx,css,json}\" \"tests/**/*.{ts,tsx}\" \"*.json\"",
     "generate:api": "orval",
+    "lint:fsd": "steiger ./src",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:acceptance": "bddgen && playwright test --grep @",
@@ -22,6 +23,7 @@
     "prepare": "node -e \"try{require('child_process').execSync('git config core.hooksPath .husky',{stdio:'ignore'})}catch(e){}\""
   },
   "dependencies": {
+    "@sentry/react": "^10.67.0",
     "@tanstack/react-query": "^5.101.2",
     "@unleash/proxy-client-react": "^6.0.0",
     "antd": "^6.5.0",
@@ -42,10 +44,13 @@
     "@babel/core": "^7.29.7",
     "@eslint/js": "^10.0.1",
     "@faker-js/faker": "^10.5.0",
+    "@feature-sliced/steiger-plugin": "^0.7.0",
     "@playwright/test": "^1.61.1",
     "@rolldown/plugin-babel": "^0.2.3",
+    "@sentry/vite-plugin": "^5.4.0",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/eslint-plugin-query": "^5.91.4",
+    "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@testing-library/user-event": "^14.6.1",
@@ -59,6 +64,7 @@
     "babel-plugin-react-compiler": "^1.0.0",
     "eslint": "^10.6.0",
     "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.3",
     "eslint-plugin-simple-import-sort": "^13.0.0",
@@ -70,6 +76,7 @@
     "orval": "^8.20.0",
     "playwright-bdd": "^9.2.0",
     "prettier": "^3.9.5",
+    "steiger": "^0.6.0",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.62.0",
@@ -80,5 +87,8 @@
     "workerDirectory": [
       "public"
     ]
+  },
+  "overrides": {
+    "js-yaml": "^4.3.0"
   }
 }
