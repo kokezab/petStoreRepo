@@ -1,8 +1,7 @@
 import { Modal } from 'antd';
 
-import { useModalStore } from '@/stores/useModalStore';
-
 import { useCreatePet } from '../model/useCreatePet';
+import { useModalStore } from '../model/useModalStore';
 import { AddPetForm, type AddPetFormValues } from './AddPetForm/AddPetForm';
 
 export function AddPetModal() {

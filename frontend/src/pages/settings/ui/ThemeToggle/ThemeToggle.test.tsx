@@ -1,7 +1,7 @@
 import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { useThemeStore } from '@/stores/useThemeStore';
+import { useThemeStore } from '@/shared/lib/theme/useThemeStore';
 
 import { ThemeToggle } from './ThemeToggle';
 

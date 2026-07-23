@@ -1,24 +1,7 @@
-export type PetStatus = 'available' | 'pending' | 'sold';
+import type { Order } from '@/entities/order';
+import type { Pet, PetStatus } from '@/entities/pet';
 
-export type OrderStatus = 'placed' | 'approved' | 'delivered';
-
-export interface Order {
-  id: number;
-  petId: number;
-  quantity: number;
-  shipDate?: string;
-  status: OrderStatus;
-  complete?: boolean;
-}
-
-export interface Pet {
-  id: number;
-  name: string;
-  status: PetStatus;
-  category: { id: number; name: string };
-  photoUrls: string[];
-  tags: { id: number; name: string }[];
-}
+export type { Order, Pet, PetStatus };
 
 export const pets: Pet[] = [
   {

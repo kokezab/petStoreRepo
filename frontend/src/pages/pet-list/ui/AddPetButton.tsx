@@ -1,7 +1,8 @@
 import { Button } from 'antd';
 
 import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
-import { useModalStore } from '@/stores/useModalStore';
+
+import { useModalStore } from '../model/useModalStore';
 
 export function AddPetButton() {
   const isPetCreationEnabled = useFeatureFlag(FEATURE_FLAGS.petCreation);

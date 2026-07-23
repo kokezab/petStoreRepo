@@ -1,7 +1,7 @@
 import { ConfigProvider, theme as antdTheme } from 'antd';
 import type { ReactNode } from 'react';
 
-import { useThemeStore } from '@/stores/useThemeStore';
+import { useThemeStore } from '@/shared/lib/theme/useThemeStore';
 
 export function AppThemeProvider({ children }: { children: ReactNode }) {
   const theme = useThemeStore((state) => state.theme);

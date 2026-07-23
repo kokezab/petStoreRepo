@@ -27,10 +27,10 @@ Then("I should be on that pet's detail page", async ({ page }) => {
 
 Then('I should see its name, status, category, photo, and tags', async ({ page }) => {
   await expect(page.getByRole('heading', { name: firstAvailablePet.name, level: 1 })).toBeVisible();
-  await expect(page.getByText(firstAvailablePet.status)).toBeVisible();
-  await expect(page.getByText(firstAvailablePet.category.name)).toBeVisible();
+  await expect(page.getByText(firstAvailablePet.status ?? '')).toBeVisible();
+  await expect(page.getByText(firstAvailablePet.category?.name ?? '')).toBeVisible();
   await expect(page.getByRole('img', { name: firstAvailablePet.name })).toBeVisible();
-  await expect(page.getByText(firstAvailablePet.tags[0].name)).toBeVisible();
+  await expect(page.getByText(firstAvailablePet.tags?.[0]?.name ?? '')).toBeVisible();
 });
 
 Then("I should see pet {string}'s detail", async ({ page }, id: string) => {
