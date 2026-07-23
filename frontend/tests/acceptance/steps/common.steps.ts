@@ -76,7 +76,6 @@ Given('the {string} feature flag is disabled', async ({ page }, flagName: string
   await mockFeatureFlag(page, { [flagName]: false });
 });
 
-
 Then('I should not see an {string} button', async ({ page }, name: string) => {
   await expect(page.getByRole('button', { name })).toHaveCount(0);
 });

@@ -27,7 +27,6 @@ When(
   },
 );
 
-
 When('I submit the pet creation form', async ({ page }) => {
   await page.getByRole('dialog', { name: 'Add pet' }).getByRole('button', { name: 'Save' }).click();
 });

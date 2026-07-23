@@ -1,6 +1,7 @@
-import { useFeatureFlag } from '@/lib/feature-flags';
 import { Layout, Menu, Typography } from 'antd';
 import { NavLink, useLocation } from 'react-router';
+
+import { useFeatureFlag } from '@/lib/feature-flags';
 
 const { Header } = Layout;
 const { Text } = Typography;

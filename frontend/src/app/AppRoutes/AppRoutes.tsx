@@ -4,11 +4,11 @@ import { Route, Routes } from 'react-router';
 import { RouteErrorBoundary } from '@/app/RouteErrorBoundary/RouteErrorBoundary';
 import { InventoryPage } from '@/features/inventory/InventoryPage';
 import { LoginPage } from '@/features/login/LoginPage';
+import { OrdersPage } from '@/features/oders/OrdersPage';
 import { PetDetailsPage } from '@/features/pet-details/PetDetailsPage';
 import { PetListPage } from '@/features/pets/PetListPage/PetListPage';
 import { SettingsPage } from '@/features/settings/SettingsPage';
 import { SignupPage } from '@/features/signup/SignupPage';
-import { OrdersPage } from '@/features/oders/OrdersPage';
 import { useFeatureFlag } from '@/lib/feature-flags';
 
 function withRouteErrorBoundary(element: ReactNode) {
@@ -17,7 +17,7 @@ function withRouteErrorBoundary(element: ReactNode) {
 
 export function AppRoutes() {
   const isOrderCreationFlagEnabled = useFeatureFlag('order-creation');
-  
+
   return (
     <Routes>
       <Route path='/' element={withRouteErrorBoundary(<PetListPage />)} />
@@ -27,8 +27,9 @@ export function AppRoutes() {
       <Route path='/settings' element={withRouteErrorBoundary(<SettingsPage />)} />
       <Route path='/signup' element={withRouteErrorBoundary(<SignupPage />)} />
       <Route path='/login' element={withRouteErrorBoundary(<LoginPage />)} />
-      {isOrderCreationFlagEnabled && <Route path='/orders' element={withRouteErrorBoundary(<OrdersPage />)} />}
-      
+      {isOrderCreationFlagEnabled && (
+        <Route path='/orders' element={withRouteErrorBoundary(<OrdersPage />)} />
+      )}
     </Routes>
   );
 }
