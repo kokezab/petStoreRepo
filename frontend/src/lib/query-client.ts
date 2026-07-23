@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/react';
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 
 import { showErrorMessage } from '@/lib/antd-message-bridge';
@@ -29,9 +30,19 @@ export const queryClient = new QueryClient({
     },
   },
   queryCache: new QueryCache({
-    onError: (error, query) => handleGlobalError(error, query.meta),
+    onError: (error, query) => {
+      // Tags every captured error with its query key so it's traceable back
+      // to a specific query in Sentry, not just "something failed somewhere".
+      Sentry.captureException(error, { extra: { queryKey: query.queryKey } });
+      handleGlobalError(error, query.meta);
+    },
   }),
   mutationCache: new MutationCache({
-    onError: (error, _variables, _context, mutation) => handleGlobalError(error, mutation.meta),
+    onError: (error, _variables, _context, mutation) => {
+      Sentry.captureException(error, {
+        extra: { mutationKey: mutation.options.mutationKey },
+      });
+      handleGlobalError(error, mutation.meta);
+    },
   }),
 });

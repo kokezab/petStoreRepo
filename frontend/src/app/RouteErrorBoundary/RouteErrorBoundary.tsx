@@ -1,8 +1,7 @@
+import * as Sentry from '@sentry/react';
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { Button, Result } from 'antd';
 import type { ReactNode } from 'react';
-
-import { ErrorBoundary } from '@/app/ErrorBoundary/ErrorBoundary';
 
 // Wraps one route/section so an unrecoverable query error (network down, 5xx)
 // only takes out that piece of the page, not the whole app. Errors a
@@ -13,15 +12,15 @@ export function RouteErrorBoundary({ children }: { children: ReactNode }) {
   return (
     <QueryErrorResetBoundary>
       {({ reset }) => (
-        <ErrorBoundary
+        <Sentry.ErrorBoundary
           onReset={reset}
-          fallback={(error, retry) => (
+          fallback={({ error, resetError }) => (
             <Result
               status='error'
               title='Something went wrong'
-              subTitle={error.message}
+              subTitle={error instanceof Error ? error.message : String(error)}
               extra={
-                <Button type='primary' onClick={retry}>
+                <Button type='primary' onClick={resetError}>
                   Try again
                 </Button>
               }
@@ -29,7 +28,7 @@ export function RouteErrorBoundary({ children }: { children: ReactNode }) {
           )}
         >
           {children}
-        </ErrorBoundary>
+        </Sentry.ErrorBoundary>
       )}
     </QueryErrorResetBoundary>
   );
