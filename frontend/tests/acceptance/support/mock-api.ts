@@ -1,11 +1,15 @@
 import type { Page, Route } from '@playwright/test';
 
-import { inventoryCounts, type Pet, pets } from '../fixtures/pets';
+import { inventoryCounts, type Order, type Pet, pets } from '../fixtures/pets';
 
 const PET_BY_ID_PATTERN = /\/pet\/\d+(\?.*)?$/;
 
+const ordersByPage = new WeakMap<Page, Order[]>();
+
 export async function mockPetApi(page: Page): Promise<void> {
   const petsInMemory: Pet[] = [...pets];
+  const ordersInMemory: Order[] = [];
+  ordersByPage.set(page, ordersInMemory);
 
   await page.route('**/pet/findByStatus**', async (route: Route) => {
     const url = new URL(route.request().url());
@@ -56,7 +60,22 @@ export async function mockPetApi(page: Page): Promise<void> {
     await route.fulfill({ json: newPet });
   });
 
-  await mockFeatureFlag(page, { 'pet-creation': false });
+  await page.route('**/store/order', async (route: Route) => {
+    if (route.request().method() !== 'POST') {
+      await route.fallback();
+      return;
+    }
+    const body = route.request().postDataJSON() as Omit<Order, 'id'>;
+    const newOrder: Order = { ...body, id: ordersInMemory.length + 1 };
+    ordersInMemory.push(newOrder);
+    await route.fulfill({ json: newOrder });
+  });
+
+  await mockFeatureFlag(page, { 'pet-creation': false, 'order-creation': false });
+}
+
+export function getOrdersInMemory(page: Page): Order[] {
+  return ordersByPage.get(page) ?? [];
 }
 
 export async function mockFeatureFlag(page: Page, flags: Record<string, boolean>): Promise<void> {
@@ -75,6 +94,19 @@ export async function mockFeatureFlag(page: Page, flags: Record<string, boolean>
 
 export async function mockAddPetError(page: Page): Promise<void> {
   await page.route('**/pet', async (route: Route) => {
+    if (route.request().method() !== 'POST') {
+      await route.fallback();
+      return;
+    }
+    await route.fulfill({
+      status: 500,
+      json: { code: 500, type: 'error', message: 'Internal server error' },
+    });
+  });
+}
+
+export async function mockAddOrderError(page: Page): Promise<void> {
+  await page.route('**/store/order', async (route: Route) => {
     if (route.request().method() !== 'POST') {
       await route.fallback();
       return;
