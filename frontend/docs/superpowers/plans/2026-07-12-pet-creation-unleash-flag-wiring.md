@@ -523,7 +523,7 @@ Feature: Pet creation
     When I navigate to "/pets"
     Then I should see an "Add pet" button
     When I click the "Add pet" button
-    Then I should see the "Add pet" form
+    Then I should see the "Add pet" dialog
 
   Scenario: AT-17 Submitting a valid form adds the pet to the list
     Given the "pet-creation" feature flag is enabled
@@ -599,6 +599,10 @@ When('I click the {string} button', async ({ page }, name: string) => {
 });
 
 Then('I should see the {string} form', async ({ page }, name: string) => {
+  await expect(page.getByRole('form', { name })).toBeVisible();
+});
+
+Then('I should see the {string} dialog', async ({ page }, name: string) => {
   await expect(page.getByRole('dialog', { name })).toBeVisible();
 });
 

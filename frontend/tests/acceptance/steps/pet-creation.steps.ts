@@ -17,22 +17,6 @@ Given('the pet-creation common flow', async ({ page }) => {
   await page.getByRole('button', { name: 'Add pet' }).click();
 });
 
-Then('I should not see an {string} button', async ({ page }, name: string) => {
-  await expect(page.getByRole('button', { name })).toHaveCount(0);
-});
-
-Then('I should see an {string} button', async ({ page }, name: string) => {
-  await expect(page.getByRole('button', { name })).toBeVisible();
-});
-
-When('I click the {string} button', async ({ page }, name: string) => {
-  await page.getByRole('button', { name }).click();
-});
-
-Then('I should see the {string} form', async ({ page }, name: string) => {
-  await expect(page.getByRole('dialog', { name })).toBeVisible();
-});
-
 When(
   'I fill in the pet creation form with name {string}, category {string} and status {string}',
   async ({ page }, name: string, category: string, status: string) => {
@@ -42,6 +26,7 @@ When(
     await selectAntDesignOption(dialog, page, 'Status', status);
   },
 );
+
 
 When('I submit the pet creation form', async ({ page }) => {
   await page.getByRole('dialog', { name: 'Add pet' }).getByRole('button', { name: 'Save' }).click();
@@ -56,18 +41,6 @@ When('I cancel the pet creation form', async ({ page }) => {
     .getByRole('dialog', { name: 'Add pet' })
     .getByRole('button', { name: 'Cancel' })
     .click();
-});
-
-Then('the {string} form should close', async ({ page }, name: string) => {
-  await expect(page.getByRole('dialog', { name })).toHaveCount(0);
-});
-
-Then('the {string} form should still be open', async ({ page }, name: string) => {
-  await expect(page.getByRole('dialog', { name })).toBeVisible();
-});
-
-Then('I should see a {string} validation message', async ({ page }, message: string) => {
-  await expect(page.getByText(new RegExp(message, 'i'))).toBeVisible();
 });
 
 Then('the pet list should include a pet named {string}', async ({ page }, name: string) => {
