@@ -6,7 +6,7 @@ import { useFindPetsByStatus } from '@/api/generated/pet/pet';
 import { PetList } from '../components';
 import { Alert, Select } from 'antd';
 
-const statusOptions = [
+const statusOptions: { value: PetStatus; label: string }[] = [  
   {
     value: 'available',
     label: 'available',

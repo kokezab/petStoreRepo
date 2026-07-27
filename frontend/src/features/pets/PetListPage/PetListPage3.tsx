@@ -5,7 +5,9 @@ import { Alert, Select } from 'antd';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-const statusOptions = [
+type PetStatus = 'available' | 'pending' | 'sold';
+
+const statusOptions: { value: PetStatus; label: string }[] = [
   {
     value: 'available',
     label: 'available',
@@ -19,8 +21,6 @@ const statusOptions = [
     label: 'sold',
   },
 ];
-
-type PetStatus = 'available' | 'pending' | 'sold';
 
 type Pet = {
   id: number;
