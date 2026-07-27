@@ -31,6 +31,7 @@ export function PetListItem({ pet }: PetListItemProps) {
         <Link to={`/pets/${pet.id}`}>
           <Title level={2}>{pet.name}</Title>
         </Link>
+        <Title level={4}>{pet.category?.name}</Title>
         <PetStatusTag status={pet.status} />
       </Card>
     </List.Item>

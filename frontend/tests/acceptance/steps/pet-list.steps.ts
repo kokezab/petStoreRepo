@@ -52,3 +52,15 @@ Then('I should see an empty-state message', async ({ page }) => {
 Then('I should see a loading indicator before the list appears', async ({ page }) => {
   await expect(page.getByRole('status', { name: 'Loading pets' })).toBeVisible();
 });
+
+Then('each pet should have a category', async ({ page }) => {
+  const expected = pets.filter((pet) => pet.status === 'available');
+  const list = page.getByRole('list', { name: 'Pets' });
+  await expect(list.getByRole('listitem')).toHaveCount(expected.length);
+  for (const pet of expected) {
+    const item = list.getByRole('listitem').filter({
+      has: page.getByRole('link', { name: pet.name }),
+    });
+    await expect(item.getByText(pet.category?.name ?? '')).toBeVisible();
+  }
+});
