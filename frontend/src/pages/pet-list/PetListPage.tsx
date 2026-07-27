@@ -1,21 +1,20 @@
 import { QueryState } from '@/components/QueryState/QueryState';
-import { useFindPetsByStatus } from '@/entities/pet';
 
-import { usePetsFilterStore } from './model/usePetsFilterStore';
-import { AddPetButton, AddPetModal, PetList, PetsStatusFilter } from './ui';
+import { useVisiblePets } from './model/useVisiblePets';
+import { AddPetButton, AddPetModal, PetCategoryFilter, PetList, PetsStatusFilter } from './ui';
 
 export function PetListPage() {
-  const status = usePetsFilterStore((state) => state.status);
-  const { data, isLoading, error } = useFindPetsByStatus({ status: [status] });
+  const { visiblePets, isLoading, error } = useVisiblePets();
 
   return (
     <div>
       <PetsStatusFilter />
+      <PetCategoryFilter />
 
       <QueryState
         isLoading={isLoading}
         error={error}
-        data={data}
+        data={visiblePets}
         loadingLabel='Loading pets'
         errorFallback='Failed to load pets.'
       >

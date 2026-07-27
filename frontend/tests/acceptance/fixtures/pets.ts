@@ -44,6 +44,15 @@ export const pets: Pet[] = [
     photoUrls: ['https://example.com/rocky.jpg'],
     tags: [{ id: 1, name: 'friendly' }],
   },
+  {
+    // id 6 is reserved: the mock POST /pet handler assigns it to created pets.
+    id: 7,
+    name: 'Buddy',
+    status: 'pending',
+    category: { id: 1, name: 'Dogs' },
+    photoUrls: ['https://example.com/buddy.jpg'],
+    tags: [{ id: 2, name: 'playful' }],
+  },
 ];
 
 export const inventoryCounts: Record<PetStatus, number> = {

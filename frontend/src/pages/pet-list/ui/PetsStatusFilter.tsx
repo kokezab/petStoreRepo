@@ -23,7 +23,7 @@ export function PetsStatusFilter() {
         role='combobox'
         aria-label='Status filter'
         value={status}
-        onChange={(value) => setStatus(value)}
+        onChange={setStatus}
         options={options}
       />
     </>
