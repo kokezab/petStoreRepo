@@ -1,6 +1,6 @@
 import { Alert, Button, Form, Input, InputNumber, Select, Space } from 'antd';
 
-import type { OrderStatus } from '@/entities/order';
+import type { OrderStatus } from '../../model/types';
 
 export type CreateOrderFormValues = {
   petId: number;
