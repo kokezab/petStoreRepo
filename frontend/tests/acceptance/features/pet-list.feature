@@ -9,6 +9,7 @@ Feature: Pet list browsing
     Then the pet list should show only pets with status "available"
     And each pet should be listed by name
     And each pet should have a photo
+    And each pet should have a category
 
   Scenario: AT-2 Filtering by pending status
     Given I am on the "/pets" page

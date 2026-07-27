@@ -2,11 +2,7 @@ import { useEffect } from 'react';
 
 import { Switch } from 'antd';
 
-import {
-  applySystemThemePreferenceIfUnset,
-  useTheme,
-  useThemeActions,
-} from '@/shared/lib/theme/useThemeStore';
+import { applySystemThemePreferenceIfUnset, useTheme, useThemeActions } from '@/shared/lib/theme';
 
 export function ThemeToggle() {
   const theme = useTheme();

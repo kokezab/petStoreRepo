@@ -1,6 +1,7 @@
 import { Select } from 'antd';
 
 import type { PetStatus } from '@/entities/pet';
+
 import { usePetsFilterActions, usePetsFilterStore } from '../model/usePetsFilterStore';
 
 const STATUS_OPTIONS: PetStatus[] = ['available', 'pending', 'sold'];
