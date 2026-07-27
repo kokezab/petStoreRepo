@@ -30,7 +30,9 @@ jobs:
       - name: Deploy prebuilt preview
         id: deploy
         run: |
-          url=$(vercel deploy --prebuilt --token="$VERCEL_TOKEN" 2>/dev/null)
+          # stderr carries progress logs; keep it visible in the job log while
+          # capturing only the deployment URL (stdout) for the step output.
+          url=$(vercel deploy --prebuilt --token="$VERCEL_TOKEN")
           echo "url=$url" >> "$GITHUB_OUTPUT"
       - name: Point staging alias at the latest preview
         run: vercel alias set "${{ steps.deploy.outputs.url }}" petstore-staging.vercel.app --token="$VERCEL_TOKEN"
