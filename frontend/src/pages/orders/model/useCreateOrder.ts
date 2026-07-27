@@ -1,6 +1,6 @@
-import { usePlaceOrder } from '@/entities/order';
 import { useApiError } from '@/hooks/useApiError';
 
+import { usePlaceOrder } from '../api/orderQueries';
 import type { CreateOrderFormValues } from '../ui/CreateOrderForm/CreateOrderForm';
 
 export function useCreateOrder() {
