@@ -2,6 +2,7 @@ import { expect } from '@playwright/test';
 import { createBdd } from 'playwright-bdd';
 
 import { mockFeatureFlag, mockPetApi } from '../support/mock-api';
+import { clearAntdDropdown, selectAntDesignOption } from '../support/playwright-helpers';
 
 export const { Given, When, Then } = createBdd();
 
@@ -56,8 +57,7 @@ Then('I should see {string} placeholder', async ({ page }, placeholder: string) 
 });
 
 When('I chose dropdown {string} value {string}', async ({ page }, name: string, option: string) => {
-  await page.getByRole('combobox', { name }).click();
-  await page.getByTitle(option).click();
+  await selectAntDesignOption(page, page, name, option);
 });
 
 Then('I should not see a {string} link', async ({ page }, name: string) => {
@@ -106,4 +106,16 @@ Then('the {string} form should still be open', async ({ page }, name: string) =>
 
 Then('I should see a {string} validation message', async ({ page }, message: string) => {
   await expect(page.getByText(new RegExp(message, 'i'))).toBeVisible();
+});
+
+Then('I should not see the {string} dropdown', async ({ page }, name: string) => {
+  await expect(page.getByRole('combobox', { name })).toHaveCount(0);
+});
+
+Then('I should see the {string} dropdown', async ({ page }, name: string) => {
+  await expect(page.getByRole('combobox', { name })).toBeVisible();
+});
+
+When('I clear the {string} dropdown', async ({ page }, name: string) => {
+  await clearAntdDropdown(page, name);
 });
