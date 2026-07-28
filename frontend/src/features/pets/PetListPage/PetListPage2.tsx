@@ -17,7 +17,7 @@ type Pet = {
   status: PetStatus;
 };
 
-const statusOptions = [
+const statusOptions: { value: PetStatus; label: string }[] = [
   {
     value: 'available',
     label: 'available',
