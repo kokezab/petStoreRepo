@@ -1,9 +1,10 @@
 import { useState } from 'react';
 
-import { PetList } from '../components';
-import { Alert, Select } from 'antd';
 import { useQuery } from '@tanstack/react-query';
+import { Alert, Select } from 'antd';
 import axios from 'axios';
+
+import { PetList } from '../components';
 
 type PetStatus = 'available' | 'pending' | 'sold';
 

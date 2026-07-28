@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { PetList } from '../components';
 import { Alert, Select } from 'antd';
 import axios from 'axios';
 
 import { useAppDispatch, useAppSelector } from '@/app/AppProviders/hooks';
 import type { RootState } from '@/app/AppProviders/store';
+
+import { PetList } from '../components';
 
 type PetStatus = 'available' | 'pending' | 'sold';
 
@@ -46,12 +47,15 @@ const initialState: PetsState = {
   data: null,
 };
 
-export const fetchPetsByStatus = createAsyncThunk('pets/fetchByStatus', async (status: PetStatus) => {
-  const response = await axios.get<Pet[]>(
-    `https://petstore.swagger.io/v2/pet/findByStatus?status=${status}`,
-  );
-  return response.data;
-});
+export const fetchPetsByStatus = createAsyncThunk(
+  'pets/fetchByStatus',
+  async (status: PetStatus) => {
+    const response = await axios.get<Pet[]>(
+      `https://petstore.swagger.io/v2/pet/findByStatus?status=${status}`,
+    );
+    return response.data;
+  },
+);
 
 const petsSlice = createSlice({
   name: 'pets',

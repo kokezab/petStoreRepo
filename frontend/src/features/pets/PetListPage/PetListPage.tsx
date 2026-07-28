@@ -24,7 +24,17 @@ const statusOptions: { value: FindPetsByStatusStatusItem; label: string }[] = [
 
 export function PetListPage() {
   const [status, setStatus] = useState<FindPetsByStatusStatusItem>('available');
-  const { data, isLoading, isError } = useFindPetsByStatus({ status: [status] });
+  const { data, isLoading, isError } = useFindPetsByStatus(
+    {
+      status: [status],
+    },
+    {
+      query: {
+        refetchOnWindowFocus: false,
+        // refetchInterval: 1_000,
+      },
+    },
+  );
 
   if (isLoading) return <p>Loading pets...</p>;
   if (isError) return <Alert type='error' title='Failed to load pets.' />;

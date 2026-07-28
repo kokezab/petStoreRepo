@@ -35,18 +35,17 @@ export function AddPetForm({ onSubmit, isLoading, error, onCancel }: AddPetFormP
   const { mutateAsync: createPet, isPending } = useAddPet();
   const [form] = Form.useForm<AddPetFormValues>();
 
-
   const handleSubmit = async () => {
     const values = await form.validateFields();
 
-      await createPet({
-        data: {
-          photoUrls: [],
-          name: values.name,
-          category: { name: values.category },
-          status: values.status,
-        },
-      });
+    await createPet({
+      data: {
+        photoUrls: [],
+        name: values.name,
+        category: { name: values.category },
+        status: values.status,
+      },
+    });
 
     await onSubmit(values);
   };
