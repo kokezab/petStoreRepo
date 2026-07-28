@@ -1,6 +1,7 @@
 import { Alert, Button, Form, Input, Select, Space } from 'antd';
 
 import type { PetStatus } from '@/api/generated/models';
+import { useAddPet } from '@/api/generated/pet/pet';
 
 export type AddPetFormValues = {
   name: string;
@@ -31,14 +32,21 @@ const options: { value: PetStatus; label: string }[] = [
 ];
 
 export function AddPetForm({ onSubmit, isLoading, error, onCancel }: AddPetFormProps) {
+  const { mutateAsync: createPet, isPending } = useAddPet();
   const [form] = Form.useForm<AddPetFormValues>();
+
+
   const handleSubmit = async () => {
-    let values: AddPetFormValues;
-    try {
-      values = await form.validateFields();
-    } catch {
-      return;
-    }
+    const values = await form.validateFields();
+
+      await createPet({
+        data: {
+          photoUrls: [],
+          name: values.name,
+          category: { name: values.category },
+          status: values.status,
+        },
+      });
 
     await onSubmit(values);
   };

@@ -1,12 +1,13 @@
 import { useState } from 'react';
 
+import { Alert, Select } from 'antd';
+
 import type { FindPetsByStatusStatusItem } from '@/api/generated/models';
 import { useFindPetsByStatus } from '@/api/generated/pet/pet';
 
 import { PetList } from '../components';
-import { Alert, Select } from 'antd';
 
-const statusOptions: { value: PetStatus; label: string }[] = [  
+const statusOptions: { value: FindPetsByStatusStatusItem; label: string }[] = [
   {
     value: 'available',
     label: 'available',

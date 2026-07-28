@@ -1,0 +1,1348 @@
+<title>From useEffect to a Generated SDK — TanStack Query</title>
+<style>
+  :root {
+    --ground: #0e1117;
+    --panel: #161a23;
+    --panel-2: #1b2029;
+    --line: #262c38;
+    --ink: #e6e9f0;
+    --muted: #8d95a8;
+    --accent: #ff4154;
+    --fresh: #3ecf8e;
+    --stale: #f5b73d;
+    --fetch: #58a6ff;
+    --dead: #7b8494;
+    --code-str: #a5d6a7;
+    --code-kw: #ff8fa0;
+    --code-com: #6a7383;
+    --code-num: #d5b3ff;
+    --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+
+    --mono: "Cascadia Code", "JetBrains Mono", "Fira Code", Consolas, ui-monospace, monospace;
+    --sans: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+
+    --s1: var(--dead);
+    --s2: var(--stale);
+    --s3: var(--accent);
+    --s4: var(--fresh);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --ground: #f4f6f8;
+      --panel: #ffffff;
+      --panel-2: #eef1f5;
+      --line: #dde2e9;
+      --ink: #151920;
+      --muted: #5d6678;
+      --accent: #d81f33;
+      --fresh: #11814a;
+      --stale: #8f5e00;
+      --fetch: #1257c9;
+      --dead: #6a7385;
+      --code-str: #1a7f4b;
+      --code-kw: #c01d38;
+      --code-com: #7a8496;
+      --code-num: #6b3fc4;
+      --shadow: 0 18px 44px rgba(20, 30, 50, 0.12);
+    }
+  }
+
+  :root[data-theme="light"] {
+    --ground: #f4f6f8;
+    --panel: #ffffff;
+    --panel-2: #eef1f5;
+    --line: #dde2e9;
+    --ink: #151920;
+    --muted: #5d6678;
+    --accent: #d81f33;
+    --fresh: #11814a;
+    --stale: #8f5e00;
+    --fetch: #1257c9;
+    --dead: #6a7385;
+    --code-str: #1a7f4b;
+    --code-kw: #c01d38;
+    --code-com: #7a8496;
+    --code-num: #6b3fc4;
+    --shadow: 0 18px 44px rgba(20, 30, 50, 0.12);
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #0e1117;
+    --panel: #161a23;
+    --panel-2: #1b2029;
+    --line: #262c38;
+    --ink: #e6e9f0;
+    --muted: #8d95a8;
+    --accent: #ff4154;
+    --fresh: #3ecf8e;
+    --stale: #f5b73d;
+    --fetch: #58a6ff;
+    --dead: #7b8494;
+    --code-str: #a5d6a7;
+    --code-kw: #ff8fa0;
+    --code-com: #6a7383;
+    --code-num: #d5b3ff;
+    --shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+  }
+
+  /* ---------- stage ---------- */
+  #viewport { position: fixed; inset: 0; display: grid; place-items: center; }
+  #stage {
+    width: 1280px; height: 720px;
+    position: relative;
+    transform-origin: center center;
+    background: var(--ground);
+  }
+
+  .slide {
+    position: absolute; inset: 0;
+    display: none;
+    grid-template-columns: 78px 1fr;
+  }
+  .slide.is-current { display: grid; }
+
+  /* ---------- ladder spine ---------- */
+  .spine {
+    border-right: 1px solid var(--line);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 6px;
+    padding: 28px 0;
+    background: var(--panel);
+  }
+  .rung {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .rung .dot {
+    width: 26px; height: 26px; border-radius: 50%;
+    display: grid; place-items: center;
+    border: 1px solid var(--line);
+    background: var(--panel-2);
+    font-size: 11px; font-weight: 700;
+  }
+  .rung .stem { width: 1px; height: 20px; background: var(--line); }
+  .slide[data-step="1"] .rung[data-r="1"] .dot { border-color: var(--s1); color: var(--s1); box-shadow: 0 0 0 4px color-mix(in srgb, var(--s1) 18%, transparent); }
+  .slide[data-step="2"] .rung[data-r="2"] .dot { border-color: var(--s2); color: var(--s2); box-shadow: 0 0 0 4px color-mix(in srgb, var(--s2) 18%, transparent); }
+  .slide[data-step="3"] .rung[data-r="3"] .dot { border-color: var(--s3); color: var(--s3); box-shadow: 0 0 0 4px color-mix(in srgb, var(--s3) 18%, transparent); }
+  .slide[data-step="4"] .rung[data-r="4"] .dot { border-color: var(--s4); color: var(--s4); box-shadow: 0 0 0 4px color-mix(in srgb, var(--s4) 18%, transparent); }
+  .slide[data-step="1"] .rung[data-r="1"],
+  .slide[data-step="2"] .rung[data-r="2"],
+  .slide[data-step="3"] .rung[data-r="3"],
+  .slide[data-step="4"] .rung[data-r="4"] { color: var(--ink); }
+
+  /* ---------- body ---------- */
+  .body {
+    padding: 46px 60px 60px;
+    display: flex; flex-direction: column;
+    gap: 22px;
+    min-width: 0;
+  }
+  .eyebrow {
+    display: flex; align-items: center; gap: 14px;
+    font-family: var(--mono); font-size: 12px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .eyebrow .part { color: var(--tone, var(--muted)); }
+  .eyebrow .clock {
+    margin-left: auto;
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 3px 11px; font-size: 11px; letter-spacing: 0.08em;
+    color: var(--muted); background: var(--panel);
+    font-variant-numeric: tabular-nums;
+  }
+  h1 {
+    font-family: var(--mono);
+    font-size: 46px; line-height: 1.08; font-weight: 600;
+    letter-spacing: -0.02em; text-wrap: balance;
+    max-width: 20ch;
+  }
+  h2 {
+    font-family: var(--mono);
+    font-size: 33px; line-height: 1.14; font-weight: 600;
+    letter-spacing: -0.015em; text-wrap: balance;
+    max-width: 26ch;
+  }
+  .lede { font-size: 19px; line-height: 1.55; color: var(--muted); max-width: 62ch; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+  p { font-size: 17px; line-height: 1.55; max-width: 62ch; }
+
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; min-height: 0; }
+  .cols.wide-left { grid-template-columns: 1.25fr 1fr; }
+  .cols.wide-right { grid-template-columns: 1fr 1.25fr; }
+  .stack { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+
+  ul.marks { display: flex; flex-direction: column; gap: 11px; }
+  ul.marks li {
+    display: grid; grid-template-columns: 18px 1fr; gap: 12px;
+    font-size: 16px; line-height: 1.45; align-items: baseline;
+  }
+  ul.marks li::before {
+    content: "—"; color: var(--tone, var(--accent));
+    font-family: var(--mono); font-size: 14px;
+  }
+  ul.marks li b { font-weight: 650; }
+  ul.marks li span { color: var(--muted); }
+  ul.marks.tight li { font-size: 15px; }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 10px; padding: 18px 20px;
+    display: flex; flex-direction: column; gap: 9px;
+  }
+  .card h3 {
+    font-family: var(--mono); font-size: 13px; font-weight: 650;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--tone, var(--ink));
+  }
+  .card p { font-size: 15px; color: var(--muted); max-width: none; }
+
+  /* ---------- code ---------- */
+  figure.code {
+    background: var(--panel); border: 1px solid var(--line);
+    border-radius: 10px; overflow: hidden; min-width: 0;
+    display: flex; flex-direction: column;
+  }
+  figure.code figcaption {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: 0.04em;
+    color: var(--muted); background: var(--panel-2);
+    border-bottom: 1px solid var(--line);
+    padding: 7px 14px; display: flex; align-items: center; gap: 9px;
+  }
+  figure.code figcaption .tag {
+    margin-left: auto; color: var(--tone, var(--muted));
+    text-transform: uppercase; letter-spacing: 0.1em; font-size: 10px;
+  }
+  figure.code .scroll { overflow: auto; }
+  pre {
+    font-family: var(--mono); font-size: 13.5px; line-height: 1.62;
+    padding: 12px 14px; tab-size: 2; white-space: pre;
+  }
+  pre.sm { font-size: 12.5px; line-height: 1.55; }
+  code .ln {
+    display: inline-block; width: 2.4em; margin-right: 12px;
+    text-align: right; color: color-mix(in srgb, var(--muted) 45%, transparent);
+    user-select: none; font-variant-numeric: tabular-nums;
+  }
+  .tok-str { color: var(--code-str); }
+  .tok-kw { color: var(--code-kw); }
+  .tok-com { color: var(--code-com); font-style: italic; }
+  .tok-num { color: var(--code-num); }
+  mark {
+    background: color-mix(in srgb, var(--accent) 20%, transparent);
+    color: inherit; border-radius: 3px; padding: 1px 2px;
+  }
+
+  /* ---------- demo slides ---------- */
+  .slide.demo .body { background:
+    repeating-linear-gradient(135deg, transparent 0 22px, color-mix(in srgb, var(--fetch) 4%, transparent) 22px 24px);
+  }
+  .badge {
+    font-family: var(--mono); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--ground); background: var(--fetch);
+    padding: 4px 10px; border-radius: 4px;
+  }
+  ol.steps { display: flex; flex-direction: column; gap: 12px; counter-reset: st; }
+  ol.steps li {
+    display: grid; grid-template-columns: 26px 1fr; gap: 13px;
+    font-size: 16px; line-height: 1.45; align-items: baseline;
+  }
+  ol.steps li::before {
+    counter-increment: st; content: counter(st);
+    font-family: var(--mono); font-size: 12px; font-weight: 700;
+    color: var(--fetch); border: 1px solid var(--line); border-radius: 5px;
+    text-align: center; padding: 2px 0; background: var(--panel);
+  }
+  .payoff {
+    border-left: 3px solid var(--fetch); padding: 8px 0 8px 16px;
+    font-size: 16px; line-height: 1.5; color: var(--muted);
+  }
+  .payoff b { color: var(--ink); }
+
+  /* ---------- scoreboard ---------- */
+  table.score { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  table.score th, table.score td {
+    text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line);
+  }
+  table.score thead th {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--muted); font-weight: 600;
+  }
+  table.score td.cap { color: var(--muted); }
+  table.score .yes { color: var(--fresh); font-family: var(--mono); }
+  table.score .no { color: var(--dead); font-family: var(--mono); }
+  table.score .part { color: var(--stale); font-family: var(--mono); }
+  table.score tbody tr:last-child td { border-bottom: none; }
+
+  /* ---------- lifecycle diagram ---------- */
+  .life { display: flex; align-items: stretch; gap: 0; margin-top: 4px; }
+  .life .st {
+    flex: 1; border: 1px solid var(--line); border-radius: 9px;
+    padding: 13px 15px; background: var(--panel);
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .life .st .nm {
+    font-family: var(--mono); font-size: 13px; font-weight: 650;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .life .st .ds { font-size: 13.5px; color: var(--muted); line-height: 1.4; }
+  .life .arrow {
+    align-self: center; padding: 0 9px; color: var(--muted);
+    font-family: var(--mono); font-size: 12px; text-align: center;
+    display: flex; flex-direction: column; gap: 3px; white-space: nowrap;
+  }
+  .life .arrow em { font-style: normal; font-size: 10px; letter-spacing: 0.06em; color: var(--muted); }
+  .life .st[data-s="fresh"] { border-color: color-mix(in srgb, var(--fresh) 55%, var(--line)); }
+  .life .st[data-s="fresh"] .nm { color: var(--fresh); }
+  .life .st[data-s="stale"] { border-color: color-mix(in srgb, var(--stale) 55%, var(--line)); }
+  .life .st[data-s="stale"] .nm { color: var(--stale); }
+  .life .st[data-s="inactive"] .nm { color: var(--dead); }
+  .life .st[data-s="gone"] { border-style: dashed; }
+  .life .st[data-s="gone"] .nm { color: var(--muted); }
+
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; font-size: 15px; align-items: baseline; }
+  .kv dt { font-family: var(--mono); font-size: 13px; color: var(--tone, var(--accent)); }
+  .kv dd { color: var(--muted); line-height: 1.45; }
+
+  .big-num { font-family: var(--mono); font-size: 60px; font-weight: 600; letter-spacing: -0.03em; line-height: 1; }
+  .big-num small { display: block; font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-top: 8px; font-weight: 400; }
+  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .metrics .m { border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; background: var(--panel); }
+
+  /* ---------- title slide ---------- */
+  .slide.cover { grid-template-columns: 1fr; }
+  .slide.cover .body { justify-content: center; padding: 0 92px; gap: 26px; }
+  .cover h1 { font-size: 62px; max-width: 22ch; }
+  .cover .rule { width: 88px; height: 3px; background: var(--accent); }
+  .ladder-inline { display: flex; gap: 10px; flex-wrap: wrap; }
+  .ladder-inline span {
+    font-family: var(--mono); font-size: 12.5px;
+    border: 1px solid var(--line); border-radius: 999px;
+    padding: 5px 13px; color: var(--muted); background: var(--panel);
+  }
+  .ladder-inline span b { color: var(--c, var(--ink)); font-weight: 600; }
+
+  /* ---------- agenda ---------- */
+  .agenda { display: flex; flex-direction: column; gap: 2px; }
+  .agenda .row {
+    display: grid; grid-template-columns: 92px 22px 1fr auto;
+    gap: 16px; align-items: baseline;
+    padding: 11px 4px; border-bottom: 1px solid var(--line);
+  }
+  .agenda .row:last-child { border-bottom: none; }
+  .agenda .t { font-family: var(--mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .agenda .n { font-family: var(--mono); font-size: 13px; font-weight: 700; color: var(--c, var(--muted)); }
+  .agenda .l { font-size: 16.5px; }
+  .agenda .l em { font-style: normal; color: var(--muted); font-size: 14.5px; }
+  .agenda .w { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c, var(--muted)); }
+  .agenda .row.core { background: color-mix(in srgb, var(--accent) 7%, transparent); border-radius: 6px; padding-inline: 10px; }
+
+  .notes { display: none; }
+
+  /* ---------- chrome (unscaled, real pixels) ---------- */
+  #chrome {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    display: flex; align-items: center; gap: 14px;
+    padding: 9px 16px;
+    font-family: var(--mono); font-size: 11.5px; color: var(--muted);
+    background: color-mix(in srgb, var(--ground) 88%, transparent);
+    border-top: 1px solid var(--line);
+    backdrop-filter: blur(6px);
+    z-index: 40;
+  }
+  #progress { position: fixed; left: 0; bottom: 0; height: 2px; background: var(--accent); z-index: 41; transition: width 0.25s ease; }
+  #chrome .sp { flex: 1; }
+  #chrome kbd {
+    font-family: var(--mono); font-size: 10.5px;
+    border: 1px solid var(--line); border-bottom-width: 2px;
+    border-radius: 4px; padding: 1px 5px; color: var(--ink); background: var(--panel);
+  }
+  #counter { font-variant-numeric: tabular-nums; color: var(--ink); }
+  .btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em;
+    background: var(--panel); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 6px;
+    padding: 4px 10px; cursor: pointer;
+  }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  #notesPanel, #jumpPanel {
+    position: fixed; z-index: 45;
+    background: var(--panel); border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+    display: none;
+  }
+  #notesPanel {
+    left: 0; right: 0; bottom: 37px;
+    max-height: 44vh; overflow: auto;
+    padding: 18px 22px 20px;
+    border-left: none; border-right: none; border-bottom: none;
+  }
+  #notesPanel.open, #jumpPanel.open { display: block; }
+  #notesPanel h4 {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 10px;
+  }
+  #notesPanel .nb { font-size: 14.5px; line-height: 1.6; max-width: 92ch; color: var(--ink); }
+  #notesPanel .nb p + p { margin-top: 8px; }
+  #notesPanel .nb code { font-family: var(--mono); font-size: 13px; color: var(--fetch); }
+  #notesPanel .nb b { color: var(--accent); font-weight: 600; }
+
+  #jumpPanel {
+    left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: min(720px, 92vw); max-height: 80vh; overflow: auto;
+    border-radius: 12px; padding: 20px 22px;
+  }
+  #jumpPanel h4 {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+  }
+  #jumpPanel ol { display: flex; flex-direction: column; gap: 1px; }
+  #jumpPanel button {
+    width: 100%; text-align: left; background: none; border: none;
+    color: var(--ink); font-family: var(--sans); font-size: 14px;
+    padding: 7px 10px; border-radius: 6px; cursor: pointer;
+    display: grid; grid-template-columns: 34px 1fr auto; gap: 12px; align-items: baseline;
+  }
+  #jumpPanel button:hover, #jumpPanel button:focus-visible { background: var(--panel-2); outline: none; }
+  #jumpPanel button .jn { font-family: var(--mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  #jumpPanel button .jt { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--c, var(--muted)); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+
+<div id="viewport">
+  <div id="stage">
+
+    <!-- 1 -->
+    <section class="slide cover" data-part="Open" data-clock="0–2 min" data-step="0" data-title="Title">
+      <div class="body">
+        <div class="eyebrow"><span class="part">Frontend enablement</span> <span>·</span> <span>60 minutes</span></div>
+        <h1>From useEffect<br>to a generated SDK</h1>
+        <div class="rule"></div>
+        <p class="lede">Four versions of the same pet list, written the way we actually wrote them. What each one cost us, and what a cache buys that a store never will.</p>
+        <div class="ladder-inline">
+          <span style="--c: var(--dead)"><b>1</b> useEffect + axios</span>
+          <span style="--c: var(--stale)"><b>2</b> Redux Toolkit</span>
+          <span style="--c: var(--accent)"><b>3</b> TanStack Query</span>
+          <span style="--c: var(--fresh)"><b>4</b> orval + TanStack Query</span>
+        </div>
+      </div>
+      <div class="notes">
+        <p>Open by naming the stakes: <b>this is our own git history</b>, not a tutorial. All four files are sitting in <code>src/features/pets/PetListPage/</code> right now and every one of them renders the same screen.</p>
+        <p>Set the contract for the hour: the middle chunk (steps 3) is where we slow down. Steps 1 and 2 are a fast, honest look at what we lived with.</p>
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section class="slide" data-part="Open" data-clock="2–5 min" data-step="0" data-title="The hour">
+      <div class="body">
+        <div class="eyebrow"><span class="part">Agenda</span></div>
+        <h2>Where the hour goes</h2>
+        <div class="agenda">
+          <div class="row"><span class="t">0–05</span><span class="n">·</span><span class="l">Server state is not client state <em>— the reframe</em></span><span class="w">Setup</span></div>
+          <div class="row" style="--c: var(--dead)"><span class="t">05–13</span><span class="n">1</span><span class="l">useEffect + axios <em>— PetListPage1.tsx</em></span><span class="w">Baseline</span></div>
+          <div class="row" style="--c: var(--stale)"><span class="t">13–20</span><span class="n">2</span><span class="l">Redux Toolkit thunk <em>— PetListPage2.tsx</em></span><span class="w">Structure</span></div>
+          <div class="row core" style="--c: var(--accent)"><span class="t">20–45</span><span class="n">3</span><span class="l">TanStack Query <em>— the cache, keys, staleness, errors</em></span><span class="w">Core · 25 min</span></div>
+          <div class="row" style="--c: var(--fresh)"><span class="t">45–56</span><span class="n">4</span><span class="l">orval <em>— generated hooks, keys and mocks</em></span><span class="w">Payoff</span></div>
+          <div class="row"><span class="t">56–60</span><span class="n">·</span><span class="l">Gotchas and questions</span><span class="w">Close</span></div>
+        </div>
+        <p class="lede">Five live demos are marked along the way. Run four of them; skip whichever the room doesn't need.</p>
+      </div>
+      <div class="notes">
+        <p>Say the weighting out loud so nobody thinks the codegen is the point: <b>25 of the 60 minutes are the cache concepts</b>. orval is what you get once the cache is in place — it is not the argument.</p>
+        <p>Ask up front: who has hit a stale-list bug after creating a record? Show of hands sets up part 3.</p>
+      </div>
+    </section>
+
+    <!-- 3 -->
+    <section class="slide" data-part="Reframe" data-clock="3 min" data-step="0" data-title="Server state ≠ client state">
+      <div class="body">
+        <div class="eyebrow"><span class="part">The reframe</span></div>
+        <h2>You don't have a state problem. You have a cache problem.</h2>
+        <div class="cols">
+          <div class="card" style="--tone: var(--fetch)">
+            <h3>Client state</h3>
+            <p>You own it. It is synchronous, it is always correct, and nobody else can change it behind your back.</p>
+            <p style="color: var(--ink)">Which filter is selected. Is the modal open. Draft form values.</p>
+          </div>
+          <div class="card" style="--tone: var(--accent)">
+            <h3>Server state</h3>
+            <p>Somebody else owns it. It arrives asynchronously, it is <b style="color:var(--stale)">stale the instant it lands</b>, and it is shared by every component that asked.</p>
+            <p style="color: var(--ink)">The pet list. The inventory. The current user.</p>
+          </div>
+        </div>
+        <p class="lede"><strong>useState and Redux are containers.</strong> Server state needs a cache: something that knows when data is old, who is still looking at it, and when to go get it again. That is the whole argument — everything else today is a consequence of it.</p>
+      </div>
+      <div class="notes">
+        <p>This slide is the thesis. If people only remember one thing, it should be the phrase <b>"a store is not a cache"</b>.</p>
+        <p>The tell that you are hand-rolling a cache: you have written <code>isLoading</code>, <code>isError</code> and <code>data</code> as three separate useStates more than twice.</p>
+      </div>
+    </section>
+
+    <!-- 4 -->
+    <section class="slide" data-part="Step 1" data-clock="5–8 min" data-step="1" data-title="Step 1 — useEffect + axios">
+      <div class="body" style="--tone: var(--dead)">
+        <div class="eyebrow"><span class="part">Step 1 · where we started</span></div>
+        <h2>useEffect + axios + four useStates</h2>
+        <figure class="code" style="--tone: var(--dead)">
+          <figcaption>src/features/pets/PetListPage/PetListPage1.tsx<span class="tag">Step 1</span></figcaption>
+          <div class="scroll"><pre data-start="32"><code>const [status, setStatus] = useState&lt;PetStatus&gt;('available');
+const [isLoading, setIsLoading] = useState(false);
+const [isError, setIsError] = useState(false);
+const [data, setData] = useState&lt;Pet[] | null&gt;(null);
+
+useEffect(() =&gt; {
+  setIsLoading(true);
+  setIsError(false);
+
+  axios
+    .get&lt;Pet[]&gt;(`https://petstore.swagger.io/v2/pet/findByStatus?status=${status}`)
+    .then((response) =&gt; {
+      setIsLoading(false);
+      setIsError(false);
+      setData(response.data);
+    })
+    .catch((error) =&gt; {
+      setIsLoading(false);
+      setIsError(true);
+      setData(null);
+    });
+}, [status]);</code></pre></div>
+        </figure>
+      </div>
+      <div class="notes">
+        <p>Read it neutrally first — <b>this code is not stupid, it is what everyone writes</b>. It works on the happy path, which is exactly why it survived so long.</p>
+        <p>Point at the three <code>setX</code> calls in each branch: that is a state machine written by hand, in triplicate, at every fetch site in the app.</p>
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section class="slide" data-part="Step 1" data-clock="8–11 min" data-step="1" data-title="Step 1 — what it costs">
+      <div class="body" style="--tone: var(--dead)">
+        <div class="eyebrow"><span class="part">Step 1 · the bill</span></div>
+        <h2>Six defects, and only one of them is a typo</h2>
+        <div class="cols wide-left">
+          <ul class="marks" style="--tone: var(--dead)">
+            <li><b>Race condition.</b> <span>No cancellation, no AbortController — switch the filter twice quickly and the slower response wins. The list shows "sold" while the dropdown says "available".</span></li>
+            <li><b>No cache.</b> <span>Every mount refetches from zero. Two components asking for the same pets make two requests.</span></li>
+            <li><b>No retry, no refresh.</b> <span>One flaky response and the user sits on an error until they reload.</span></li>
+            <li><b>The error is thrown away.</b> <span><code>.catch((error) =&gt; …)</code> never reads <code>error</code> — every failure becomes the same blank message.</span></li>
+            <li><b>The filter disappears.</b> <span>The early <code>return</code> on <code>isLoading</code> unmounts the <code>&lt;Select&gt;</code>, so the control vanishes on every fetch.</span></li>
+            <li><b>It is copy-pasted.</b> <span>Every new endpoint re-implements all five of the above, slightly differently.</span></li>
+          </ul>
+          <figure class="code" style="--tone: var(--dead)">
+            <figcaption>PetListPage1.tsx<span class="tag">lines 48–56</span></figcaption>
+            <div class="scroll"><pre class="sm" data-start="48"><code>.catch((error) =&gt; {   <mark>// error unused</mark>
+  setIsLoading(false);
+  setIsError(true);
+  setData(null);
+});
+
+<mark>if (isLoading) return &lt;p&gt;Loading pets...&lt;/p&gt;;</mark>
+if (isError) return &lt;Alert type='error' … /&gt;;</code></pre></div>
+          </figure>
+        </div>
+      </div>
+      <div class="notes">
+        <p>The <b>disappearing filter</b> is the one that lands with non-frontend folks in the room — it is a visible product bug caused purely by how the fetch state was modelled. Demo it if you have the time.</p>
+        <p>Do not let this turn into a pile-on. Land the point: none of these are mistakes of skill, they are the cost of not having a cache layer.</p>
+      </div>
+    </section>
+
+    <!-- 6 -->
+    <section class="slide demo" data-part="Step 1" data-clock="11–13 min" data-step="1" data-title="DEMO — the race condition">
+      <div class="body">
+        <div class="eyebrow"><span class="badge">Live demo</span> <span class="part">Race condition</span></div>
+        <h2>Make the wrong list win</h2>
+        <div class="cols">
+          <ol class="steps">
+            <li>Render <code>PetListPage1</code>. Open DevTools → Network → throttle to <b>Slow 3G</b>.</li>
+            <li>Switch the filter <b>available → sold → available</b> as fast as you can click.</li>
+            <li>Watch the list settle on the wrong status. The dropdown and the data disagree.</li>
+            <li>Switch to <code>PetListPage3</code> and repeat the exact same clicks.</li>
+          </ol>
+          <div class="stack">
+            <div class="payoff"><b>Why it can't happen in step 3:</b> the result is stored against the query key it was requested with, not in a single shared <code>data</code> slot. A late response for <code>['pets','sold']</code> updates the sold entry — it can't overwrite what's on screen.</div>
+            <div class="card" style="--tone: var(--fetch)">
+              <h3>If the demo won't cooperate</h3>
+              <p>Throttling is flaky on cached mocks. Fallback: add <code>await new Promise(r =&gt; setTimeout(r, 1500 * Math.random()))</code> to the step 1 fetch before showing it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <p>Rehearse this one — it is the single most persuasive two minutes in the deck, because it is a bug the room has shipped and blamed on "flaky backend".</p>
+        <p>Do not explain the fix yet. Just show that step 3 cannot reproduce it, and promise the reason in ten minutes.</p>
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section class="slide" data-part="Step 2" data-clock="13–16 min" data-step="2" data-title="Step 2 — Redux">
+      <div class="body" style="--tone: var(--stale)">
+        <div class="eyebrow"><span class="part">Step 2 · where we went next</span></div>
+        <h2>Redux Toolkit: sixty lines to do one GET</h2>
+        <figure class="code" style="--tone: var(--stale)">
+          <figcaption>src/features/pets/PetListPage/PetListPage2.tsx<span class="tag">Step 2</span></figcaption>
+          <div class="scroll"><pre class="sm" data-start="49"><code>export const fetchPetsByStatus = createAsyncThunk('pets/fetchByStatus', async (status: PetStatus) =&gt; {
+  const response = await axios.get&lt;Pet[]&gt;(`…/pet/findByStatus?status=${status}`);
+  return response.data;
+});
+
+const petsSlice = createSlice({
+  name: 'pets',
+  initialState,
+  reducers: { statusChanged(state, action) { state.status = action.payload; } },
+  extraReducers: (builder) =&gt; {
+    builder
+      .addCase(fetchPetsByStatus.pending,   (state) =&gt; { state.isLoading = true;  state.isError = false; })
+      .addCase(fetchPetsByStatus.fulfilled, (state, action) =&gt; { state.isLoading = false; state.data = action.payload; })
+      .addCase(fetchPetsByStatus.rejected,  (state) =&gt; { state.isLoading = false; state.isError = true; state.data = null; });
+  },
+});
+
+<mark>useEffect(() =&gt; { dispatch(fetchPetsByStatus(status)); }, [status, dispatch]);</mark></code></pre></div>
+        </figure>
+      </div>
+      <div class="notes">
+        <p>Note the punchline at the bottom: <b>the useEffect never went away</b>. We wrapped it in ceremony.</p>
+        <p>Three <code>addCase</code> branches per endpoint is the tax. Multiply by the number of endpoints in a real app and read that number out loud.</p>
+      </div>
+    </section>
+
+    <!-- 8 -->
+    <section class="slide" data-part="Step 2" data-clock="16–20 min" data-step="2" data-title="Step 2 — structure isn't capability">
+      <div class="body" style="--tone: var(--stale)">
+        <div class="eyebrow"><span class="part">Step 2 · the verdict</span></div>
+        <h2>We bought structure. We did not buy capability.</h2>
+        <div class="cols wide-left">
+          <ul class="marks" style="--tone: var(--stale)">
+            <li><b>It still isn't a cache.</b> <span>The slice holds <em>one</em> <code>data</code> array. Switching to "sold" destroys the "available" result — going back refetches from scratch.</span></li>
+            <li><b>Same race condition.</b> <span>Nothing cancels the in-flight thunk. The last <code>fulfilled</code> to land wins, whichever status it was for.</span></li>
+            <li><b>Still no retry, no staleness, no invalidation.</b> <span>Every one of those is code you now write inside reducers.</span></li>
+            <li><b>New problem: coupling.</b> <span>The global store now imports a reducer <em>from a page component file</em>.</span></li>
+          </ul>
+          <div class="stack">
+            <figure class="code" style="--tone: var(--stale)">
+              <figcaption>src/app/AppProviders/store.ts<span class="tag">line 3</span></figcaption>
+              <div class="scroll"><pre class="sm" data-start="3"><code>import { petsReducer } from '@/features/pets/PetListPage/PetListPage2';</code></pre></div>
+            </figure>
+            <div class="card">
+              <h3>Be fair to Redux</h3>
+              <p>Redux and Zustand are not the villains here. They are excellent at client state — and we still use Zustand for exactly that, three slides from the end. They were simply never designed to be an HTTP cache.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <p>The import from a page file is a good laugh and a real point: <b>the data layer leaked into the view layer</b> and the store took the blame.</p>
+        <p>Close the section with the scoreboard framing — after two rewrites, the defect list from step 1 is almost entirely unchanged.</p>
+      </div>
+    </section>
+
+    <!-- 9 -->
+    <section class="slide" data-part="Step 3" data-clock="20–22 min" data-step="3" data-title="Step 3 — the swap">
+      <div class="body" style="--tone: var(--accent)">
+        <div class="eyebrow"><span class="part">Step 3 · TanStack Query</span></div>
+        <h2>The entire slice becomes nine lines</h2>
+        <figure class="code" style="--tone: var(--accent)">
+          <figcaption>src/features/pets/PetListPage/PetListPage3.tsx<span class="tag">Step 3</span></figcaption>
+          <div class="scroll"><pre data-start="33"><code>const [status, setStatus] = useState&lt;PetStatus&gt;('available');
+const { data, isLoading, isError } = useQuery({
+  queryKey: ['pets', status],
+  queryFn: async () =&gt; {
+    const response = await axios.get&lt;Pet[]&gt;(
+      `https://petstore.swagger.io/v2/pet/findByStatus?status=${status}`,
+    );
+    return response.data;
+  },
+});</code></pre></div>
+        </figure>
+        <p class="lede">No thunk. No reducer. <strong>No useEffect.</strong> The next twenty minutes are about what those nine lines quietly turned on.</p>
+      </div>
+      <div class="notes">
+        <p>Resist the urge to celebrate the line count — the room can count. The interesting claim is <b>"and it also fixed the race condition, added a cache, added retries and added background refresh"</b>.</p>
+        <p>Flag the missing useEffect explicitly. Fetching is now a <b>declaration</b>, not an effect: "this component needs the pets for this status."</p>
+      </div>
+    </section>
+
+    <!-- 10 -->
+    <section class="slide" data-part="Step 3" data-clock="22–25 min" data-step="3" data-title="Query keys">
+      <div class="body" style="--tone: var(--accent)">
+        <div class="eyebrow"><span class="part">Concept 1 of 6</span></div>
+        <h2>The query key is a cache address</h2>
+        <div class="cols wide-left">
+          <div class="stack">
+            <p class="lede"><strong>Changing the key <em>is</em> the refetch.</strong> You never call a fetch function — you describe what this component needs, and the library reconciles.</p>
+            <dl class="kv" style="--tone: var(--accent)">
+              <dt>['pets', 'available']</dt><dd>One cache entry. Its own data, its own status, its own timers.</dd>
+              <dt>['pets', 'sold']</dt><dd>A different entry. Switching between them is a lookup, not a reset.</dd>
+              <dt>['pets']</dt><dd>A <em>prefix</em>. Invalidating it invalidates every entry underneath.</dd>
+            </dl>
+            <p>Everything in the key must be everything the <code>queryFn</code> reads. That is the one rule; the ESLint plugin already in this repo enforces it.</p>
+          </div>
+          <div class="card" style="--tone: var(--accent)">
+            <h3>Why the race is gone</h3>
+            <p>A response is written to the entry it was requested for. When <code>['pets','sold']</code> resolves late, it updates the sold entry — which nothing is rendering any more.</p>
+            <p>Step 1 had one <code>data</code> variable and no way to tell which request it belonged to. Step 3 can't lose that information: it is in the key.</p>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <p>Call back to the demo explicitly here — this slide is the promised answer.</p>
+        <p>Mention <code>@tanstack/eslint-plugin-query</code> is already in our devDependencies, so the "did you put everything in the key" review comment is automated.</p>
+      </div>
+    </section>
+
+    <!-- 11 -->
+    <section class="slide" data-part="Step 3" data-clock="25–29 min" data-step="3" data-title="Cache lifecycle">
+      <div class="body" style="--tone: var(--accent)">
+        <div class="eyebrow"><span class="part">Concept 2 of 6 · the one everyone gets wrong</span></div>
+        <h2>Fresh, stale, inactive, collected</h2>
+        <div class="life">
+          <div class="st" data-s="fresh"><span class="nm">Fresh</span><span class="ds">Rendered from cache. No request will be made, for any reason.</span></div>
+          <div class="arrow"><span>→</span><em>staleTime</em></div>
+          <div class="st" data-s="stale"><span class="nm">Stale</span><span class="ds">Still shown instantly — but a trigger will refetch it in the background.</span></div>
+          <div class="arrow"><span>→</span><em>unmount</em></div>
+          <div class="st" data-s="inactive"><span class="nm">Inactive</span><span class="ds">No component is subscribed. The data is kept anyway, for the next visit.</span></div>
+          <div class="arrow"><span>→</span><em>gcTime</em></div>
+          <div class="st" data-s="gone"><span class="nm">Collected</span><span class="ds">Dropped from memory. The next request is a cold load.</span></div>
+        </div>
+        <div class="cols" style="margin-top: 6px">
+          <div class="card" style="--tone: var(--stale)">
+            <h3>staleTime — default 0</h3>
+            <p>How long data counts as current. Zero means "assume it changed the moment it arrived", which is why people see refetches they didn't expect. It is a correctness dial, and it is yours to set per query.</p>
+          </div>
+          <div class="card" style="--tone: var(--dead)">
+            <h3>gcTime — default 5 min</h3>
+            <p>How long unused data survives in memory. It is a <em>memory</em> dial, not a freshness one. Confusing these two is the single most common misread of this library.</p>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <p>Slow down here. Say the sentence: <b>"stale does not mean gone — stale means shown instantly and checked in the background."</b> That is stale-while-revalidate, and it is why the UI feels fast.</p>
+        <p>Anticipate the objection "so it fetches constantly?" — no: it fetches on triggers, deduped, and staleTime is how you turn that down.</p>
+      </div>
+    </section>
+
+    <!-- 12 -->
+    <section class="slide" data-part="Step 3" data-clock="29–31 min" data-step="3" data-title="Dedupe & structural sharing">
+      <div class="body" style="--tone: var(--accent)">
+        <div class="eyebrow"><span class="part">Concept 3 of 6</span></div>
+        <h2>One key, one request, no matter who asks</h2>
+        <div class="cols">
+          <div class="card" style="--tone: var(--fresh)">
+            <h3>Deduplication</h3>
+            <p>Five components mount at once and all call <code>useFindPetsByStatus</code>. <b style="color:var(--ink)">One network request goes out.</b> All five get the same entry and re-render together.</p>
+            <p>No lifting state up. No fetching in a parent and drilling props down purely to avoid duplicate calls.</p>
+          </div>
+          <div class="card" style="--tone: var(--fetch)">
+            <h3>Structural sharing</h3>
+            <p>After a background refetch, the new response is compared to the old one. Unchanged objects keep their <b style="color:var(--ink)">identical references</b>.</p>
+            <p>So a refetch that returns the same 40 pets does not re-render 40 rows, and your <code>useMemo</code> deps stay stable for free.</p>
+          </div>
+        </div>
+        <p class="lede">This is the part that quietly deletes architecture. A lot of "we need global state" turns out to have been "we need to not fetch this twice".</p>
+      </div>
+      <div class="notes">
+        <p>This slide is aimed at anyone in the room who is about to ask "but where does the data <em>live</em>?" — it lives in the cache, addressed by key, and any component can ask for it directly.</p>
+        <p>Concrete example from our repo: the pet list and a future header count could both call the same hook with zero coordination.</p>
+      </div>
+    </section>
+
+    <!-- 13 -->
+    <section class="slide demo" data-part="Step 3" data-clock="31–34 min" data-step="3" data-title="DEMO — cache & refetch">
+      <div class="body">
+        <div class="eyebrow"><span class="badge">Live demo</span> <span class="part">DevTools, cache hits, focus refetch</span></div>
+        <h2>Watch the cache work</h2>
+        <div class="cols">
+          <ol class="steps">
+            <li>Open the React Query DevTools panel next to the app.</li>
+            <li>Toggle <b>available → sold → available</b>. The second visit to "available" paints <b>instantly</b>, then shows a background-fetch indicator.</li>
+            <li>Point at the two entries in DevTools flipping between fresh and stale.</li>
+            <li>Alt-tab away, wait, alt-tab back — the list refetches on window focus.</li>
+            <li>Set <code>staleTime: 30_000</code> in <code>src/lib/query-client.ts</code> and repeat. The refetches stop.</li>
+          </ol>
+          <div class="stack">
+            <div class="payoff"><b>The comparison that lands:</b> do step 4 of this demo on <code>PetListPage1</code> first. It never updates — that tab could be showing yesterday's data until someone hits reload.</div>
+            <div class="card" style="--tone: var(--fresh)">
+              <h3>Already wired</h3>
+              <p><code>&lt;ReactQueryDevtools /&gt;</code> is mounted in <code>AppProviders.tsx</code> behind an <code>import.meta.env.DEV</code> guard. Open the app and click the floating logo, bottom corner.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <p>The DevTools panel is the best teaching tool in the library — leave it open for the rest of the talk, not just this demo.</p>
+        <p>The staleTime edit at the end is what converts the concept slide into muscle memory. Do it live, in front of them, and let them watch the network panel go quiet.</p>
+      </div>
+    </section>
+
+    <!-- 14 -->
+    <section class="slide" data-part="Step 3" data-clock="34–36 min" data-step="3" data-title="Refetch triggers & retries">
+      <div class="body" style="--tone: var(--accent)">
+        <div class="eyebrow"><span class="part">Concept 4 of 6</span></div>
+        <h2>When it refetches — and how hard it tries</h2>
+        <div class="cols wide-right">
+          <div class="stack">
+            <ul class="marks tight" style="--tone: var(--accent)">
+              <li><b>Key change</b> <span>— a different address, so a different entry</span></li>
+              <li><b>Component mount</b> <span>— if the entry is stale</span></li>
+              <li><b>Window focus</b> <span>— they came back to the tab; show them the truth</span></li>
+              <li><b>Network reconnect</b> <span>— the laptop woke up</span></li>
+              <li><b>Explicit invalidation</b> <span>— we just changed something (next slide)</span></li>
+            </ul>
+            <p style="font-size:15.5px; color: var(--muted)">Every one of these is a switch. None of them fire while data is fresh.</p>
+          </div>
+          <figure class="code" style="--tone: var(--accent)">
+            <figcaption>src/lib/query-client.ts<span class="tag">our real config</span></figcaption>
+            <div class="scroll"><pre class="sm" data-start="20"><code>queries: {
+  // One quick retry keeps some resilience to transient
+  // network blips for real users, without react-query's
+  // default 3-attempt exponential backoff (up to ~7s)
+  // leaving the UI on a stale/loading state far longer
+  // than a failure warrants.
+  retry: 1,
+  retryDelay: 300,
+  throwOnError: (error) =&gt; isBoundaryWorthyError(error),
+}</code></pre></div>
+          </figure>
+        </div>
+      </div>
+      <div class="notes">
+        <p>Use our own config as the evidence that <b>defaults are opinions you are allowed to overrule</b> — we did, and the comment records why.</p>
+        <p>The <code>throwOnError</code> line is the bridge into the next two slides. Don't explain it yet, just point at it.</p>
+      </div>
+    </section>
+
+    <!-- 15 -->
+    <section class="slide" data-part="Step 3" data-clock="36–39 min" data-step="3" data-title="Error routing">
+      <div class="body" style="--tone: var(--accent)">
+        <div class="eyebrow"><span class="part">Concept 5 of 6 · the grown-up part</span></div>
+        <h2>Errors get routed, not caught everywhere</h2>
+        <div class="cols">
+          <div class="card" style="--tone: var(--accent)">
+            <h3>Boundary-worthy → Error Boundary</h3>
+            <p>Network failures and 5xx cannot be rendered around locally. <code>throwOnError</code> re-throws them so <code>RouteErrorBoundary</code> shows a real fallback.</p>
+          </div>
+          <div class="card" style="--tone: var(--fetch)">
+            <h3>Everything else → local UI</h3>
+            <p>404s and validation errors stay in the component, rendered inline via <code>useApiError</code>. The user can act on those.</p>
+          </div>
+        </div>
+        <figure class="code" style="--tone: var(--accent)">
+          <figcaption>src/lib/query-client.ts<span class="tag">one policy, whole app</span></figcaption>
+          <div class="scroll"><pre class="sm" data-start="8"><code>function handleGlobalError(error: unknown, meta: Record&lt;string, unknown&gt; | undefined) {
+  if (meta?.skipGlobalErrorToast) return;   <mark>// caller renders its own error</mark>
+  if (isBoundaryWorthyError(error)) return; <mark>// boundary already shows a fallback</mark>
+  showErrorMessage(getApiErrorMessage(error));
+}
+
+queryCache:    new QueryCache({    onError: (e, query)       =&gt; handleGlobalError(e, query.meta) }),
+mutationCache: new MutationCache({ onError: (e, _v, _c, mut) =&gt; handleGlobalError(e, mut.meta) }),</code></pre></div>
+        </figure>
+      </div>
+      <div class="notes">
+        <p>This is the slide that separates "I used useQuery once" from "we run this in production". <b>Every request in the app inherits one error policy</b>, written in one file.</p>
+        <p>Compare against step 1: to change error handling there, you edit every <code>.catch</code> in the codebase.</p>
+      </div>
+    </section>
+
+    <!-- 16 -->
+    <section class="slide" data-part="Step 3" data-clock="39–43 min" data-step="3" data-title="Mutations & invalidation">
+      <div class="body" style="--tone: var(--accent)">
+        <div class="eyebrow"><span class="part">Concept 6 of 6</span></div>
+        <h2>Writes tell the cache what they invalidated</h2>
+        <figure class="code" style="--tone: var(--accent)">
+          <figcaption>src/features/pets/hooks/useCreatePet.ts<span class="tag">production code, unedited</span></figcaption>
+          <div class="scroll"><pre class="sm" data-start="19"><code>export function useCreatePet() {
+  const { mutateAsync, isPending, error: mutationError, reset } = useAddPet({
+    mutation: { meta: { skipGlobalErrorToast: true } },  <mark>// we render this one inline</mark>
+  });
+  const queryClient = useQueryClient();
+  const { message: error } = useApiError(mutationError, 'Error adding pet');
+
+  const createPet = async (values: AddPetFormValues) =&gt; {
+    reset();
+    await mutateAsync({ data: { photoUrls: [], name: values.name, … } });
+    // Blunt-but-correct: refetch every status query so the new pet appears
+    // whichever filter is active.
+    <mark>await queryClient.invalidateQueries({ queryKey: getFindPetsByStatusQueryKey() });</mark>
+  };
+
+  return { createPet, isPending, error };
+}</code></pre></div>
+        </figure>
+        <p class="lede"><strong>That one invalidate line replaces</strong> a re-fetch action, a reducer case, and the bug where the list didn't update because someone forgot to dispatch it.</p>
+      </div>
+      <div class="notes">
+        <p>Point out the <code>meta</code> opt-out: this mutation renders its error inline, so it excuses itself from the global toast. <b>Policy with an escape hatch, not policy with exceptions scattered around.</b></p>
+        <p>The "blunt-but-correct" comment is worth reading aloud — it's honest engineering. Invalidating by prefix is coarse and completely fine here.</p>
+      </div>
+    </section>
+
+    <!-- 17 -->
+    <section class="slide demo" data-part="Step 3" data-clock="43–45 min" data-step="3" data-title="DEMO — write path & failure path">
+      <div class="body">
+        <div class="eyebrow"><span class="badge">Live demo</span> <span class="part">Invalidation and failure</span></div>
+        <h2>Add a pet, then break the API</h2>
+        <div class="cols">
+          <ol class="steps">
+            <li>Add a pet through the modal. The list updates — with no state code between the form and the list.</li>
+            <li>Show the invalidation in DevTools: the entry goes stale, then refetches.</li>
+            <li>Uncomment <code>listServerError</code> in <code>src/mocks/browser.ts</code> (already written, at the bottom) and put it first in <code>setupWorker</code>.</li>
+            <li>Reload: watch one retry after 300 ms, then the Error Boundary fallback.</li>
+            <li>Swap it for <code>addPetRejected</code> — a <b>4xx</b>: the error renders <em>inside</em> the modal, no toast, page intact.</li>
+          </ol>
+          <div class="payoff"><b>The point:</b> nobody wrote per-screen error handling for any of that. Two different failures got two appropriate treatments because the policy lives in <code>query-client.ts</code> and the caller only had to say <code>skipGlobalErrorToast</code>.</div>
+        </div>
+      </div>
+      <div class="notes">
+        <p>If time is tight at this point in the hour, <b>cut steps 3–5</b> and just do the add-pet invalidation. The failure path is the first thing to sacrifice.</p>
+        <p>Have the 500 handler pre-written and commented out so you only have to uncomment it live.</p>
+      </div>
+    </section>
+
+    <!-- 18 -->
+    <section class="slide" data-part="Step 3" data-clock="45–46 min" data-step="3" data-title="Where the line is">
+      <div class="body" style="--tone: var(--accent)">
+        <div class="eyebrow"><span class="part">Drawing the line</span></div>
+        <h2>This does not replace your state manager</h2>
+        <div class="cols wide-right">
+          <div class="stack">
+            <p class="lede">Server state moves to the cache. <strong>Client state stays exactly where it was</strong> — and in this repo that is Zustand, in eleven lines, right next to the component that uses it.</p>
+            <ul class="marks tight" style="--tone: var(--fetch)">
+              <li><b>Cache it</b> <span>— anything that came from an API</span></li>
+              <li><b>Store it</b> <span>— selected filter, open modal, wizard step, draft input</span></li>
+              <li><b>Never</b> <span>— copy server data into a store "so it's easier to access"</span></li>
+            </ul>
+          </div>
+          <figure class="code" style="--tone: var(--fetch)">
+            <figcaption>src/stores/usePetsFilterStore.ts<span class="tag">client state</span></figcaption>
+            <div class="scroll"><pre class="sm" data-start="9"><code>export const usePetsFilterStore = create&lt;PetsFilterState&gt;((set) =&gt; ({
+  status: 'available',
+  actions: {
+    setStatus: (status: FindPetsByStatusStatusItem) =&gt; set({ status }),
+  },
+}));</code></pre></div>
+          </figure>
+        </div>
+      </div>
+      <div class="notes">
+        <p>Pre-empt the fear that this is another big migration mandate. <b>The two layers compose</b>: the Zustand store holds the status, the status goes in the query key, the cache does the rest.</p>
+        <p>Note the type here already comes from generated models — a natural hand-off into part 4.</p>
+      </div>
+    </section>
+
+    <!-- 19 -->
+    <section class="slide" data-part="Step 4" data-clock="46–48 min" data-step="4" data-title="Step 4 — orval">
+      <div class="body" style="--tone: var(--fresh)">
+        <div class="eyebrow"><span class="part">Step 4 · the payoff</span></div>
+        <h2>Now stop writing the hooks at all</h2>
+        <div class="cols">
+          <figure class="code" style="--tone: var(--fresh)">
+            <figcaption>orval.config.ts<span class="tag">23 lines, whole config</span></figcaption>
+            <div class="scroll"><pre class="sm" data-start="4"><code>petstore: {
+  input: { target: 'https://petstore.swagger.io/v2/swagger.json' },
+  output: {
+    target: './src/api/generated/endpoints.ts',
+    schemas: './src/api/generated/models',
+    client: 'react-query',
+    httpClient: 'axios',
+    mock: true,
+    mode: 'tags-split',
+    override: {
+      mutator: { path: './src/api/axios-instance.ts', name: 'customInstance' },
+    },
+  },
+}</code></pre></div>
+          </figure>
+          <div class="stack">
+            <div class="metrics" style="grid-template-columns: 1fr 1fr">
+              <div class="m"><div class="big-num" style="color: var(--fresh)">674<small>lines of typed hooks</small></div></div>
+              <div class="m"><div class="big-num">1<small>command: generate:api</small></div></div>
+            </div>
+            <div class="card" style="--tone: var(--fresh)">
+              <h3>What comes out</h3>
+              <p>Hooks (<code>useFindPetsByStatus</code>, <code>useAddPet</code>), models, query-key helpers, query-options factories, plus MSW handlers and faker builders — for every endpoint in the spec, not just the ones we use today.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <p>Emphasise <code>mutator: customInstance</code>: <b>generated code still goes through our axios instance</b>, so auth headers, base URL and interceptors stay ours. This is the objection people raise first.</p>
+        <p><code>mode: 'tags-split'</code> means output is grouped by OpenAPI tag — pet / store / user — not one giant file.</p>
+      </div>
+    </section>
+
+    <!-- 20 -->
+    <section class="slide" data-part="Step 4" data-clock="48–51 min" data-step="4" data-title="The final page">
+      <div class="body" style="--tone: var(--fresh)">
+        <div class="eyebrow"><span class="part">Step 4 · the page we actually ship</span></div>
+        <h2>No URL. No axios. No hand-written Pet type.</h2>
+        <figure class="code" style="--tone: var(--fresh)">
+          <figcaption>src/features/pets/PetListPage/PetListPage.tsx<span class="tag">rendered by App.tsx</span></figcaption>
+          <div class="scroll"><pre data-start="24"><code>export function PetListPage() {
+  const [status, setStatus] = useState&lt;FindPetsByStatusStatusItem&gt;('available');
+  <mark>const { data, isLoading, isError } = useFindPetsByStatus({ status: [status] });</mark>
+
+  if (isLoading) return &lt;p&gt;Loading pets...&lt;/p&gt;;
+  if (isError) return &lt;Alert type='error' title='Failed to load pets.' /&gt;;
+  …
+}</code></pre></div>
+        </figure>
+        <ul class="marks tight" style="--tone: var(--fresh)">
+          <li><b>The type is the contract.</b> <span>Steps 1–3 each hand-wrote <code>type Pet</code> — three copies, drifting independently from the API.</span></li>
+          <li><b>The status union is generated.</b> <span><code>FindPetsByStatusStatusItem</code> comes from the spec, so a typo is a compile error.</span></li>
+          <li><b>Keys can't drift.</b> <span><code>getFindPetsByStatusQueryKey()</code> is generated alongside the fetch, and that is exactly what <code>useCreatePet</code> invalidates.</span></li>
+        </ul>
+      </div>
+      <div class="notes">
+        <p>Put step 1 and step 4 on screen side by side if you can — 68 lines to 41, and the 41 has caching, retries, dedupe, background refresh and real types.</p>
+        <p>Heads up: this file currently references a <code>PetStatus</code> type it no longer defines. <b>Fix it before the session</b> or the demo won't typecheck.</p>
+      </div>
+    </section>
+
+    <!-- 21 -->
+    <section class="slide" data-part="Step 4" data-clock="51–54 min" data-step="4" data-title="Generated mocks">
+      <div class="body" style="--tone: var(--fresh)">
+        <div class="eyebrow"><span class="part">Step 4 · the part nobody expects</span></div>
+        <h2>The spec also generates your mocks</h2>
+        <div class="cols wide-left">
+          <figure class="code" style="--tone: var(--fresh)">
+            <figcaption>src/mocks/browser.ts<span class="tag">the whole file</span></figcaption>
+            <div class="scroll"><pre class="sm" data-start="4"><code>import {
+  getFindPetsByStatusMockHandler,
+  getGetPetByIdResponseMock,
+} from '@/api/generated/pet/pet.msw';
+
+export const worker = setupWorker(
+  <mark>getFindPetsByStatusMockHandler()</mark>,
+  http.get('*/pet/:petId(\\d+)', () =&gt; HttpResponse.json(getGetPetByIdResponseMock())),
+);</code></pre></div>
+          </figure>
+          <div class="stack">
+            <ul class="marks tight" style="--tone: var(--fresh)">
+              <li><b>MSW handlers, generated.</b> <span><code>pet.msw.ts</code> — 131 lines nobody maintains.</span></li>
+              <li><b>Faker builders, generated.</b> <span><code>pet.faker.ts</code> — shaped by the spec, so the fake data is always the right shape.</span></li>
+              <li><b>Frontend unblocks itself.</b> <span>Spec exists → hooks, types <em>and</em> a working fake backend exist. Backend can still be a sprint behind.</span></li>
+              <li><b>Same handlers in tests.</b> <span>Dev, unit and acceptance runs share one source of truth for what the API returns.</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <p>This is the slide that wins over anyone unconvinced by "fewer lines". <b>Parallel work with the backend</b> is a schedule argument, not a taste argument.</p>
+        <p>Mention <code>enable-mocking.ts</code>: mocking is dev-only and switchable with <code>VITE_API_MOCKING</code>.</p>
+      </div>
+    </section>
+
+    <!-- 22 -->
+    <section class="slide demo" data-part="Step 4" data-clock="54–56 min" data-step="4" data-title="DEMO — contract drift">
+      <div class="body">
+        <div class="eyebrow"><span class="badge">Live demo</span> <span class="part">Contract drift</span></div>
+        <h2>Turn a production 500 into a compile error</h2>
+        <div class="cols">
+          <ol class="steps">
+            <li><code>demo/petstore-drifted.json</code> is ready: it renames <code>Pet.name</code> → <code>Pet.petName</code>.</li>
+            <li>In <code>orval.config.ts</code>, swap to the commented <code>target</code> line and run <code>npm run generate:api</code>.</li>
+            <li>Run <code>tsc -b</code>. It names the exact lines that just broke.</li>
+            <li>Ask the room: in step 1, when would we have found out?</li>
+          </ol>
+          <div class="payoff"><b>The answer is the whole pitch.</b> In step 1 the hand-written <code>type Pet</code> is a comforting lie — it compiles perfectly and the field is <code>undefined</code> at runtime, in production, on a customer's screen.</div>
+        </div>
+      </div>
+      <div class="notes">
+        <p>Prepare the modified spec file <b>in advance</b> — do not edit JSON live in front of an audience.</p>
+        <p>If the room is backend-heavy, this is the moment to talk about the OpenAPI spec being a shared contract rather than documentation nobody reads.</p>
+      </div>
+    </section>
+
+    <!-- 23 -->
+    <section class="slide" data-part="Close" data-clock="56–58 min" data-step="0" data-title="Scoreboard">
+      <div class="body">
+        <div class="eyebrow"><span class="part">Scoreboard</span></div>
+        <h2>Same screen, four times</h2>
+        <table class="score">
+          <thead>
+            <tr><th>Capability</th><th style="color:var(--dead)">1 · useEffect</th><th style="color:var(--stale)">2 · Redux</th><th style="color:var(--accent)">3 · Query</th><th style="color:var(--fresh)">4 · orval</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="cap">Immune to request races</td><td class="no">no</td><td class="no">no</td><td class="yes">yes</td><td class="yes">yes</td></tr>
+            <tr><td class="cap">Caches previous results</td><td class="no">no</td><td class="no">no</td><td class="yes">yes</td><td class="yes">yes</td></tr>
+            <tr><td class="cap">Dedupes concurrent callers</td><td class="no">no</td><td class="no">no</td><td class="yes">yes</td><td class="yes">yes</td></tr>
+            <tr><td class="cap">Retries / background refresh</td><td class="no">no</td><td class="no">no</td><td class="yes">yes</td><td class="yes">yes</td></tr>
+            <tr><td class="cap">One app-wide error policy</td><td class="no">no</td><td class="part">by hand</td><td class="yes">yes</td><td class="yes">yes</td></tr>
+            <tr><td class="cap">Types match the real API</td><td class="no">hoped</td><td class="no">hoped</td><td class="no">hoped</td><td class="yes">enforced</td></tr>
+            <tr><td class="cap">Mocks for free</td><td class="no">no</td><td class="no">no</td><td class="no">no</td><td class="yes">yes</td></tr>
+            <tr><td class="cap">Contract-driven development</td><td class="no">no</td><td class="no">no</td><td class="no">no</td><td class="yes">yes</td></tr>
+            <tr><td class="cap">Lines in the component</td><td class="no">68</td><td class="no">109</td><td class="part">57</td><td class="yes">41</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="notes">
+        <p>Note the trap in the line-count row: <b>it is the least interesting row on this slide</b>. The rows above it are capabilities you would otherwise have had to build and maintain yourself.</p>
+        <p>The types row is the honest one — step 3 is still <em>hoping</em> its hand-written types match the API. That is precisely the gap orval closes.</p>
+        <p>Land on the contract-driven row before you drop to the line count. <b>It is the last row where step 3 still says no</b> — every version up to it treats the API shape as folklore passed between developers. Only step 4 makes the spec the single source that generates the types, the hooks, the keys and the mocks. That is the difference between "we use a nice fetching library" and "the frontend and backend share one contract".</p>
+        <p>Then read the line count almost as an afterthought — that is the right weighting.</p>
+      </div>
+    </section>
+
+    <!-- 24 -->
+    <section class="slide" data-part="Close" data-clock="58–60 min" data-step="0" data-title="Gotchas">
+      <div class="body">
+        <div class="eyebrow"><span class="part">Before you go and rewrite everything</span></div>
+        <h2>Five ways to get this wrong</h2>
+        <ul class="marks" style="--tone: var(--stale)">
+          <li><b>Sloppy query keys.</b> <span>If a value is read in the <code>queryFn</code> it belongs in the key. Otherwise you serve one status's data under another's address.</span></li>
+          <li><b>Leaving staleTime at 0 everywhere.</b> <span>Fine for a volatile list, wasteful for a country dropdown. It is a per-query decision, so make it.</span></li>
+          <li><b>Copying query data into a store.</b> <span>The moment you <code>useState</code> the response, you own the staleness again and you are back at step 1.</span></li>
+          <li><b>Editing generated code.</b> <span><code>src/api/generated/**</code> is output. Change the spec or the orval config; never the file.</span></li>
+          <li><b>Thinking useEffect is banned.</b> <span>It isn't. It was just never a data-fetching tool — use it for subscriptions, listeners and imperative DOM work.</span></li>
+        </ul>
+        <p class="lede" style="margin-top:auto"><strong>Migration order that works:</strong> new endpoints use the generated hooks; existing screens get converted when you're already touching them. Nobody has to schedule a rewrite sprint.</p>
+      </div>
+      <div class="notes">
+        <p>End on the migration line — it defuses the "so we have to rewrite the app?" question before it gets asked.</p>
+        <p>Then open the floor. Keep the DevTools panel on screen during Q&amp;A; most questions are easier to answer by pointing at it.</p>
+      </div>
+    </section>
+
+    <!-- 25 -->
+    <section class="slide" data-part="Presenter" data-clock="do this first" data-step="0" data-title="Prep checklist (presenter only)">
+      <div class="body">
+        <div class="eyebrow"><span class="part">Presenter checklist</span> <span>·</span> <span>not for the room</span></div>
+        <h2>Run sheet</h2>
+        <div class="cols">
+          <div class="stack">
+            <div class="card" style="--tone: var(--fresh)">
+              <h3>Ready — verified</h3>
+              <p><code>npm run dev</code>, then <code>?step=1</code> … <code>?step=4</code> switches between the four versions. A small step bar renders at the top in dev.</p>
+              <p>DevTools mounted · failure handlers pre-written in <code>browser.ts</code> · <code>demo/petstore-drifted.json</code> ready · <code>vite build</code> green.</p>
+            </div>
+            <div class="card" style="--tone: var(--stale)">
+              <h3>Known red — don't panic live</h3>
+              <p><code>App.test.tsx</code> fails on this branch: it expects the full NavBar/footer layout that the demo <code>App.tsx</code> doesn't render. Pre-existing.</p>
+              <p><code>tsc -b</code> reports 4 pre-existing errors (unused <code>error</code> in step 1 — the defect on slide 5, unused <code>StrictMode</code>, and two in <code>PetList.test.tsx</code>). The drift demo adds its errors <em>on top</em> of those.</p>
+            </div>
+          </div>
+          <ul class="marks" style="--tone: var(--accent)">
+            <li><b>Open two windows.</b> <span>App with DevTools on one side, editor on the other. You will edit <code>query-client.ts</code> live.</span></li>
+            <li><b>Keep DevTools open</b> <span>from slide 13 onward — most Q&amp;A is easier answered by pointing at it.</span></li>
+            <li><b>Restore after the drift demo.</b> <span>Re-comment the <code>target</code> line and re-run <code>npm run generate:api</code>.</span></li>
+            <li><b>The exhibit to leave alone.</b> <span><code>store.ts</code> importing <code>petsReducer</code> from a page file — that's slide 8's punchline. Clean it up after the talk, not before.</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="notes">
+        <p>This slide is for you, not the audience — skip past it, or leave it up while people file in.</p>
+        <p>The repo is already prepped: devtools installed and mounted, <code>PetListPage.tsx</code> typechecks, the step switcher works, both failure handlers and the drifted spec are staged.</p>
+        <p>If someone runs the test suite live, get ahead of it: <b>the two red items are pre-existing on this branch</b> and unrelated to anything in this talk.</p>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div id="notesPanel" aria-live="polite">
+  <h4>Speaker notes</h4>
+  <div class="nb" id="notesBody"></div>
+</div>
+
+<div id="jumpPanel" role="dialog" aria-label="Jump to slide">
+  <h4>Jump to slide</h4>
+  <ol id="jumpList"></ol>
+</div>
+
+<div id="progress"></div>
+<div id="chrome">
+  <span id="deckName">From useEffect to a generated SDK</span>
+  <span class="sp"></span>
+  <span id="clock"></span>
+  <button class="btn" id="notesBtn" aria-pressed="false">Notes <kbd>N</kbd></button>
+  <button class="btn" id="jumpBtn">Jump <kbd>O</kbd></button>
+  <span id="counter">1 / 25</span>
+</div>
+
+<script>
+  (function () {
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var stage = document.getElementById('stage');
+    var counter = document.getElementById('counter');
+    var clock = document.getElementById('clock');
+    var progress = document.getElementById('progress');
+    var notesPanel = document.getElementById('notesPanel');
+    var notesBody = document.getElementById('notesBody');
+    var notesBtn = document.getElementById('notesBtn');
+    var jumpPanel = document.getElementById('jumpPanel');
+    var jumpList = document.getElementById('jumpList');
+    var jumpBtn = document.getElementById('jumpBtn');
+    var i = 0;
+
+    var STEP_COLOR = { '1': 'var(--dead)', '2': 'var(--stale)', '3': 'var(--accent)', '4': 'var(--fresh)' };
+
+    /* --- eyebrow metadata from data attributes --- */
+    slides.forEach(function (s) {
+      var eb = s.querySelector('.eyebrow');
+      if (eb && s.dataset.clock && !eb.querySelector('.clock')) {
+        var c = document.createElement('span');
+        c.className = 'clock';
+        c.textContent = s.dataset.clock;
+        eb.appendChild(c);
+      }
+    });
+
+    /* --- ladder spine --- */
+    var RUNGS = [
+      { n: '1', l: 'EFFECT' },
+      { n: '2', l: 'REDUX' },
+      { n: '3', l: 'QUERY' },
+      { n: '4', l: 'ORVAL' }
+    ];
+    slides.forEach(function (s) {
+      if (s.classList.contains('cover')) return;
+      var spine = document.createElement('div');
+      spine.className = 'spine';
+      spine.setAttribute('aria-hidden', 'true');
+      RUNGS.forEach(function (r, idx) {
+        var w = document.createElement('div');
+        w.className = 'rung';
+        w.setAttribute('data-r', r.n);
+        w.innerHTML = '<span class="dot">' + r.n + '</span>';
+        spine.appendChild(w);
+        if (idx < RUNGS.length - 1) {
+          var stem = document.createElement('div');
+          stem.className = 'stem';
+          spine.appendChild(stem);
+        }
+      });
+      s.insertBefore(spine, s.firstChild);
+    });
+
+    /* --- syntax highlighting + line gutters --- */
+    var KW = /\b(const|let|var|function|return|await|async|export|import|from|type|interface|if|else|new|as|of|in)\b/;
+    var RE = new RegExp(
+      '(\\/\\/[^\\n]*)' +                      // comment
+      "|('(?:[^'\\\\\\n]|\\\\.)*'" +           // single-quoted string
+      '|`(?:[^`\\\\]|\\\\.)*`)' +              // template string
+      '|' + KW.source +
+      '|(\\b\\d+(?:_\\d+)*\\b)', 'g');
+
+    function highlight(html) {
+      // operate on already-escaped HTML, preserving <mark> wrappers
+      return html.replace(/(<[^>]+>)|([^<]+)/g, function (_, tag, text) {
+        if (tag) return tag;
+        return text.replace(RE, function (m, com, str, kw, num) {
+          if (com) return '<span class="tok-com">' + com + '</span>';
+          if (str) return '<span class="tok-str">' + str + '</span>';
+          if (kw) return '<span class="tok-kw">' + kw + '</span>';
+          if (num) return '<span class="tok-num">' + num + '</span>';
+          return m;
+        });
+      });
+    }
+
+    document.querySelectorAll('pre').forEach(function (pre) {
+      var start = parseInt(pre.getAttribute('data-start') || '0', 10);
+      var code = pre.querySelector('code') || pre;
+      var lines = code.innerHTML.replace(/\n$/, '').split('\n');
+      code.innerHTML = lines.map(function (line, n) {
+        var gutter = start ? '<span class="ln">' + (start + n) + '</span>' : '';
+        return gutter + highlight(line);
+      }).join('\n');
+    });
+
+    /* --- notes + jump list --- */
+    slides.forEach(function (s, n) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      var step = s.dataset.step;
+      b.style.setProperty('--c', STEP_COLOR[step] || 'var(--muted)');
+      b.innerHTML =
+        '<span class="jn">' + (n + 1) + '</span>' +
+        '<span>' + s.dataset.title + '</span>' +
+        '<span class="jt">' + (s.dataset.clock || '') + '</span>';
+      b.addEventListener('click', function () { go(n); closePanels(); });
+      var li = document.createElement('li');
+      li.appendChild(b);
+      jumpList.appendChild(li);
+    });
+
+    function closePanels() {
+      jumpPanel.classList.remove('open');
+    }
+
+    function renderNotes() {
+      var note = slides[i].querySelector('.notes');
+      notesBody.innerHTML = note ? note.innerHTML : '<p>No notes for this slide.</p>';
+    }
+
+    function go(n) {
+      i = Math.max(0, Math.min(slides.length - 1, n));
+      slides.forEach(function (s, k) { s.classList.toggle('is-current', k === i); });
+      counter.textContent = (i + 1) + ' / ' + slides.length;
+      clock.textContent = slides[i].dataset.part + (slides[i].dataset.clock ? ' · ' + slides[i].dataset.clock : '');
+      progress.style.width = ((i + 1) / slides.length * 100) + 'vw';
+      progress.style.background = STEP_COLOR[slides[i].dataset.step] || 'var(--accent)';
+      renderNotes();
+      try { location.hash = '#' + (i + 1); } catch (e) {}
+    }
+
+    function fit() {
+      var pad = 46; // chrome bar
+      var s = Math.min(window.innerWidth / 1280, (window.innerHeight - pad) / 720);
+      stage.style.transform = 'scale(' + s + ')';
+      stage.style.marginBottom = pad + 'px';
+    }
+
+    window.addEventListener('resize', fit);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(i + 1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(i - 1); }
+      else if (e.key === 'Home') { go(0); }
+      else if (e.key === 'End') { go(slides.length - 1); }
+      else if (e.key === 'n' || e.key === 'N' || e.key === '?') { toggleNotes(); }
+      else if (e.key === 'o' || e.key === 'O') { jumpPanel.classList.toggle('open'); }
+      else if (e.key === 'Escape') { closePanels(); notesPanel.classList.remove('open'); notesBtn.setAttribute('aria-pressed', 'false'); }
+    });
+
+    function toggleNotes() {
+      var open = notesPanel.classList.toggle('open');
+      notesBtn.setAttribute('aria-pressed', String(open));
+    }
+    notesBtn.addEventListener('click', toggleNotes);
+    jumpBtn.addEventListener('click', function () { jumpPanel.classList.toggle('open'); });
+
+    stage.addEventListener('click', function (e) {
+      if (e.target.closest('a, button')) return;
+      go(i + (e.clientX > window.innerWidth * 0.35 ? 1 : -1));
+    });
+
+    var startX = null;
+    document.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+    document.addEventListener('touchend', function (e) {
+      if (startX === null) return;
+      var dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 45) go(i + (dx < 0 ? 1 : -1));
+      startX = null;
+    }, { passive: true });
+
+    fit();
+    var fromHash = parseInt((location.hash || '').replace('#', ''), 10);
+    go(isNaN(fromHash) ? 0 : fromHash - 1);
+  })();
+</script>

@@ -5,17 +5,6 @@ import { useApiError } from '@/hooks/useApiError';
 
 import type { AddPetFormValues } from '../components/AddPetForm/AddPetForm';
 
-/**
- * Owns everything it means to create a Pet: mapping form values to the Pet
- * payload, running the mutation, invalidating the list cache, and exposing a
- * renderable error message. Callers (the modal today, potentially other entry
- * points) just invoke `createPet` and render `error`/`isPending`.
- *
- * Errors stay local: `skipGlobalErrorToast` opts this mutation out of the app's
- * global error toast (see handleGlobalError in main.tsx) because the caller
- * shows `error` inline. `createPet` rejects on failure so a caller can `await`
- * it to decide whether to close the surrounding UI.
- */
 export function useCreatePet() {
   const {
     mutateAsync,

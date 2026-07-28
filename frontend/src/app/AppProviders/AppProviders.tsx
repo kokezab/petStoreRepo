@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 
 import '@/lib/localization/i18n';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { FlagProvider } from '@unleash/proxy-client-react';
 import { App as AntdApp } from 'antd';
 import type { ReactNode } from 'react';
@@ -32,6 +33,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
               <Suspense fallback={null}>
                 <BrowserRouter>{children}</BrowserRouter>
               </Suspense>
+              {/* Demo aid: the cache inspector the enablement session is built around.
+                  Vite strips it from production builds via the DEV guard. */}
+              {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />}
             </AntdApp>
           </AppThemeProvider>
         </QueryClientProvider>

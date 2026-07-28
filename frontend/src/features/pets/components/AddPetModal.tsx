@@ -2,30 +2,29 @@ import { Modal } from 'antd';
 
 import { useModalStore } from '@/stores/useModalStore';
 
-import { useCreatePet } from '../hooks/useCreatePet';
 import { AddPetForm, type AddPetFormValues } from './AddPetForm/AddPetForm';
+import { useAddPet } from '@/api/generated/pet/pet';
 
 export function AddPetModal() {
   const isOpen = useModalStore((state) => state.isOpen);
-  const closeModal = useModalStore((state) => state.closeModal);
-  const { createPet, isPending, error } = useCreatePet();
+  const { mutateAsync: createPet, isPending } = useAddPet();
 
   const handleSubmit = async (values: AddPetFormValues) => {
-    try {
-      await createPet(values);
-      closeModal();
-    } catch {
-      // Failure is surfaced via `error`; keep the modal open so the user can retry.
-    }
+      await createPet({
+        data: {
+          photoUrls: [],
+          name: values.name,
+          category: { name: values.category },
+          status: values.status,
+        },
+      });
   };
 
   return (
-    <Modal open={isOpen} title='Add pet' onCancel={closeModal} footer={null}>
+    <Modal open={isOpen} title='Add pet' footer={null}>
       <AddPetForm
         onSubmit={handleSubmit}
         isLoading={isPending}
-        error={error}
-        onCancel={closeModal}
       />
     </Modal>
   );
