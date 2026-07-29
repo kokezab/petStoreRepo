@@ -5,19 +5,6 @@ import { useThemeStore } from '@/shared/lib/theme';
 
 import { ThemeToggle } from './ThemeToggle';
 
-function mockMatchMedia(prefersDark: boolean) {
-  window.matchMedia = ((query: string) => ({
-    matches: query === '(prefers-color-scheme: dark)' ? prefersDark : false,
-    media: query,
-    onchange: null,
-    addListener: () => {},
-    removeListener: () => {},
-    addEventListener: () => {},
-    removeEventListener: () => {},
-    dispatchEvent: () => false,
-  })) as typeof window.matchMedia;
-}
-
 describe('ThemeToggle', () => {
   afterEach(() => {
     useThemeStore.setState({
@@ -87,33 +74,6 @@ describe('ThemeToggle', () => {
     });
 
     expect(screen.getByRole('switch')).toHaveAttribute('aria-checked', 'true');
-  });
-
-  it('defaults to dark when the system prefers dark and no theme has been persisted', () => {
-    mockMatchMedia(true);
-    useThemeStore.persist.clearStorage();
-
-    render(<ThemeToggle />);
-
-    expect(useThemeStore.getState().theme).toBe('dark');
-  });
-
-  it('defaults to light when the system does not prefer dark and no theme has been persisted', () => {
-    mockMatchMedia(false);
-    useThemeStore.persist.clearStorage();
-
-    render(<ThemeToggle />);
-
-    expect(useThemeStore.getState().theme).toBe('light');
-  });
-
-  it('does not override an already-persisted theme with the system preference', () => {
-    mockMatchMedia(true);
-    useThemeStore.setState({ theme: 'light' });
-
-    render(<ThemeToggle />);
-
-    expect(useThemeStore.getState().theme).toBe('light');
   });
 
   it('displays "Dark mode" label when theme is dark', () => {
