@@ -71,6 +71,14 @@ export async function mockPetApi(page: Page): Promise<void> {
     await route.fulfill({ json: newOrder });
   });
 
+  await page.route('**/user/createWithArray', async (route: Route) => {
+    if (route.request().method() !== 'POST') {
+      await route.fallback();
+      return;
+    }
+    await route.fulfill({ status: 200, json: {} });
+  });
+
   await mockFeatureFlag(page, { 'pet-creation': false, 'order-creation': false });
 }
 
@@ -94,6 +102,19 @@ export async function mockFeatureFlag(page: Page, flags: Record<string, boolean>
 
 export async function mockAddPetError(page: Page): Promise<void> {
   await page.route('**/pet', async (route: Route) => {
+    if (route.request().method() !== 'POST') {
+      await route.fallback();
+      return;
+    }
+    await route.fulfill({
+      status: 500,
+      json: { code: 500, type: 'error', message: 'Internal server error' },
+    });
+  });
+}
+
+export async function mockCreateUsersError(page: Page): Promise<void> {
+  await page.route('**/user/createWithArray', async (route: Route) => {
     if (route.request().method() !== 'POST') {
       await route.fallback();
       return;

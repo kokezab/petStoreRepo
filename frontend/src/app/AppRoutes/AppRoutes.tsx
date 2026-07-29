@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router';
 
 import { RouteErrorBoundary } from '@/app/RouteErrorBoundary/RouteErrorBoundary';
 import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
+import { BulkUserCreationPage } from '@/pages/bulk-user-creation';
 import { InventoryPage } from '@/pages/inventory';
 import { LoginPage } from '@/pages/login';
 import { OrdersPage } from '@/pages/orders';
@@ -26,6 +27,7 @@ export function AppRoutes() {
       <Route path='/inventory' element={withRouteErrorBoundary(<InventoryPage />)} />
       <Route path='/settings' element={withRouteErrorBoundary(<SettingsPage />)} />
       <Route path='/signup' element={withRouteErrorBoundary(<SignupPage />)} />
+      <Route path='/users/bulk' element={withRouteErrorBoundary(<BulkUserCreationPage />)} />
       <Route path='/login' element={withRouteErrorBoundary(<LoginPage />)} />
       {isOrderCreationFlagEnabled && (
         <Route path='/orders' element={withRouteErrorBoundary(<OrdersPage />)} />

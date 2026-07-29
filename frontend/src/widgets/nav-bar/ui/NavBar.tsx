@@ -11,6 +11,7 @@ const navItems = [
   { key: '/inventory', label: <NavLink to='/inventory'>Inventory</NavLink> },
   { key: '/settings', label: <NavLink to='/settings'>Settings</NavLink> },
   { key: '/login', label: <NavLink to='/login'>Login</NavLink> },
+  { key: '/users/bulk', label: <NavLink to='/users/bulk'>Users</NavLink> },
 ];
 
 export function NavBar() {
