@@ -5,7 +5,7 @@ import type { User } from '@/api/generated/models';
 export type BulkUserFormValues = { users: User[] };
 
 interface BulkUserFormProps {
-  onSubmit: (users: User[]) => Promise<void>;
+  onSubmit: (users: User[]) => Promise<boolean>;
   isLoading: boolean;
   error?: string | null;
 }
@@ -21,7 +21,11 @@ export function BulkUserForm({ onSubmit, isLoading, error }: BulkUserFormProps) 
       return;
     }
 
-    await onSubmit(values.users ?? []);
+    const ok = await onSubmit(values.users ?? []);
+    if (!ok) return;
+
+    form.resetFields();
+    form.setFieldsValue({ users: [{}] });
   };
 
   return (

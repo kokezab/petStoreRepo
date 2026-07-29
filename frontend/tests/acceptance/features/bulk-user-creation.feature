@@ -45,6 +45,8 @@ Feature: Bulk user creation
     When I submit the bulk user creation form
     Then the user list should include a user named "alice"
     And the user list should include a user named "bob"
+    And the form should have exactly one user entry
+    And the first user entry fields should all be empty
 
   Scenario: AT-40 An API failure keeps the form open with an error
     Given the mocked API returns an error for creating users
@@ -53,3 +55,4 @@ Feature: Bulk user creation
     When I submit the bulk user creation form
     Then I should see an error message instead of a blank page
     And the "Add users" form should still be visible
+    And the first user entry should still contain username "alice", firstName "Alice", lastName "Smith", email "alice@example.com", password "secret1", phone "111"

@@ -10,13 +10,15 @@ export function BulkUserCreationPage() {
   const [createdUsers, setCreatedUsers] = useState<User[]>([]);
   const { createUsers, isPending, error } = useBulkCreateUsers();
 
-  const handleSubmit = async (users: User[]) => {
+  const handleSubmit = async (users: User[]): Promise<boolean> => {
     try {
       await createUsers(users);
       setCreatedUsers(users);
       showSuccessMessage('Users created successfully');
+      return true;
     } catch {
       // Failure is surfaced via `error` on the form.
+      return false;
     }
   };
 
