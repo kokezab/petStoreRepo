@@ -7,7 +7,7 @@ import type { ReactNode } from 'react';
 // only takes out that piece of the page, not the whole app. Errors a
 // component can render around itself (404s, validation) should stay local
 // via useApiError instead of reaching this boundary — see queryClient's
-// throwOnError in main.tsx for the split.
+// throwOnError in lib/query-client.ts for the split.
 export function RouteErrorBoundary({ children }: { children: ReactNode }) {
   return (
     <QueryErrorResetBoundary>

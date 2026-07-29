@@ -1,17 +1,11 @@
-import { useEffect } from 'react';
-
 import { Switch } from 'antd';
 
-import { applySystemThemePreferenceIfUnset, useTheme, useThemeActions } from '@/shared/lib/theme';
+import { useTheme, useThemeActions } from '@/shared/lib/theme';
 
 export function ThemeToggle() {
   const theme = useTheme();
   const { toggleTheme } = useThemeActions();
   const isDarkMode = theme === 'dark';
-
-  useEffect(() => {
-    applySystemThemePreferenceIfUnset();
-  }, []);
 
   return (
     <Switch

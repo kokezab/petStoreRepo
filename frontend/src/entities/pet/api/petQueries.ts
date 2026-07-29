@@ -16,9 +16,16 @@ export function useFindPetsByStatus(params: FindPetsByStatusParams) {
   });
 }
 
+type UseGetPetByIdOptions = NonNullable<Parameters<typeof useGetPetByIdGenerated>[1]>;
+
+// `select` is owned here (it applies normalizePet) - exclude it from the
+// caller-facing options so a caller-supplied `select` is a compile error rather
+// than something silently overwritten below.
 export function useGetPetById(
   petId: number,
-  options?: Parameters<typeof useGetPetByIdGenerated>[1],
+  options?: Omit<UseGetPetByIdOptions, 'query'> & {
+    query?: Omit<NonNullable<UseGetPetByIdOptions['query']>, 'select'>;
+  },
 ) {
   return useGetPetByIdGenerated(petId, {
     ...options,

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react';
 import { Route, Routes } from 'react-router';
 
 import { RouteErrorBoundary } from '@/app/RouteErrorBoundary/RouteErrorBoundary';
-import { useFeatureFlag } from '@/lib/feature-flags';
+import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
 import { InventoryPage } from '@/pages/inventory';
 import { LoginPage } from '@/pages/login';
 import { OrdersPage } from '@/pages/orders';
@@ -16,7 +16,7 @@ function withRouteErrorBoundary(element: ReactNode) {
 }
 
 export function AppRoutes() {
-  const isOrderCreationFlagEnabled = useFeatureFlag('order-creation');
+  const isOrderCreationFlagEnabled = useFeatureFlag(FEATURE_FLAGS.orderCreation);
 
   return (
     <Routes>

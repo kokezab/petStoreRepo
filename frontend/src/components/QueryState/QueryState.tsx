@@ -23,7 +23,8 @@ interface QueryStateProps<T> {
  *
  * Only locally-renderable errors reach here: 5xx/network failures are thrown to
  * the nearest RouteErrorBoundary via the query client's `throwOnError` (see
- * main.tsx). The message prefers the server's, falling back to `errorFallback`.
+ * lib/query-client.ts). The message prefers the server's, falling back to
+ * `errorFallback`.
  */
 export function QueryState<T>({
   isLoading,
