@@ -142,3 +142,30 @@ Then('the user list should include a user named {string}', async ({ page }, name
 Then('the {string} form should still be visible', async ({ page }, name: string) => {
   await expect(page.getByRole('form', { name })).toBeVisible();
 });
+
+Then('the form should have exactly one user entry', async ({ page }) => {
+  await expect(userEntries(page)).toHaveCount(1);
+});
+
+Then('the first user entry fields should all be empty', async ({ page }) => {
+  const entry = userEntries(page).first();
+  await expect(entry.getByLabel('Username')).toHaveValue('');
+  await expect(entry.getByLabel('First Name')).toHaveValue('');
+  await expect(entry.getByLabel('Last Name')).toHaveValue('');
+  await expect(entry.getByLabel('Email')).toHaveValue('');
+  await expect(entry.getByLabel('Password')).toHaveValue('');
+  await expect(entry.getByLabel('Phone')).toHaveValue('');
+});
+
+Then(
+  'the first user entry should still contain username {string}, firstName {string}, lastName {string}, email {string}, password {string}, phone {string}',
+  async ({ page }, username, firstName, lastName, email, password, phone) => {
+    const entry = userEntries(page).first();
+    await expect(entry.getByLabel('Username')).toHaveValue(username);
+    await expect(entry.getByLabel('First Name')).toHaveValue(firstName);
+    await expect(entry.getByLabel('Last Name')).toHaveValue(lastName);
+    await expect(entry.getByLabel('Email')).toHaveValue(email);
+    await expect(entry.getByLabel('Password')).toHaveValue(password);
+    await expect(entry.getByLabel('Phone')).toHaveValue(phone);
+  },
+);
