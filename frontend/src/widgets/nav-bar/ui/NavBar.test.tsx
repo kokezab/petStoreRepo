@@ -26,5 +26,6 @@ describe('NavBar', () => {
       '/settings',
     );
     expect(within(nav).getByRole('link', { name: 'Login' })).toHaveAttribute('href', '/login');
+    expect(within(nav).getByRole('link', { name: 'Users' })).toHaveAttribute('href', '/users/bulk');
   });
 });
