@@ -38,6 +38,7 @@
     "react-i18next": "^17.0.10",
     "react-router": "^8.2.0",
     "unleash-proxy-client": "^3.8.0",
+    "zod": "^4.4.3",
     "zustand": "^5.0.14"
   },
   "devDependencies": {
