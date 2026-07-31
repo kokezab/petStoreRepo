@@ -1,0 +1,1 @@
+export { useZodToAntd } from './zodToAntd';
