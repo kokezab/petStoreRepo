@@ -12,6 +12,7 @@ const navItems = [
   { key: '/settings', label: <NavLink to='/settings'>Settings</NavLink> },
   { key: '/login', label: <NavLink to='/login'>Login</NavLink> },
   { key: '/users/bulk', label: <NavLink to='/users/bulk'>Users</NavLink> },
+  { key: '/countries', label: <NavLink to='/countries'>Countries</NavLink> },
 ];
 
 export function NavBar() {
