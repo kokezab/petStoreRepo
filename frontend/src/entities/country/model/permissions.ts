@@ -1,3 +1,4 @@
+import type { Can } from '@/shared/lib/rbac';
 import { createFieldLock } from '@/shared/lib/rbac';
 import type { CodebookPermissions } from '@/shared/ui/codebook-page';
 
@@ -6,7 +7,7 @@ import type { Country } from './types';
 const fieldLock = createFieldLock<Country>();
 
 interface Deps {
-  can: (action: string, subject: string, record?: unknown) => boolean;
+  can: Can;
 }
 
 /**

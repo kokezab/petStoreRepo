@@ -1,9 +1,10 @@
+import type { Can } from '@/shared/lib/rbac';
 import type { CodebookPermissions } from '@/shared/ui/codebook-page';
 
 import type { Company } from './types';
 
 interface Deps {
-  can: (action: string, subject: string, record?: unknown) => boolean;
+  can: Can;
 }
 
 /**
