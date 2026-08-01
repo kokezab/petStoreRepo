@@ -22,10 +22,9 @@ export function CompaniesPage() {
       hooks={companyHooksServer}
       permissions={buildCompanyPermissions({ can })}
       schema={companySchema}
-      pageSize={view.pageSize}
-      onPageSizeChange={view.setPageSize}
     >
       <Codebook.Toolbar title={t('company.title')} />
+      <Codebook.Pager pageSize={view.pageSize} onPageSizeChange={view.setPageSize} />
 
       <Codebook.Table<Company>
         columns={[

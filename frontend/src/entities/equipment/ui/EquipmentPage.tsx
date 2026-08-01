@@ -23,10 +23,14 @@ export function EquipmentPage() {
       hooks={equipmentHooksServer}
       permissions={permissions}
       schema={equipmentSchema}
-      pageSize={view.pageSize}
-      onPageSizeChange={view.setPageSize}
     >
       <Codebook.Toolbar title={t('equipment.title')} />
+      <Codebook.Pager
+        pageSize={view.pageSize}
+        onPageSizeChange={view.setPageSize}
+        showSizeChanger
+        pageSizeOptions={[10, 20, 50]}
+      />
 
       <Codebook.Table<Equipment>
         columns={[
