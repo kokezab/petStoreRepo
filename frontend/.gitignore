@@ -31,3 +31,6 @@ test-results/
 
 .claude
 .vercel
+
+*storybook.log
+storybook-static

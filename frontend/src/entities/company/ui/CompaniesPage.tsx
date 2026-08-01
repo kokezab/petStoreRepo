@@ -33,7 +33,8 @@ export function CompaniesPage() {
           {
             title: t('company.fields.active'),
             dataIndex: 'active',
-            render: (active: boolean) => (active ? t('company.active.yes') : t('company.active.no')),
+            render: (active: boolean) =>
+              active ? t('company.active.yes') : t('company.active.no'),
           },
         ]}
         actionsColumn={actionsColumn}
