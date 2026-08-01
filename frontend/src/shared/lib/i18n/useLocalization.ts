@@ -49,6 +49,11 @@ const resources: Record<string, string> = {
   'equipment.fields.status': 'Status',
   'equipment.permissions.cannotEditDone': 'Cannot edit equipment marked as done',
   'equipment.permissions.cannotDeleteDone': 'Cannot delete equipment marked as done',
+  'equipment.permissions.cannotMoveDone': 'Cannot move equipment marked as done',
+  'equipment.move.title': 'Move equipment',
+  'equipment.move.parentLabel': 'New parent',
+  'equipment.move.root': 'No parent (root)',
+  'equipment.move.success': 'Moved',
 
   'company.title': 'Companies',
   'company.entityName': 'Company',
