@@ -14,6 +14,7 @@ const navItems = [
   { key: '/users/bulk', label: <NavLink to='/users/bulk'>Users</NavLink> },
   { key: '/countries', label: <NavLink to='/countries'>Countries</NavLink> },
   { key: '/equipment', label: <NavLink to='/equipment'>Equipment</NavLink> },
+  { key: '/companies', label: <NavLink to='/companies'>Companies</NavLink> },
 ];
 
 export function NavBar() {

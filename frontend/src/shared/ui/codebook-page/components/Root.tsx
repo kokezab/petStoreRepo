@@ -120,6 +120,7 @@ export function Root<T extends object>({
         mode: hooks.mode,
         data,
         isLoading: listQuery.isLoading,
+        isFetching: listQuery.isFetching,
         rowKey,
         pagination:
           hooks.mode === 'server'

@@ -35,6 +35,10 @@ function useSeedAbilities() {
       'update:Equipment': true,
       'delete:Equipment': (record) =>
         (record as { status?: string } | undefined)?.status !== 'done',
+
+      'create:Company': true,
+      'update:Company': true,
+      'delete:Company': true,
     });
   }, [setRules]);
 }
