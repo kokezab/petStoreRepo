@@ -1,4 +1,4 @@
-import { type ReactNode, useState } from 'react';
+import { Children, isValidElement, type ReactNode, useState } from 'react';
 
 import type { TablePaginationConfig } from 'antd';
 import { message } from 'antd';
@@ -8,6 +8,7 @@ import type { ZodObject, ZodRawShape } from 'zod';
 import { CodebookContext } from '../core/context';
 import { resolvePermissions } from '../core/permissions';
 import type { CodebookHooks, CodebookPermissions, ListParams, Paginated } from '../core/types';
+import { Pager, type PagerProps } from './Pager';
 
 interface RootProps<T> {
   rowKey: keyof T;
@@ -15,10 +16,20 @@ interface RootProps<T> {
   permissions?: CodebookPermissions<T>;
   /** Zod schema for the create/edit form. Optional — omit if you're not using Codebook.Field's auto-validation. */
   schema?: ZodObject<ZodRawShape>;
-  pageSize?: number;
-  /** Provide together with pageSize to make page size persist (e.g. via a zustand view store) */
-  onPageSizeChange?: (size: number) => void;
   children: ReactNode;
+}
+
+/**
+ * Finds a direct <Codebook.Pager> child and returns its props, or null if absent.
+ * Pagination is opt-in: no Pager means no pager (the Table renders all rows).
+ */
+function findPager(children: ReactNode): PagerProps | null {
+  for (const child of Children.toArray(children)) {
+    if (isValidElement(child) && child.type === Pager) {
+      return child.props as PagerProps;
+    }
+  }
+  return null;
 }
 
 export function Root<T extends object>({
@@ -26,15 +37,16 @@ export function Root<T extends object>({
   hooks,
   permissions,
   schema,
-  pageSize: pageSizeProp = 10,
-  onPageSizeChange,
   children,
 }: RootProps<T>) {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingRecord, setEditingRecord] = useState<T | null>(null);
 
-  const [internalPageSize, setInternalPageSize] = useState(pageSizeProp);
-  const pageSize = onPageSizeChange ? pageSizeProp : internalPageSize;
+  const pager = findPager(children);
+  const onPageSizeChange = pager?.onPageSizeChange;
+
+  const [internalPageSize, setInternalPageSize] = useState(pager?.pageSize ?? 10);
+  const pageSize = onPageSizeChange ? (pager?.pageSize ?? 10) : internalPageSize;
   const setPageSize = onPageSizeChange ?? setInternalPageSize;
 
   const [listParams, setListParams] = useState<ListParams>({ page: 1, pageSize });
@@ -122,10 +134,15 @@ export function Root<T extends object>({
         isLoading: listQuery.isLoading,
         isFetching: listQuery.isFetching,
         rowKey,
-        pagination:
-          hooks.mode === 'server'
-            ? { current: listParams.page, pageSize: listParams.pageSize, total }
-            : { pageSize },
+        pagination: !pager
+          ? false
+          : {
+              showSizeChanger: pager.showSizeChanger ?? false,
+              pageSizeOptions: pager.pageSizeOptions,
+              ...(hooks.mode === 'server'
+                ? { current: listParams.page, pageSize: listParams.pageSize, total }
+                : { pageSize }),
+            },
         onTableChange,
         editingRecord,
         modalOpen,

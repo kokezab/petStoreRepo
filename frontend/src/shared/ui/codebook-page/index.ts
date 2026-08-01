@@ -1,6 +1,7 @@
 import { DeleteAction, EditAction } from './components/Actions';
 import { Field } from './components/Field';
 import { FormModal } from './components/FormModal';
+import { Pager } from './components/Pager';
 import { Root } from './components/Root';
 import { Table } from './components/Table';
 import { Toolbar } from './components/Toolbar';
@@ -10,6 +11,7 @@ export const Codebook = {
   Root,
   Toolbar,
   Table,
+  Pager,
   FormModal,
   Field,
   EditAction,

@@ -22,10 +22,9 @@ export function CountriesPage() {
       hooks={countryHooksServer}
       permissions={buildCountryPermissions({ can })}
       schema={countrySchema}
-      pageSize={view.pageSize}
-      onPageSizeChange={view.setPageSize}
     >
       <Codebook.Toolbar title={t('countries.title')} />
+      <Codebook.Pager pageSize={view.pageSize} onPageSizeChange={view.setPageSize} />
 
       <Codebook.Table<Country>
         columns={[
