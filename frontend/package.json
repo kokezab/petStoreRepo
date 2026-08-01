@@ -15,12 +15,15 @@
     "check": "tsc -b && eslint . && steiger ./src && prettier --check \"src/**/*.{ts,tsx,css,json}\" \"tests/**/*.{ts,tsx}\" \"*.json\"",
     "generate:api": "orval",
     "lint:fsd": "steiger ./src",
+    "lint:fsd:watch": "steiger ./src --watch",
     "test:unit": "vitest run",
     "test:unit:watch": "vitest",
     "test:e2e": "bddgen && playwright test",
     "test:e2e:ui": "bddgen && playwright test --ui",
     "test:e2e:acceptance": "bddgen && playwright test --grep @",
-    "prepare": "node -e \"try{require('child_process').execSync('git config core.hooksPath .husky',{stdio:'ignore'})}catch(e){}\""
+    "prepare": "node -e \"try{require('child_process').execSync('git config core.hooksPath .husky',{stdio:'ignore'})}catch(e){}\"",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@sentry/react": "^10.67.0",
@@ -82,7 +85,11 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.62.0",
     "vite": "^8.1.1",
-    "vitest": "^4.1.10"
+    "vitest": "^4.1.10",
+    "storybook": "^10.5.5",
+    "@storybook/react-vite": "^10.5.5",
+    "eslint-plugin-storybook": "^10.5.5",
+    "playwright": "^1.62.1"
   },
   "msw": {
     "workerDirectory": [
