@@ -1,5 +1,5 @@
 import type { Pet, PetStatus } from '@/entities/pet';
-import type { Order } from '@/pages/orders';
+import type { Order } from '@/pages/order';
 
 export type { Order, Pet, PetStatus };
 

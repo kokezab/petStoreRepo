@@ -30,6 +30,11 @@ function useSeedAbilities() {
       // example: RBAC itself can depend on the record too. The store passes records
       // in untyped (record?: unknown), so narrow to the shape this rule cares about.
       'delete:Country': (record) => (record as { status?: string } | undefined)?.status !== 'done',
+
+      'create:Equipment': true,
+      'update:Equipment': true,
+      'delete:Equipment': (record) =>
+        (record as { status?: string } | undefined)?.status !== 'done',
     });
   }, [setRules]);
 }
