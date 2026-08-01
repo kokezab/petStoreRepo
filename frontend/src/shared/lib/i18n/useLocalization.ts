@@ -41,6 +41,14 @@ const resources: Record<string, string> = {
   'countries.validation.codeLength': 'Code must be exactly 3 letters',
   'countries.permissions.cannotEditDone': 'Cannot edit a country marked as done',
   'countries.permissions.cannotDeleteDone': 'Cannot delete a country marked as done',
+
+  'equipment.title': 'Equipment',
+  'equipment.entityName': 'Equipment',
+  'equipment.fields.name': 'Name',
+  'equipment.fields.code': 'Code',
+  'equipment.fields.status': 'Status',
+  'equipment.permissions.cannotEditDone': 'Cannot edit equipment marked as done',
+  'equipment.permissions.cannotDeleteDone': 'Cannot delete equipment marked as done',
 };
 
 type Vars = Record<string, string | number>;
