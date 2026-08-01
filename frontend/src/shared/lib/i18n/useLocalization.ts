@@ -49,6 +49,15 @@ const resources: Record<string, string> = {
   'equipment.fields.status': 'Status',
   'equipment.permissions.cannotEditDone': 'Cannot edit equipment marked as done',
   'equipment.permissions.cannotDeleteDone': 'Cannot delete equipment marked as done',
+
+  'company.title': 'Companies',
+  'company.entityName': 'Company',
+  'company.fields.name': 'Name',
+  'company.fields.shortName': 'Short name',
+  'company.fields.additionalInfo': 'Additional info',
+  'company.fields.active': 'Active',
+  'company.active.yes': 'Yes',
+  'company.active.no': 'No',
 };
 
 type Vars = Record<string, string | number>;

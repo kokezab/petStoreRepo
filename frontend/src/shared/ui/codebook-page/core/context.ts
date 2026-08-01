@@ -9,6 +9,8 @@ export interface CodebookContextValue<T> {
   mode: 'client' | 'server';
   data: T[] | undefined;
   isLoading: boolean;
+  /** True whenever a list request is in flight, including background refetches (unlike isLoading, which is only the first load). */
+  isFetching: boolean;
   rowKey: keyof T;
   pagination: TablePaginationConfig | false;
   onTableChange: TableProps<T>['onChange'];

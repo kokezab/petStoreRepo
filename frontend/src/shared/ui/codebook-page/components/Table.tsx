@@ -9,12 +9,12 @@ interface TableProps<T> {
 }
 
 export function Table<T extends object>({ columns, actionsColumn }: TableProps<T>) {
-  const { data, isLoading, rowKey, pagination, onTableChange } = useCodebookContext<T>();
+  const { data, isFetching, rowKey, pagination, onTableChange } = useCodebookContext<T>();
 
   return (
     <AntTable<T>
       rowKey={rowKey as string}
-      loading={isLoading}
+      loading={isFetching}
       dataSource={data}
       columns={actionsColumn ? [...columns, actionsColumn] : columns}
       pagination={pagination}

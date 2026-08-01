@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import { Route, Routes } from 'react-router';
 
 import { RouteErrorBoundary } from '@/app/RouteErrorBoundary/RouteErrorBoundary';
+import { CompaniesPage } from '@/entities/company';
 import { CountriesPage } from '@/entities/country';
 import { EquipmentPage } from '@/entities/equipment';
 import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
@@ -33,6 +34,7 @@ export function AppRoutes() {
       <Route path='/login' element={withRouteErrorBoundary(<LoginPage />)} />
       <Route path='/countries' element={withRouteErrorBoundary(<CountriesPage />)} />
       <Route path='/equipment' element={withRouteErrorBoundary(<EquipmentPage />)} />
+      <Route path='/companies' element={withRouteErrorBoundary(<CompaniesPage />)} />
       {isOrderCreationFlagEnabled && (
         <Route path='/orders' element={withRouteErrorBoundary(<OrdersPage />)} />
       )}
