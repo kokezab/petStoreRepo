@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 
-import { LanguageSelector } from '@/lib/localization/LanguageSelector';
+import { LanguageSelector } from '@/shared/ui/language-selector';
 
 import { ThemeToggle } from './ui/ThemeToggle/ThemeToggle';
 

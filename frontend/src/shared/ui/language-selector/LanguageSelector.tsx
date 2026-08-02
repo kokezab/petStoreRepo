@@ -1,9 +1,8 @@
 import { useState } from 'react';
 
 import { Select } from 'antd';
+import i18n from 'i18next';
 import { useTranslation } from 'react-i18next';
-
-import i18n from '@/app/i18n/init';
 
 import { supportedLanguages } from './supportedLanguages';
 import type { Language } from './types';
