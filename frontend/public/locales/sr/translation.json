@@ -3,5 +3,73 @@
   "settings": "Podešavanja",
   "en": "Engleski",
   "sr": "Srpski",
-  "language": "Jezik"
+  "language": "Jezik",
+  "codebook": {
+    "add": "Add",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirmDelete": "Delete this item?",
+    "createTitle": "Create {{entity}}",
+    "editTitle": "Edit {{entity}}",
+    "lockedField": "This action is not available for this record right now",
+    "discardChangesTitle": "Discard changes?",
+    "discardChangesBody": "You have unsaved changes that will be lost.",
+    "discard": "Discard",
+    "keepEditing": "Keep editing"
+  },
+  "validation": {
+    "required": "This field is required",
+    "invalid": "Invalid value",
+    "tooLong": "Value is too long"
+  },
+  "countries": {
+    "title": "Countries",
+    "entityName": "Country",
+    "fields": {
+      "name": "Name",
+      "code": "Code",
+      "status": "Status"
+    },
+    "validation": {
+      "codeLength": "Code must be exactly 3 letters"
+    },
+    "permissions": {
+      "cannotEditDone": "Cannot edit a country marked as done",
+      "cannotDeleteDone": "Cannot delete a country marked as done"
+    }
+  },
+  "equipment": {
+    "title": "Equipment",
+    "entityName": "Equipment",
+    "fields": {
+      "name": "Name",
+      "code": "Code",
+      "status": "Status"
+    },
+    "permissions": {
+      "cannotEditDone": "Cannot edit equipment marked as done",
+      "cannotDeleteDone": "Cannot delete equipment marked as done",
+      "cannotMoveDone": "Cannot move equipment marked as done"
+    },
+    "move": {
+      "title": "Move equipment",
+      "parentLabel": "New parent",
+      "root": "No parent (root)",
+      "success": "Moved"
+    }
+  },
+  "company": {
+    "title": "Companies",
+    "entityName": "Company",
+    "fields": {
+      "name": "Name",
+      "shortName": "Short name",
+      "additionalInfo": "Additional info",
+      "active": "Active"
+    },
+    "active": {
+      "yes": "Yes",
+      "no": "No"
+    }
+  }
 }
