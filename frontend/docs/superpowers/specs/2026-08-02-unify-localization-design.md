@@ -40,6 +40,9 @@ exactly the capability being asked for. The fix is wiring, not new abstraction.
 - `src/lib/query-client` is a separate, pre-existing instance of the same
   "framework singleton outside FSD" pattern — out of scope here, flagged as a
   follow-up cleanup, not fixed inside this task.
+- `.storybook/preview.tsx` — gains a synchronous i18next init (real resources,
+  no backend fetch) so the Storybook preview keeps showing real translated text
+  instead of raw keys. See "Risk: Storybook fixture harness" below.
 
 ## `useLocalization` implementation
 
@@ -98,16 +101,25 @@ relies on "`useLocalization` ... key-fallback (missing keys render as the key)..
 so no i18n setup is required" for `WidgetsCodebook.stories.tsx`, and
 `.storybook/preview.tsx` wires no i18n provider.
 
-Since Storybook never imports `app/i18n/init.ts`, the i18next singleton stays
-uninitialized in that context. react-i18next's documented behavior for an
-uninitialized instance is to return the raw key synchronously — the same
-fallback-to-key behavior the mock had, not a suspend-forever state. This is a claim
-about third-party library behavior, not something to take on faith: verify by
-running `npm run storybook` after the change and visually confirming
-`WidgetsCodebook` still renders its labels (not a stuck loading state or a crash),
-before calling this done. (No automated `test:storybook` script exists yet — that's
-tracked separately in the 2026-08-01 Storybook design doc, not this task's job to
-add.)
+The mock's `resources` object always had all ~30 keys hardcoded, so historically
+Storybook rendered real text ("Add", "Edit") — the fallback-to-key path only ever
+fired for genuinely missing/typo'd keys. Once `useLocalization` wraps real
+`react-i18next`, and `.storybook/preview.tsx` never initializes i18next, **every**
+key is "missing" from i18next's perspective there. It won't crash or hang —
+react-i18next's documented behavior for an uninitialized instance is to return the
+raw key synchronously — but every codebook label in the Storybook preview would
+show literal dotted keys (`codebook.add`) instead of real text. That's a visible
+regression in the interactive demo specifically (not in automated tests —
+`src/test/setup.ts` already loads real resources synchronously for Vitest, so
+`WidgetsCodebook.test.tsx` stays green either way).
+
+**Mitigation:** add a synchronous i18next init to `.storybook/preview.tsx`,
+mirroring `src/test/setup.ts` — `i18next.use(initReactI18next).init({ lng: 'en',
+resources: { en: { translation: enTranslation } }, ... })` using the same
+`public/locales/en/translation.json` import. Zero React providers still needed
+(matches the original Storybook design's intent), just a plain module-level
+`.init()` call. Verify by running `npm run storybook` and visually confirming
+`WidgetsCodebook` renders real English labels, not dotted keys.
 
 ## Testing
 
