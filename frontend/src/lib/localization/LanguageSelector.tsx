@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Select } from 'antd';
 import { useTranslation } from 'react-i18next';
 
-import i18n from '@/lib/localization/i18n';
+import i18n from '@/app/i18n/init';
 
 import { supportedLanguages } from './supportedLanguages';
 import type { Language } from './types';
