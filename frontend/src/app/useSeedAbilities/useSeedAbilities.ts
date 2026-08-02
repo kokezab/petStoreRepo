@@ -1,6 +1,11 @@
 import { useEffect } from 'react';
 
+import type { Country } from '@/entities/country';
 import { useAbilityStore } from '@/shared/lib/rbac';
+
+function isEntityActive<T extends { active: boolean }>(record: unknown) {
+  return !!(record as T).active;
+}
 
 /**
  * Stand-in for fetching the current user's abilities from your auth/`/me`
@@ -20,13 +25,12 @@ export function useSeedAbilities() {
       'update:Country': true,
       // example: RBAC itself can depend on the record too. The store passes records
       // in untyped (record?: unknown), so narrow to the shape this rule cares about.
-      'delete:Country': (record) => (record as { status?: string } | undefined)?.status !== 'done',
+      'delete:Country': (record) => (record as Country | undefined)?.status !== 'done',
 
       'create:Equipment': true,
       'update:Equipment': true,
-      'delete:Equipment': (record) =>
-        (record as { status?: string } | undefined)?.status !== 'done',
-      'move:Equipment': (record) => (record as { status?: string } | undefined)?.status !== 'done',
+      'delete:Equipment': isEntityActive,
+      'move:Equipment': isEntityActive,
 
       'create:Company': true,
       'update:Company': true,
