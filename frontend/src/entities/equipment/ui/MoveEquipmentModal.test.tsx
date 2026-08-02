@@ -80,4 +80,17 @@ describe('MoveEquipmentModal', () => {
 
     await waitFor(() => expect(mutateAsync).toHaveBeenCalledWith({ id: 1, parentId: 2 }));
   });
+
+  it('shows an error and keeps the modal open when the move is rejected', async () => {
+    mutateAsync.mockRejectedValueOnce(new Error('cycle'));
+    const user = userEvent.setup();
+    const { onClose } = renderModal({ id: 1, name: 'Router', code: 100, active: true });
+
+    await user.click(screen.getByRole('combobox'));
+    await user.click(await screen.findByTitle('Switch'));
+    await user.click(screen.getByRole('button', { name: 'OK' }));
+
+    expect(await screen.findByText('Failed to move equipment')).toBeInTheDocument();
+    expect(onClose).not.toHaveBeenCalled();
+  });
 });

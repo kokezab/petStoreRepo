@@ -15,7 +15,10 @@
     "discardChangesTitle": "Discard changes?",
     "discardChangesBody": "You have unsaved changes that will be lost.",
     "discard": "Discard",
-    "keepEditing": "Keep editing"
+    "keepEditing": "Keep editing",
+    "cancel": "Cancel",
+    "ok": "OK",
+    "actions": "Actions"
   },
   "validation": {
     "required": "This field is required",
@@ -55,7 +58,8 @@
       "title": "Move equipment",
       "parentLabel": "New parent",
       "root": "No parent (root)",
-      "success": "Moved"
+      "success": "Moved",
+      "error": "Failed to move equipment"
     }
   },
   "company": {

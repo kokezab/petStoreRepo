@@ -3,10 +3,6 @@ import { useEffect } from 'react';
 import type { Country } from '@/entities/country';
 import { useAbilityStore } from '@/shared/lib/rbac';
 
-function isEntityActive<T extends { active: boolean }>(record: unknown) {
-  return !!(record as T).active;
-}
-
 /**
  * Stand-in for fetching the current user's abilities from your auth/`/me`
  * endpoint and seeding them into the RBAC store on mount.
@@ -29,8 +25,8 @@ export function useSeedAbilities() {
 
       'create:Equipment': true,
       'update:Equipment': true,
-      'delete:Equipment': isEntityActive,
-      'move:Equipment': isEntityActive,
+      'delete:Equipment': true,
+      'move:Equipment': true,
 
       'create:Company': true,
       'update:Company': true,
