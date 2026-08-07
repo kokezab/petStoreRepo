@@ -30,7 +30,7 @@ export function PetCategoryFilter() {
   }
 
   return (
-    <>
+    <div>
       <label htmlFor='pets-category-filter'>Category filter</label>
       <Select<PetCategory>
         allowClear
@@ -43,6 +43,6 @@ export function PetCategoryFilter() {
         value={category}
         onChange={(value) => setCategory(value ?? null)}
       />
-    </>
+    </div>
   );
 }
