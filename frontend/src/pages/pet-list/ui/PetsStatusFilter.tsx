@@ -16,16 +16,17 @@ export function PetsStatusFilter() {
   const { setStatus } = usePetsFilterActions();
 
   return (
-    <>
+    <div>
       <label htmlFor='pets-status-filter'>Status filter</label>
       <Select<PetStatus>
         id='pets-status-filter'
         role='combobox'
         aria-label='Status filter'
+        style={{ width: 160 }}
         value={status}
         onChange={setStatus}
         options={options}
       />
-    </>
+    </div>
   );
 }

@@ -8,8 +8,10 @@ export function PetListPage() {
 
   return (
     <div>
-      <PetsStatusFilter />
-      <PetCategoryFilter />
+      <div className='mb-4 flex flex-col items-start gap-2'>
+        <PetsStatusFilter />
+        <PetCategoryFilter />
+      </div>
 
       <QueryState
         isLoading={isLoading}
