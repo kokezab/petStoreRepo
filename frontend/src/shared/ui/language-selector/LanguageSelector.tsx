@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 
 import { Select } from 'antd';
-import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
+
+import { useLocalization } from '@/shared/lib/i18n';
 
 import { supportedLanguages } from './supportedLanguages';
 import type { Language } from './types';
@@ -11,13 +13,11 @@ function normalizeLanguage(lang: string): Language {
   // Extract base language code (e.g., "en-US" -> "en")
   const baseLanguage = lang.split('-')[0];
   // Check if it's a supported language, otherwise fallback to 'en'
-  return supportedLanguages.includes(baseLanguage as Language)
-    ? (baseLanguage as Language)
-    : 'en';
+  return supportedLanguages.includes(baseLanguage as Language) ? (baseLanguage as Language) : 'en';
 }
 
 export function LanguageSelector() {
-  const { t, i18n } = useTranslation();
+  const { t } = useLocalization();
 
   // Derive current language from i18next's resolved language
   const currentLanguage = normalizeLanguage(i18n.resolvedLanguage || i18n.language);
@@ -37,7 +37,7 @@ export function LanguageSelector() {
     return () => {
       i18n.off('languageChanged', handleLanguageChanged);
     };
-  }, [i18n, currentLanguage]);
+  }, [currentLanguage]);
 
   const options = supportedLanguages.map((lang) => ({
     label: t(lang),

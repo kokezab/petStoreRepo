@@ -56,7 +56,7 @@ export function FormModal<T extends object>({ title, children }: FormModalProps)
       onOk={handleOk}
       onCancel={handleCancel}
       confirmLoading={isSubmitting}
-      destroyOnClose
+      destroyOnHidden
     >
       <Form form={form} layout='vertical'>
         {children}
