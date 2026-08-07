@@ -1,16 +1,43 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { Select } from 'antd';
-import i18n from 'i18next';
-
-import { useLocalization } from '@/shared/lib/i18n';
+import { useTranslation } from 'react-i18next';
 
 import { supportedLanguages } from './supportedLanguages';
 import type { Language } from './types';
 
+// Normalize i18next language string to supported Language type
+function normalizeLanguage(lang: string): Language {
+  // Extract base language code (e.g., "en-US" -> "en")
+  const baseLanguage = lang.split('-')[0];
+  // Check if it's a supported language, otherwise fallback to 'en'
+  return supportedLanguages.includes(baseLanguage as Language)
+    ? (baseLanguage as Language)
+    : 'en';
+}
+
 export function LanguageSelector() {
-  const { t } = useLocalization();
-  const [language, setLanguage] = useState<Language>('en');
+  const { t, i18n } = useTranslation();
+
+  // Derive current language from i18next's resolved language
+  const currentLanguage = normalizeLanguage(i18n.resolvedLanguage || i18n.language);
+  const [language, setLanguage] = useState<Language>(currentLanguage);
+
+  // Subscribe to language changes from i18next
+  useEffect(() => {
+    const handleLanguageChanged = (lng: string) => {
+      setLanguage(normalizeLanguage(lng));
+    };
+
+    i18n.on('languageChanged', handleLanguageChanged);
+
+    // Sync with current language on mount
+    setLanguage(currentLanguage);
+
+    return () => {
+      i18n.off('languageChanged', handleLanguageChanged);
+    };
+  }, [i18n, currentLanguage]);
 
   const options = supportedLanguages.map((lang) => ({
     label: t(lang),
@@ -18,7 +45,6 @@ export function LanguageSelector() {
   }));
 
   const onChange = (value: Language) => {
-    setLanguage(value);
     i18n.changeLanguage(value);
   };
 
