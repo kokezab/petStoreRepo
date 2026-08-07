@@ -35,8 +35,24 @@ export function MoveEquipmentButton({
   const { visible, enabled, reason } = permission;
   if (!visible) return null;
 
-  const btn = <Button icon={<ApartmentOutlined />} disabled={!enabled} onClick={onClick} />;
-  return !enabled && reason ? <Tooltip title={t(reason)}>{btn}</Tooltip> : btn;
+  const btn = (
+    <Button
+      icon={<ApartmentOutlined />}
+      aria-label={t('equipment.move.title')}
+      disabled={!enabled}
+      onClick={onClick}
+    />
+  );
+  // A disabled antd Button doesn't fire pointer/focus events, so a Tooltip
+  // wrapping it directly never shows — wrap in a span so the Tooltip has a
+  // non-disabled element to attach its listeners to.
+  return !enabled && reason ? (
+    <Tooltip title={t(reason)}>
+      <span>{btn}</span>
+    </Tooltip>
+  ) : (
+    btn
+  );
 }
 
 /**
@@ -90,7 +106,12 @@ function MoveEquipmentForm({ record, onClose }: { record: Equipment; onClose: ()
 
   const handleOk = async () => {
     const parentId = value === ROOT ? undefined : value;
-    await move.mutateAsync({ id: record.id, parentId });
+    try {
+      await move.mutateAsync({ id: record.id, parentId });
+    } catch {
+      message.error(t('equipment.move.error'));
+      return;
+    }
     message.success(t('equipment.move.success'));
     onClose();
   };
@@ -109,9 +130,9 @@ function MoveEquipmentForm({ record, onClose }: { record: Equipment; onClose: ()
       />
       <div style={{ marginTop: 16, textAlign: 'right' }}>
         <Space>
-          <Button onClick={onClose}>Cancel</Button>
+          <Button onClick={onClose}>{t('codebook.cancel')}</Button>
           <Button type='primary' loading={move.isPending} onClick={handleOk}>
-            OK
+            {t('codebook.ok')}
           </Button>
         </Space>
       </div>

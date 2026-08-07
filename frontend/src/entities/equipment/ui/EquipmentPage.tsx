@@ -27,7 +27,7 @@ export function EquipmentPage() {
   // Local actions column (Edit + Delete + Move) instead of useDefaultActionsColumn,
   // since Move is equipment-specific and not part of the codebook default.
   const actionsColumn: ColumnsType<Equipment>[number] = {
-    title: 'Actions',
+    title: t('codebook.actions'),
     key: 'actions',
     render: (_: unknown, record: Equipment) => (
       <Space>
