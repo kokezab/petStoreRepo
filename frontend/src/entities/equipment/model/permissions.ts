@@ -1,13 +1,24 @@
+import type { Can } from '@/shared/lib/rbac';
 import { createFieldLock } from '@/shared/lib/rbac';
-import type { CodebookPermissions } from '@/shared/ui/codebook-page';
+import type { CodebookPermissions, PermissionResult } from '@/shared/ui/codebook-page';
 
 import type { Equipment } from './types';
 
 const fieldLock = createFieldLock<Equipment>();
 
 interface Deps {
-  can: (action: string, subject: string, record?: unknown) => boolean;
+  can: Can;
 }
+
+/**
+ * `move` (re-parent) is not part of the codebook framework's CodebookPermissions
+ * contract — moving is an equipment-specific capability. It's returned as an extra
+ * key here (ignored by the framework, read directly by EquipmentPage's actions
+ * column). Same fieldLock shape as update/delete so the UI treats it uniformly.
+ */
+export type EquipmentPermissions = CodebookPermissions<Equipment> & {
+  move: (record: Equipment) => PermissionResult;
+};
 
 /**
  * update/delete = has RBAC permission AND status isn't 'done'.
@@ -16,7 +27,7 @@ interface Deps {
  *  - has permission, status done   -> visible: true, enabled: false, with a tooltip reason
  *  - has permission, status !done  -> visible: true, enabled: true
  */
-export function buildEquipmentPermissions({ can }: Deps): CodebookPermissions<Equipment> {
+export function buildEquipmentPermissions({ can }: Deps): EquipmentPermissions {
   return {
     // Lazy, like update/delete below. Evaluating eagerly here would freeze the
     // result at the moment buildCountryPermissions runs — which is CountriesPage's
@@ -36,6 +47,12 @@ export function buildEquipmentPermissions({ can }: Deps): CodebookPermissions<Eq
       'active',
       [false],
       'equipment.permissions.cannotDeleteDone',
+    ),
+    move: fieldLock(
+      (r) => can('move', 'Equipment', r),
+      'active',
+      [false],
+      'equipment.permissions.cannotMoveDone',
     ),
   };
 }

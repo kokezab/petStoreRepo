@@ -13,6 +13,7 @@ dist-ssr
 *.local
 
 .superpowers/
+.worktrees/
 
 tests/acceptance/.features-gen/
 playwright-report/

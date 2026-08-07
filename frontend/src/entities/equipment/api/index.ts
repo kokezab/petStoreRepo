@@ -3,6 +3,7 @@ import { useMutation, useQueryClient, type UseQueryResult } from '@tanstack/reac
 import {
   createEquipment,
   deleteEquipment,
+  moveEquipment,
   updateEquipment,
 } from '@/api/generated/tracer/equipment-command-controller/equipment-command-controller';
 import {
@@ -65,3 +66,18 @@ export const equipmentHooksServer: CodebookHooksClient<Equipment> = {
     });
   },
 };
+
+/**
+ * Re-parent an equipment via PATCH /v1/equipment/{id}/move. Not part of the
+ * CodebookHooks contract (which only covers list/create/update/delete) — moving
+ * is equipment-specific, so it's a standalone hook consumed by the Move UI.
+ * `parentId: undefined` moves the equipment to the root (no parent).
+ */
+export function useMoveEquipment() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, parentId }: { id: number; parentId?: number }) =>
+      moveEquipment(id, { parentId }, tracerRequest),
+    onSuccess: () => qc.invalidateQueries({ queryKey: QUERY_KEY }),
+  });
+}
