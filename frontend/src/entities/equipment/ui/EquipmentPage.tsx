@@ -1,21 +1,45 @@
-import { Input, Select } from 'antd';
+import { useState } from 'react';
+
+import { Input, Select, Space } from 'antd';
+import type { ColumnsType } from 'antd/es/table';
 
 import { useLocalization } from '@/shared/lib/i18n';
 import { usePermissions } from '@/shared/lib/rbac';
-import { Codebook, useDefaultActionsColumn } from '@/shared/ui/codebook-page';
+import { Codebook } from '@/shared/ui/codebook-page';
 
 import { equipmentHooksServer } from '../api';
 import { buildEquipmentPermissions } from '../model/permissions';
 import { equipmentSchema } from '../model/schema';
 import type { Equipment } from '../model/types';
 import { useEquipmentViewStore } from '../model/viewStore';
+import { MoveEquipmentButton, MoveEquipmentModal } from './MoveEquipmentModal';
 
 export function EquipmentPage() {
   const { t } = useLocalization();
   const { can } = usePermissions();
   const view = useEquipmentViewStore();
-  const actionsColumn = useDefaultActionsColumn<Equipment>();
   const permissions = buildEquipmentPermissions({ can });
+
+  // A single Move modal for the page, opened by whichever row's Move button was
+  // clicked (vs. rendering a modal per row).
+  const [movingRecord, setMovingRecord] = useState<Equipment | null>(null);
+
+  // Local actions column (Edit + Delete + Move) instead of useDefaultActionsColumn,
+  // since Move is equipment-specific and not part of the codebook default.
+  const actionsColumn: ColumnsType<Equipment>[number] = {
+    title: t('codebook.actions'),
+    key: 'actions',
+    render: (_: unknown, record: Equipment) => (
+      <Space>
+        <Codebook.EditAction record={record} />
+        <Codebook.DeleteAction record={record} />
+        <MoveEquipmentButton
+          permission={permissions.move(record)}
+          onClick={() => setMovingRecord(record)}
+        />
+      </Space>
+    ),
+  };
 
   return (
     <Codebook.Root<Equipment>
@@ -68,6 +92,8 @@ export function EquipmentPage() {
           />
         </Codebook.Field>
       </Codebook.FormModal>
+
+      <MoveEquipmentModal record={movingRecord} onClose={() => setMovingRecord(null)} />
     </Codebook.Root>
   );
 }

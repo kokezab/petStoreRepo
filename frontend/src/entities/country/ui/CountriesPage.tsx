@@ -27,6 +27,7 @@ export function CountriesPage() {
       <Codebook.Pager pageSize={view.pageSize} onPageSizeChange={view.setPageSize} />
 
       <Codebook.Table<Country>
+        size='small'
         columns={[
           { title: t('countries.fields.name'), dataIndex: 'name', sorter: true },
           { title: t('countries.fields.code'), dataIndex: 'code' },
