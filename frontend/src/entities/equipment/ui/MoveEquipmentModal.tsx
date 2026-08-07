@@ -76,7 +76,7 @@ export function MoveEquipmentModal({
       open={record !== null}
       onCancel={onClose}
       footer={null}
-      destroyOnClose
+      destroyOnHidden
     >
       {record && <MoveEquipmentForm key={record.id} record={record} onClose={onClose} />}
     </Modal>

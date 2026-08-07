@@ -21,6 +21,7 @@
     "test:e2e": "bddgen && playwright test",
     "test:e2e:ui": "bddgen && playwright test --ui",
     "test:e2e:acceptance": "bddgen && playwright test --grep @",
+    "test:full": "npm run test:unit && npm run test:e2e:acceptance",
     "prepare": "node -e \"try{require('child_process').execSync('git config core.hooksPath .husky',{stdio:'ignore'})}catch(e){}\"",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
