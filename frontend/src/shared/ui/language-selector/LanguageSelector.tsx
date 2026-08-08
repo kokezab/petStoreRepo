@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
 import { Select } from 'antd';
 import i18n from 'i18next';
@@ -16,28 +16,24 @@ function normalizeLanguage(lang: string): Language {
   return supportedLanguages.includes(baseLanguage as Language) ? (baseLanguage as Language) : 'en';
 }
 
+// Subscribe to i18next language changes as an external store
+function subscribe(onStoreChange: () => void) {
+  i18n.on('languageChanged', onStoreChange);
+  return () => {
+    i18n.off('languageChanged', onStoreChange);
+  };
+}
+
+function getLanguageSnapshot() {
+  return i18n.resolvedLanguage || i18n.language;
+}
+
 export function LanguageSelector() {
   const { t } = useLocalization();
 
-  // Derive current language from i18next's resolved language
-  const currentLanguage = normalizeLanguage(i18n.resolvedLanguage || i18n.language);
-  const [language, setLanguage] = useState<Language>(currentLanguage);
-
-  // Subscribe to language changes from i18next
-  useEffect(() => {
-    const handleLanguageChanged = (lng: string) => {
-      setLanguage(normalizeLanguage(lng));
-    };
-
-    i18n.on('languageChanged', handleLanguageChanged);
-
-    // Sync with current language on mount
-    setLanguage(currentLanguage);
-
-    return () => {
-      i18n.off('languageChanged', handleLanguageChanged);
-    };
-  }, [currentLanguage]);
+  // Read the current language directly from i18next (the external store),
+  // re-rendering on every 'languageChanged' event — no mirrored state needed.
+  const language = normalizeLanguage(useSyncExternalStore(subscribe, getLanguageSnapshot));
 
   const options = supportedLanguages.map((lang) => ({
     label: t(lang),

@@ -1,4 +1,5 @@
 import type { Rule } from 'antd/es/form';
+import type { ParseKeys } from 'i18next';
 import type { ZodObject, ZodRawShape, ZodTypeAny } from 'zod';
 
 import { useLocalization } from '@/shared/lib/i18n';
@@ -34,7 +35,11 @@ export function useZodToAntd() {
 
           const result = shape.safeParse(value);
           if (!result.success) {
-            const messageKey = result.error.issues[0]?.message ?? 'validation.invalid';
+            // Zod's `.message` is always `string`; by convention (see file comment)
+            // schema authors put a translation key there, so we assert it here rather
+            // than widening `t`'s type everywhere else.
+            const messageKey = (result.error.issues[0]?.message ??
+              'validation.invalid') as ParseKeys<'translation'>;
             throw new Error(t(messageKey));
           }
         },

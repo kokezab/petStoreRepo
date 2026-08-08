@@ -1,5 +1,6 @@
 import type { UseMutationResult, UseQueryResult } from '@tanstack/react-query';
 import type { ColumnsType } from 'antd/es/table';
+import type { ParseKeys } from 'i18next';
 import type { ReactNode } from 'react';
 
 export interface Paginated<T> {
@@ -38,12 +39,12 @@ export type CodebookHooks<T> = CodebookHooksClient<T> | CodebookHooksServer<T>;
 /**
  * visible  -> RBAC-level: should this control render at all
  * enabled  -> business-state-level: can it be clicked right now (record status, locks, etc.)
- * reason   -> translation key (or literal text) explaining why it's disabled, shown in a tooltip
+ * reason   -> translation key explaining why it's disabled, shown in a tooltip
  */
 export interface PermissionResult {
   visible: boolean;
   enabled: boolean;
-  reason?: string;
+  reason?: ParseKeys<'translation'>;
 }
 
 export type PermissionValue<T> =

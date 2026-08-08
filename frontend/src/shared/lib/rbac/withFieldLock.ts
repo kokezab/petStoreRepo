@@ -1,3 +1,5 @@
+import type { ParseKeys } from 'i18next';
+
 import type { PermissionResult } from '@/shared/ui/codebook-page';
 
 /**
@@ -14,7 +16,7 @@ export function createFieldLock<T>() {
     check: (record: T) => boolean,
     field: K,
     lockedValues: readonly T[K][],
-    reason?: string,
+    reason?: ParseKeys<'translation'>,
   ) {
     return (record: T): PermissionResult => {
       const visible = check(record); // RBAC: can they see this action at all
