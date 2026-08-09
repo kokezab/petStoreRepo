@@ -10,16 +10,16 @@ const api = axios.create({
     qs.stringify(params, { allowDots: false, skipNulls: true, arrayFormat: 'repeat' }),
 });
 
-// TODO: replace this hardcoded local-dev Keycloak (TRACER realm) bearer token
-// with a real token source (auth store / silent refresh). Update the token HERE —
-// it's attached to every Tracer request by the interceptor below.
-const TRACER_DEV_TOKEN =
-  '***REMOVED***';
 // Attach the Tracer auth header. Scoped to Tracer requests (by base URL) so the
-// petstore demo calls sharing this instance are left untouched.
+// petstore demo calls sharing this instance are left untouched. The token comes
+// from the environment (config.tracerDevToken, backed by the gitignored
+// `.env.local`) — never hardcoded here. When it's absent we attach no header and
+// let the backend reject the call, rather than shipping a secret in source.
+// TODO: replace the static dev token with a real token source (auth store /
+// silent refresh) — see config.tracerDevToken.
 api.interceptors.request.use((request) => {
-  if (request.baseURL === config.tracerApiBaseUrl) {
-    request.headers.set('Authorization', `Bearer ${TRACER_DEV_TOKEN}`);
+  if (request.baseURL === config.tracerApiBaseUrl && config.tracerDevToken) {
+    request.headers.set('Authorization', `Bearer ${config.tracerDevToken}`);
   }
   return request;
 });

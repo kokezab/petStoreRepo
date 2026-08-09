@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Local env files hold per-developer config/secrets. Only .env.example is tracked.
+.env
+!.env.example
+
 .superpowers/
 .worktrees/
 
