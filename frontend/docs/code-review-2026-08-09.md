@@ -30,13 +30,19 @@ Not run in this review: Playwright e2e (`test:e2e`), production build, Storybook
 ## Findings (ranked by severity)
 
 ### 🔴 HIGH-1 — Hardcoded Keycloak JWT committed in source
-> **Status (2026-08-09): code portion FIXED, secret still live.** The literal was removed from
-> `src/shared/api/client.ts`; the token now comes from `config.tracerDevToken`
-> (`VITE_TRACER_DEV_TOKEN`, backed by the gitignored `.env.local`). `git grep` confirms no token
-> in tracked source; `tsc`/`eslint` green. **STILL OWED — outside code:** (1) rotate/invalidate the
-> token on the Keycloak TRACER realm (treat as compromised), (2) purge it from git history (present
-> in `698e5cc` onward) via history rewrite + force-push, or accept it stays in history and rely on
-> rotation. Both require the user's explicit go-ahead.
+> **Status (2026-08-09): code FIXED + history PURGED. One owner action remains: rotate the token.**
+> - Code: literal removed from `src/shared/api/client.ts`; token now comes from `config.tracerDevToken`
+>   (`VITE_TRACER_DEV_TOKEN`, backed by the gitignored `.env.local`). `git grep` clean; `tsc`/`eslint` green.
+> - History: `git filter-branch` rewrote all 185 commits, replacing the token with `***REMOVED***`
+>   across the range it lived in (14 commits). Verified: the token appears in **no** commit reachable
+>   from `main`. Force-pushed to `origin/main` (`b58f9b3` → `43bab22`); pre-push `check` hook passed.
+> - **STILL OWED (only the user/infra can do this): ROTATE/INVALIDATE the token on the Keycloak TRACER
+>   realm.** It must be treated as compromised — it was public in the pushed history, and GitHub can
+>   still retain the old commit objects (reachable by their SHA) until its own GC runs. Rotation is the
+>   only thing that truly neutralizes the leaked copy.
+> - Local recovery points still hold the old (token-bearing) history: branch `backup/pre-token-purge`,
+>   tag `backup-pre-token-purge`, `refs/original/refs/heads/main`, and a bundle in the session scratchpad.
+>   Delete these once the remote is confirmed good (see handoff for the cleanup commands).
 
 **File:** `src/shared/api/client.ts:16-17` (also in git history — introduced `698e5cc`)
 
