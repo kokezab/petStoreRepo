@@ -22,4 +22,6 @@ export const usePetsFilterStore = create<PetsFilterState>((set) => ({
   },
 }));
 
-export const usePetsFilterActions = () => usePetsFilterStore((state) => state.actions);
+export function usePetsFilterActions() {
+  return usePetsFilterStore((state) => state.actions);
+}

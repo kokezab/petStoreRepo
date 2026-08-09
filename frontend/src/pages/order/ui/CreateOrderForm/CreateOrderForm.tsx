@@ -1,13 +1,15 @@
 import { Alert, Button, Form, Input, InputNumber, Select, Space } from 'antd';
 
+import { useLocalization } from '@/shared/lib/i18n';
+
 import type { OrderStatus } from '../../model/types';
 
-export type CreateOrderFormValues = {
+export interface CreateOrderFormValues {
   petId: number;
   quantity: number;
   shipDate: string;
   status: OrderStatus;
-};
+}
 
 interface CreateOrderFormProps {
   onSubmit: (values: CreateOrderFormValues) => Promise<void>;
@@ -15,10 +17,10 @@ interface CreateOrderFormProps {
   error?: string | null;
 }
 
-type OrderStatusOption = {
+interface OrderStatusOption {
   label: string;
   value: OrderStatus;
-};
+}
 
 const orderStatusOptions: OrderStatusOption[] = [
   { label: 'placed', value: 'placed' },
@@ -27,6 +29,7 @@ const orderStatusOptions: OrderStatusOption[] = [
 ];
 
 export function CreateOrderForm({ onSubmit, isLoading, error }: CreateOrderFormProps) {
+  const { t } = useLocalization();
   const [form] = Form.useForm<CreateOrderFormValues>();
   const handleSubmit = async () => {
     let values: CreateOrderFormValues;
@@ -42,7 +45,11 @@ export function CreateOrderForm({ onSubmit, isLoading, error }: CreateOrderFormP
   return (
     <Space orientation='vertical' style={{ width: '100%' }} size='large'>
       {error && <Alert type='error' title={error} showIcon />}
-      <Form<CreateOrderFormValues> form={form} layout='vertical' aria-label='Create order'>
+      <Form<CreateOrderFormValues>
+        form={form}
+        layout='vertical'
+        aria-label={t('order.createForm.label')}
+      >
         <Form.Item
           name='petId'
           label='Pet Id'
@@ -65,7 +72,7 @@ export function CreateOrderForm({ onSubmit, isLoading, error }: CreateOrderFormP
 
         <Form.Item name='status' label='Status'>
           <Select<OrderStatus, OrderStatusOption>
-            aria-label='Status'
+            aria-label={t('order.createForm.statusLabel')}
             options={orderStatusOptions}
           />
         </Form.Item>

@@ -1,5 +1,3 @@
-import type { FC } from 'react';
-
 export interface PagerProps {
   /** Rows per page. Defaults to 10. */
   pageSize?: number;
@@ -19,4 +17,9 @@ export interface PagerProps {
  * Must be a direct child of <Codebook.Root> (like Toolbar/Table/FormModal), and its
  * presence should be static rather than toggled per render.
  */
-export const Pager: FC<PagerProps> = () => null;
+// Headless marker: declares PagerProps for JSX consumers but renders nothing
+// and reads no props (its parent inspects its presence/props from children).
+// The `_props` param is intentionally unused (see argsIgnorePattern in eslint).
+export function Pager(_props: PagerProps) {
+  return null;
+}

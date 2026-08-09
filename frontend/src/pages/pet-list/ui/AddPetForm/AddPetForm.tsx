@@ -7,12 +7,13 @@ import { Alert, Button, Form, Input, Select, Space } from 'antd';
 import { AddPetBody } from '@/api/generated/zod/pet/pet.zod';
 import type { PetStatus } from '@/entities/pet';
 import { antdRulesFromZod } from '@/lib/antd-zod-rules';
+import { useLocalization } from '@/shared/lib/i18n';
 
-export type AddPetFormValues = {
+export interface AddPetFormValues {
   name: string;
   category: string;
   status: PetStatus;
-};
+}
 
 interface AddPetFormProps {
   onSubmit: (values: AddPetFormValues) => Promise<void>;
@@ -41,6 +42,7 @@ const options: { value: PetStatus; label: string }[] = [
 const petRules = antdRulesFromZod(AddPetBody);
 
 export function AddPetForm({ onSubmit, isLoading, error, onCancel }: AddPetFormProps) {
+  const { t } = useLocalization();
   const [form] = Form.useForm<AddPetFormValues>();
   const handleSubmit = async () => {
     let values: AddPetFormValues;
@@ -56,7 +58,7 @@ export function AddPetForm({ onSubmit, isLoading, error, onCancel }: AddPetFormP
   return (
     <Space orientation='vertical' style={{ width: '100%' }} size='large'>
       {error && <Alert type='error' title={error} showIcon />}
-      <Form<AddPetFormValues> form={form} layout='vertical' aria-label='Add pet'>
+      <Form<AddPetFormValues> form={form} layout='vertical' aria-label={t('petList.addPetForm.label')}>
         {/* Rules derived from the generated zod schema (the spec marks `name`
             required). */}
         <Form.Item name='name' label='Name' rules={petRules.name}>

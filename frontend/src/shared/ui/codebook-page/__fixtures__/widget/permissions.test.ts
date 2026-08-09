@@ -13,7 +13,9 @@ const active: Widget = {
 };
 const done: Widget = { ...active, id: 2, status: 'done' };
 
-const allow = () => true;
+function allow() {
+  return true;
+}
 
 describe('buildWidgetPermissions', () => {
   it('locks update/delete for done records with a reason', () => {

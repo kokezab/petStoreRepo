@@ -49,7 +49,7 @@ export function LanguageSelector() {
       <label>{t('language')}</label>
       <Select<Language>
         role='combobox'
-        aria-label='Select language'
+        aria-label={t('languageSelector.label')}
         value={language}
         onChange={onChange}
         options={options}

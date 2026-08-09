@@ -1,8 +1,11 @@
 import { Alert, Button, Form, Input, Space } from 'antd';
 
 import type { User } from '@/api/generated/models';
+import { useLocalization } from '@/shared/lib/i18n';
 
-export type BulkUserFormValues = { users: User[] };
+export interface BulkUserFormValues {
+  users: User[];
+}
 
 interface BulkUserFormProps {
   onSubmit: (users: User[]) => Promise<boolean>;
@@ -11,6 +14,7 @@ interface BulkUserFormProps {
 }
 
 export function BulkUserForm({ onSubmit, isLoading, error }: BulkUserFormProps) {
+  const { t } = useLocalization();
   const [form] = Form.useForm<BulkUserFormValues>();
 
   const handleSubmit = async () => {
@@ -34,7 +38,7 @@ export function BulkUserForm({ onSubmit, isLoading, error }: BulkUserFormProps) 
       <Form<BulkUserFormValues>
         form={form}
         layout='vertical'
-        aria-label='Add users'
+        aria-label={t('bulkUserCreation.form.label')}
         initialValues={{ users: [{}] }}
       >
         <Form.List name='users'>
@@ -43,7 +47,7 @@ export function BulkUserForm({ onSubmit, isLoading, error }: BulkUserFormProps) 
               {fields.map((field, index) => (
                 <fieldset
                   key={field.key}
-                  aria-label={`User ${index + 1}`}
+                  aria-label={t('bulkUserCreation.form.userRowLabel', { number: index + 1 })}
                   style={{ border: '1px solid #d9d9d9', borderRadius: 8, padding: 16 }}
                 >
                   <Form.Item name={[field.name, 'username']} label='Username'>

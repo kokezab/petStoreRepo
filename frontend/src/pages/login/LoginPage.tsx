@@ -1,13 +1,16 @@
 import { Alert, Button, Form, Input, Space } from 'antd';
 
+import { useLocalization } from '@/shared/lib/i18n';
+
 import { useLogin } from './model/useLogin';
 
-export type LoginFormValues = {
+export interface LoginFormValues {
   username: string;
   password: string;
-};
+}
 
 export function LoginPage() {
+  const { t } = useLocalization();
   const [form] = Form.useForm<LoginFormValues>();
   const { login, isPending, error } = useLogin();
 
@@ -16,7 +19,7 @@ export function LoginPage() {
       <h1>Log in</h1>
       <Space orientation='vertical' style={{ width: '100%' }} size='large'>
         {error && <Alert type='error' title={error} showIcon />}
-        <Form<LoginFormValues> onFinish={login} form={form} name='login-form' aria-label='Log In'>
+        <Form<LoginFormValues> onFinish={login} form={form} name='login-form' aria-label={t('login.formLabel')}>
           <Form.Item
             required
             name='username'

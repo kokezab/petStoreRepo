@@ -26,9 +26,13 @@ export const useThemeStore = create<ThemeState>()(
   ),
 );
 
-export const useTheme = () => useThemeStore((state) => state.theme);
+export function useTheme() {
+  return useThemeStore((state) => state.theme);
+}
 
-export const useThemeActions = () => useThemeStore((state) => state.actions);
+export function useThemeActions() {
+  return useThemeStore((state) => state.actions);
+}
 
 export function applySystemThemePreferenceIfUnset() {
   if (localStorage.getItem('theme-storage') !== null) {

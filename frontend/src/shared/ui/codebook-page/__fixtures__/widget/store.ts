@@ -8,7 +8,9 @@ export interface WidgetStore {
   remove: (id: number) => void;
 }
 
-const clone = (w: Widget): Widget => ({ ...w });
+function clone(w: Widget): Widget {
+  return { ...w };
+}
 
 export function createWidgetStore(initial: Widget[]): WidgetStore {
   let rows = initial.map(clone);

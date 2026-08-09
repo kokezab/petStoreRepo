@@ -1,6 +1,7 @@
 import { Select } from 'antd';
 
 import type { PetStatus } from '@/entities/pet';
+import { useLocalization } from '@/shared/lib/i18n';
 
 import { usePetsFilterActions, usePetsFilterStore } from '../model/usePetsFilterStore';
 
@@ -12,6 +13,7 @@ const options = STATUS_OPTIONS.map((option) => ({
 }));
 
 export function PetsStatusFilter() {
+  const { t } = useLocalization();
   const status = usePetsFilterStore((state) => state.status);
   const { setStatus } = usePetsFilterActions();
 
@@ -21,7 +23,7 @@ export function PetsStatusFilter() {
       <Select<PetStatus>
         id='pets-status-filter'
         role='combobox'
-        aria-label='Status filter'
+        aria-label={t('petList.statusFilterLabel')}
         value={status}
         onChange={setStatus}
         options={options}

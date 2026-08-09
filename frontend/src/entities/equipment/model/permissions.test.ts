@@ -3,13 +3,15 @@ import { describe, expect, it } from 'vitest';
 import { buildEquipmentPermissions } from './permissions';
 import type { Equipment } from './types';
 
-const rec = (over: Partial<Equipment> = {}): Equipment => ({
-  id: 1,
-  name: 'Router',
-  code: 100,
-  active: true,
-  ...over,
-});
+function rec(over: Partial<Equipment> = {}): Equipment {
+  return {
+    id: 1,
+    name: 'Router',
+    code: 100,
+    active: true,
+    ...over,
+  };
+}
 
 describe('buildEquipmentPermissions — move', () => {
   it('is hidden when RBAC denies move', () => {

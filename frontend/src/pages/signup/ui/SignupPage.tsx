@@ -1,10 +1,13 @@
 import { Button, Form, Input } from 'antd';
 
+import { useLocalization } from '@/shared/lib/i18n';
+
 export function SignupPage() {
+  const { t } = useLocalization();
   return (
     <div>
       <h1>Signup</h1>
-      <Form name='signup-form' aria-label='Sign Up'>
+      <Form name='signup-form' aria-label={t('signup.formLabel')}>
         <Form.Item
           required
           name='username'

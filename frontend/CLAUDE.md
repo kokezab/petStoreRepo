@@ -196,6 +196,12 @@ input validation (already solved by Antd Form).
   where used — don't hit real APIs in CI.
 - `eslint-plugin-jsx-a11y` in CI for accessibility regressions in
   `shared/ui` components especially.
+- How to write Vitest + RTL unit/component tests (queries, WET-tests stance,
+  Antd Form control recipes, mocking): see
+  [`docs/testing-guidelines.md`](./docs/testing-guidelines.md).
+- `aria-label` values must be translated (`aria-label={t('...')}`), enforced as
+  an `error` by the repo-local `local/require-aria-label-i18n` ESLint rule
+  (`eslint-rules/`).
 
 ## CI checklist
 
@@ -218,6 +224,14 @@ Flag:
   fallback/normalization check
 - Form validation logic duplicated via zod/yup alongside Antd Form rules
 - Missing Sentry context (query key, extra fields) on captured errors
+
+## Code style
+
+Module-level style conventions (function-vs-arrow, `interface` vs `type`,
+import ordering, TODO/FIXME format) live in
+[`docs/code-guidelines.md`](./docs/code-guidelines.md). This file (CLAUDE.md)
+owns *where code lives*; `code-guidelines.md` owns *how a module is written*.
+Flag violations in review.
 
 ## References
 

@@ -75,5 +75,36 @@
       "yes": "Yes",
       "no": "No"
     }
+  },
+  "bulkUserCreation": {
+    "createdUsersLabel": "Created users",
+    "usersListLabel": "Users",
+    "form": {
+      "label": "Add users",
+      "userRowLabel": "User {{number}}"
+    }
+  },
+  "login": {
+    "formLabel": "Log In"
+  },
+  "order": {
+    "createForm": {
+      "label": "Create order",
+      "statusLabel": "Status"
+    }
+  },
+  "petList": {
+    "listLabel": "Pets",
+    "categoryFilterLabel": "Category filter",
+    "statusFilterLabel": "Status filter",
+    "addPetForm": {
+      "label": "Add pet"
+    }
+  },
+  "signup": {
+    "formLabel": "Sign Up"
+  },
+  "languageSelector": {
+    "label": "Select language"
   }
 }

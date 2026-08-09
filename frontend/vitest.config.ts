@@ -16,6 +16,7 @@ export default defineConfig({
     include: [
       'src/**/*.{test,spec}.?(c|m)[jt]s?(x)',
       'scripts/**/*.{test,spec}.?(c|m)[jt]s?(x)',
+      'eslint-rules/**/*.{test,spec}.?(c|m)[jt]s?(x)',
     ],
   },
 });

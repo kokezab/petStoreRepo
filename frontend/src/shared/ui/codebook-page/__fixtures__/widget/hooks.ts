@@ -16,7 +16,9 @@ export interface WidgetHooksConfig {
   failList?: boolean;
 }
 
-const wait = (ms?: number) => (ms ? new Promise((r) => setTimeout(r, ms)) : Promise.resolve());
+function wait(ms?: number) {
+  return ms ? new Promise((r) => setTimeout(r, ms)) : Promise.resolve();
+}
 
 function applyServerParams(rows: Widget[], params: ListParams): Paginated<Widget> {
   const out = [...rows];

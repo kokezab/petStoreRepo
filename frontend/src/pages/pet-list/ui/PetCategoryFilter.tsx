@@ -1,6 +1,7 @@
 import { Select } from 'antd';
 
 import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
+import { useLocalization } from '@/shared/lib/i18n';
 
 import {
   type PetCategory,
@@ -20,6 +21,7 @@ const petCategoryOptions: { value: PetCategory; label: string }[] = [
 ];
 
 export function PetCategoryFilter() {
+  const { t } = useLocalization();
   const isPetCategoryFilterEnabled = useFeatureFlag(FEATURE_FLAGS.petCategoryFilter);
 
   const category = usePetsFilterStore((state) => state.category);
@@ -36,7 +38,7 @@ export function PetCategoryFilter() {
         allowClear
         id='pets-category-filter'
         role='combobox'
-        aria-label='Category filter'
+        aria-label={t('petList.categoryFilterLabel')}
         placeholder='All categories'
         style={{ width: 160 }}
         options={petCategoryOptions}

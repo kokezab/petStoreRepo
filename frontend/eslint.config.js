@@ -12,6 +12,7 @@ import { defineConfig, globalIgnores } from 'eslint/config'
 import simpleImportSort from 'eslint-plugin-simple-import-sort'
 import unusedImports from 'eslint-plugin-unused-imports'
 import pluginQuery from '@tanstack/eslint-plugin-query'
+import local from './eslint-rules/index.js'
 
 export default defineConfig([
   globalIgnores(['dist', 'src/api/generated', 'tests/acceptance/.features-gen', 'public']),
@@ -30,6 +31,7 @@ export default defineConfig([
     plugins: {
       'simple-import-sort': simpleImportSort,
       'unused-imports': unusedImports,
+      local,
     },
     rules: {
       'simple-import-sort/imports': [
@@ -49,6 +51,19 @@ export default defineConfig([
       ],
       'simple-import-sort/exports': 'error',
       'unused-imports/no-unused-imports': 'error',
+      // aria-labels must be translated (see docs/testing-guidelines.md + i18n).
+      'local/require-aria-label-i18n': 'error',
+      // Allow intentionally-unused identifiers when prefixed with `_` (e.g. a
+      // headless component that must declare props for JSX but reads none, or
+      // positional args you skip). Mirrors TS's own `noUnusedParameters`.
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+        },
+      ],
     },
   },
   ...pluginQuery.configs['flat/recommended'],
