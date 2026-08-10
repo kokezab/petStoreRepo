@@ -15,7 +15,6 @@ const api = axios.create({
 // from the environment (config.tracerDevToken, backed by the gitignored
 // `.env.local`) — never hardcoded here. When it's absent we attach no header and
 // let the backend reject the call, rather than shipping a secret in source.
-// TODO: replace the static dev token with a real token source (auth store /
 // silent refresh) — see config.tracerDevToken.
 api.interceptors.request.use((request) => {
   if (request.baseURL === config.tracerApiBaseUrl && config.tracerDevToken) {

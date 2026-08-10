@@ -15,7 +15,7 @@ import type { OpenAPIObject } from 'openapi3-ts/oas30';
  *      bearer scheme illegally carries `name`, which OpenAPI only allows on
  *      `apiKey` schemes.
  *
- * TODO(backend): rename the scheme to a valid key and remove the stray `name`
+ * (backend): rename the scheme to a valid key and remove the stray `name`
  * on the http bearer scheme, then delete this workaround.
  */
 const VALID_KEY = /^[a-zA-Z0-9.\-_]+$/;

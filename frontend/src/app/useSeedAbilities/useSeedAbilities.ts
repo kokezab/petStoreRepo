@@ -19,7 +19,6 @@ export function useSeedAbilities() {
   const setRules = useAbilityStore((s) => s.setRules);
 
   useEffect(() => {
-    // TODO: seed rules from your auth/`/me` endpoint
     setRules({
       'create:Country': true,
       'update:Country': true,

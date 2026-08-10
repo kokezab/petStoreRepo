@@ -1,0 +1,11 @@
+#!/bin/sh
+# Run commitlint from frontend/ (where deps + config live). Git runs hooks
+# with CWD at the repo root, so resolve the message file to an absolute
+# path before switching directories.
+msg="$1"
+case "$msg" in
+  /*) ;;
+  *) msg="$PWD/$msg" ;;
+esac
+cd frontend || exit 1
+npx --no -- commitlint --edit "$msg"
