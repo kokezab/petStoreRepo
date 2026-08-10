@@ -19,7 +19,12 @@ export function LoginPage() {
       <h1>Log in</h1>
       <Space orientation='vertical' style={{ width: '100%' }} size='large'>
         {error && <Alert type='error' title={error} showIcon />}
-        <Form<LoginFormValues> onFinish={login} form={form} name='login-form' aria-label={t('login.formLabel')}>
+        <Form<LoginFormValues>
+          onFinish={login}
+          form={form}
+          name='login-form'
+          aria-label={t('login.formLabel')}
+        >
           <Form.Item
             required
             name='username'

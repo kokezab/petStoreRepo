@@ -58,7 +58,11 @@ export function AddPetForm({ onSubmit, isLoading, error, onCancel }: AddPetFormP
   return (
     <Space orientation='vertical' style={{ width: '100%' }} size='large'>
       {error && <Alert type='error' title={error} showIcon />}
-      <Form<AddPetFormValues> form={form} layout='vertical' aria-label={t('petList.addPetForm.label')}>
+      <Form<AddPetFormValues>
+        form={form}
+        layout='vertical'
+        aria-label={t('petList.addPetForm.label')}
+      >
         {/* Rules derived from the generated zod schema (the spec marks `name`
             required). */}
         <Form.Item name='name' label='Name' rules={petRules.name}>
