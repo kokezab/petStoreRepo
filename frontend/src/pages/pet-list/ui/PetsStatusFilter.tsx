@@ -1,4 +1,4 @@
-import { Select } from 'antd';
+import { Select, Space } from 'antd';
 
 import type { PetStatus } from '@/entities/pet';
 import { useLocalization } from '@/shared/lib/i18n';
@@ -18,7 +18,7 @@ export function PetsStatusFilter() {
   const { setStatus } = usePetsFilterActions();
 
   return (
-    <>
+    <Space>
       <label htmlFor='pets-status-filter'>Status filter</label>
       <Select<PetStatus>
         id='pets-status-filter'
@@ -28,6 +28,6 @@ export function PetsStatusFilter() {
         onChange={setStatus}
         options={options}
       />
-    </>
+    </Space>
   );
 }

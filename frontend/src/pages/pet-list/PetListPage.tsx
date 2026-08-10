@@ -2,14 +2,17 @@ import { QueryState } from '@/components/QueryState/QueryState';
 
 import { useVisiblePets } from './model/useVisiblePets';
 import { AddPetButton, AddPetModal, PetCategoryFilter, PetList, PetsStatusFilter } from './ui';
+import { Space } from 'antd';
 
 export function PetListPage() {
   const { visiblePets, isLoading, error } = useVisiblePets();
 
   return (
     <div>
+      <Space orientation='vertical'>
       <PetsStatusFilter />
       <PetCategoryFilter />
+      </Space>
 
       <QueryState
         isLoading={isLoading}

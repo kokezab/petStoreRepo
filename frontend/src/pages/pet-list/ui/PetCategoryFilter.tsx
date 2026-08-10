@@ -1,4 +1,4 @@
-import { Select } from 'antd';
+import { Select, Space } from 'antd';
 
 import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
 import { useLocalization } from '@/shared/lib/i18n';
@@ -32,7 +32,7 @@ export function PetCategoryFilter() {
   }
 
   return (
-    <>
+    <Space>
       <label htmlFor='pets-category-filter'>Category filter</label>
       <Select<PetCategory>
         allowClear
@@ -45,6 +45,6 @@ export function PetCategoryFilter() {
         value={category}
         onChange={(value) => setCategory(value ?? null)}
       />
-    </>
+    </Space>
   );
 }
