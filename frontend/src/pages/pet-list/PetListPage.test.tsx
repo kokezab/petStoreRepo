@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router';
+import { MemoryRouter, useLocation } from 'react-router';
 import { vi } from 'vitest';
 
 import type { Pet } from '@/api/generated/models';
@@ -50,15 +50,27 @@ function mockStatus(
   } as unknown as ReturnType<typeof useFindPetsByStatus>);
 }
 
-function renderPage() {
+// Surfaces the current query string so tests can assert on the URL the filters
+// write to.
+function LocationProbe() {
+  const { search } = useLocation();
+  return <div data-testid='location-search'>{search}</div>;
+}
+
+function renderPage(initialUrl = '/pets') {
   const queryClient = new QueryClient();
   render(
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter>
+      <MemoryRouter initialEntries={[initialUrl]}>
         <PetListPage />
+        <LocationProbe />
       </MemoryRouter>
     </QueryClientProvider>,
   );
+}
+
+function locationSearch() {
+  return screen.getByTestId('location-search').textContent;
 }
 
 describe('PetListPage', () => {
@@ -126,5 +138,72 @@ describe('PetListPage', () => {
     renderPage();
 
     expect(screen.getByRole('alert')).toBeVisible();
+  });
+
+  it('AT-7: a bookmarked status param loads that filter and queries it', () => {
+    mockStatus('pending');
+    renderPage('/pets?status=pending');
+
+    expect(mockedUseFindPetsByStatus).toHaveBeenCalledWith(
+      { status: ['pending'] },
+      expect.anything(),
+    );
+    const list = screen.getByRole('list', { name: 'Pets' });
+    expect(within(list).getByRole('link', { name: 'Whiskers' })).toBeVisible();
+  });
+
+  it('AT-8: a bookmarked category param filters the list to that category', () => {
+    const felix: Pet = {
+      id: 4,
+      name: 'Felix',
+      photoUrls: [],
+      status: 'pending',
+      category: { id: 1, name: 'Cats' },
+    };
+    const rex: Pet = {
+      id: 5,
+      name: 'Rex',
+      photoUrls: [],
+      status: 'pending',
+      category: { id: 2, name: 'Dogs' },
+    };
+    mockedUseFindPetsByStatus.mockReturnValue({
+      data: [felix, rex],
+      isLoading: false,
+      error: null,
+    } as unknown as ReturnType<typeof useFindPetsByStatus>);
+
+    renderPage('/pets?status=pending&category=Cats');
+
+    const list = screen.getByRole('list', { name: 'Pets' });
+    expect(within(list).getByRole('link', { name: 'Felix' })).toBeVisible();
+    expect(within(list).queryByRole('link', { name: 'Rex' })).not.toBeInTheDocument();
+  });
+
+  it('AT-9: changing a filter writes it to the URL, omitting the default status', async () => {
+    mockStatus('available');
+    renderPage();
+    const user = userEvent.setup();
+
+    expect(locationSearch()).toBe('');
+
+    mockStatus('pending');
+    await user.click(screen.getByRole('combobox', { name: 'Status filter' }));
+    // @ts-expect-error Selecting "pending"
+    await user.click(await screen.findByTitle('pending', { selector: 'div.ant-select-item' }));
+
+    expect(locationSearch()).toBe('?status=pending');
+  });
+
+  it('AT-10: an unknown status param falls back to the available default', () => {
+    mockStatus('available');
+    renderPage('/pets?status=banana');
+
+    expect(mockedUseFindPetsByStatus).toHaveBeenCalledWith(
+      { status: ['available'] },
+      expect.anything(),
+    );
+    const list = screen.getByRole('list', { name: 'Pets' });
+    expect(within(list).getByRole('link', { name: 'Bella' })).toBeVisible();
   });
 });

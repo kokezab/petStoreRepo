@@ -3,11 +3,7 @@ import { Select, Space } from 'antd';
 import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
 import { useLocalization } from '@/shared/lib/i18n';
 
-import {
-  type PetCategory,
-  usePetsFilterActions,
-  usePetsFilterStore,
-} from '../model/usePetsFilterStore';
+import { type PetCategory, usePetsFilter } from '../model/usePetsFilter';
 
 const petCategoryOptions: { value: PetCategory; label: string }[] = [
   {
@@ -24,8 +20,7 @@ export function PetCategoryFilter() {
   const { t } = useLocalization();
   const isPetCategoryFilterEnabled = useFeatureFlag(FEATURE_FLAGS.petCategoryFilter);
 
-  const category = usePetsFilterStore((state) => state.category);
-  const { setCategory } = usePetsFilterActions();
+  const { category, setCategory } = usePetsFilter();
 
   if (!isPetCategoryFilterEnabled) {
     return null;

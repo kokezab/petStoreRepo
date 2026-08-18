@@ -1,11 +1,10 @@
 import { useFindPetsByStatus } from '@/entities/pet';
 import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
 
-import { usePetsFilterStore } from './usePetsFilterStore';
+import { usePetsFilter } from './usePetsFilter';
 
 export function useVisiblePets() {
-  const status = usePetsFilterStore((state) => state.status);
-  const category = usePetsFilterStore((state) => state.category);
+  const { status, category } = usePetsFilter();
   const isCategoryFilterEnabled = useFeatureFlag(FEATURE_FLAGS.petCategoryFilter);
   const { data, isLoading, error } = useFindPetsByStatus({ status: [status] });
 

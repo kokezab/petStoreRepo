@@ -3,7 +3,7 @@ import { Select, Space } from 'antd';
 import type { PetStatus } from '@/entities/pet';
 import { useLocalization } from '@/shared/lib/i18n';
 
-import { usePetsFilterActions, usePetsFilterStore } from '../model/usePetsFilterStore';
+import { usePetsFilter } from '../model/usePetsFilter';
 
 const STATUS_OPTIONS: PetStatus[] = ['available', 'pending', 'sold'];
 
@@ -14,8 +14,7 @@ const options = STATUS_OPTIONS.map((option) => ({
 
 export function PetsStatusFilter() {
   const { t } = useLocalization();
-  const status = usePetsFilterStore((state) => state.status);
-  const { setStatus } = usePetsFilterActions();
+  const { status, setStatus } = usePetsFilter();
 
   return (
     <Space>
