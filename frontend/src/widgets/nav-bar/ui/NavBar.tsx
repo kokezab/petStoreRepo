@@ -1,4 +1,5 @@
-import { Layout, Menu, Typography } from 'antd';
+import { Button, Layout, Menu, Space, Typography } from 'antd';
+import { useAuth } from 'react-oidc-context';
 import { NavLink, useLocation } from 'react-router';
 
 import { useFeatureFlag } from '@/lib/feature-flags';
@@ -10,7 +11,6 @@ const navItems = [
   { key: '/pets', label: <NavLink to='/pets'>Pets</NavLink> },
   { key: '/inventory', label: <NavLink to='/inventory'>Inventory</NavLink> },
   { key: '/settings', label: <NavLink to='/settings'>Settings</NavLink> },
-  { key: '/login', label: <NavLink to='/login'>Login</NavLink> },
   { key: '/users/bulk', label: <NavLink to='/users/bulk'>Users</NavLink> },
   { key: '/countries', label: <NavLink to='/countries'>Countries</NavLink> },
   { key: '/equipment', label: <NavLink to='/equipment'>Equipment</NavLink> },
@@ -19,6 +19,7 @@ const navItems = [
 
 export function NavBar() {
   const location = useLocation();
+  const auth = useAuth();
 
   const isOrderCreationFlagEnabled = useFeatureFlag('order-creation');
 
@@ -50,6 +51,32 @@ export function NavBar() {
           style={{ minWidth: 0 }}
         />
       </nav>
+      {auth.isAuthenticated ? (
+        <Space>
+          <Text style={{ color: 'rgba(255, 255, 255, 0.88)', whiteSpace: 'nowrap' }}>
+            {auth.user?.profile?.preferred_username ?? auth.user?.profile?.email}
+          </Text>
+          <Button
+            type='text'
+            style={{ color: 'rgba(255, 255, 255, 0.88)' }}
+            onClick={() => {
+              auth.signoutRedirect().catch((err) => console.error('Sign-out redirect failed', err));
+            }}
+          >
+            Sign out
+          </Button>
+        </Space>
+      ) : (
+        <Button
+          type='text'
+          style={{ color: 'rgba(255, 255, 255, 0.88)' }}
+          onClick={() => {
+            auth.signinRedirect().catch((err) => console.error('Sign-in redirect failed', err));
+          }}
+        >
+          Sign in
+        </Button>
+      )}
     </Header>
   );
 }

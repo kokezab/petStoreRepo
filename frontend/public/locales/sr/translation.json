@@ -85,7 +85,9 @@
     }
   },
   "login": {
-    "formLabel": "Log In"
+    "title": "Prijava",
+    "signIn": "Prijava putem Keycloak-a",
+    "signInFailed": "Nije moguće započeti prijavu. Proverite Keycloak klijent konfiguraciju (VITE_OIDC_CLIENT_ID i registrovani redirect URI)."
   },
   "order": {
     "createForm": {

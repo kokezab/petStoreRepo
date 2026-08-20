@@ -6,6 +6,7 @@ import { CompaniesPage } from '@/entities/company';
 import { CountriesPage } from '@/entities/country';
 import { EquipmentPage } from '@/entities/equipment';
 import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
+import { AuthCallbackPage } from '@/pages/auth-callback';
 import { BulkUserCreationPage } from '@/pages/bulk-user-creation';
 import { InventoryPage } from '@/pages/inventory';
 import { LoginPage } from '@/pages/login';
@@ -32,6 +33,7 @@ export function AppRoutes() {
       <Route path='/signup' element={withRouteErrorBoundary(<SignupPage />)} />
       <Route path='/users/bulk' element={withRouteErrorBoundary(<BulkUserCreationPage />)} />
       <Route path='/login' element={withRouteErrorBoundary(<LoginPage />)} />
+      <Route path='/auth/callback' element={withRouteErrorBoundary(<AuthCallbackPage />)} />
       <Route path='/countries' element={withRouteErrorBoundary(<CountriesPage />)} />
       <Route path='/equipment' element={withRouteErrorBoundary(<EquipmentPage />)} />
       <Route path='/companies' element={withRouteErrorBoundary(<CompaniesPage />)} />

@@ -7,6 +7,12 @@ vi.mock('@/app/AppRoutes/AppRoutes', () => ({
   AppRoutes: () => <div>Routed Page</div>,
 }));
 
+// NavBar reads auth state via react-oidc-context; this test renders the real
+// NavBar without an <AuthProvider>, so stub the hook to an unauthenticated state.
+vi.mock('react-oidc-context', () => ({
+  useAuth: () => ({ isAuthenticated: false, signinRedirect: vi.fn() }),
+}));
+
 // NavBar (unmocked here, per this test's intent to verify the real navigation
 // landmark) reads the build-time-injected __BUILD_TIME__ global, which vite defines
 // via `define` at build time but vitest does not provide. Stub it locally so this

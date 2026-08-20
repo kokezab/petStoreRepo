@@ -85,7 +85,9 @@
     }
   },
   "login": {
-    "formLabel": "Log In"
+    "title": "Sign in",
+    "signIn": "Sign in with Keycloak",
+    "signInFailed": "Could not start sign-in. Check the Keycloak client configuration (VITE_OIDC_CLIENT_ID and the registered redirect URI)."
   },
   "order": {
     "createForm": {
