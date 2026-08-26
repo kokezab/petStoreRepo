@@ -1,0 +1,589 @@
+<title>Frontend Tech Showcase</title>
+<style>
+  :root {
+    --bg: #faf8f5;
+    --surface: #ffffff;
+    --surface-2: #f4efe8;
+    --ink: #1c1a17;
+    --ink-soft: #56514a;
+    --ink-faint: #8a8378;
+    --line: #e6ded3;
+    --accent: #b45309;
+    --accent-bright: #f59e0b;
+    --mark: rgba(245, 158, 11, 0.28);
+    --ai: #7c3aed;
+    --gate: #0e7490;
+    --prod: #15803d;
+    --stop: #b91c1c;
+    --shadow: 0 1px 2px rgba(28,26,23,.04), 0 8px 28px rgba(28,26,23,.07);
+    --mono: ui-monospace, "SF Mono", "JetBrains Mono", "Cascadia Code", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15120e;
+      --surface: #201c16;
+      --surface-2: #2a251d;
+      --ink: #f5f1ea;
+      --ink-soft: #b6ac9d;
+      --ink-faint: #857c6e;
+      --line: #37302a;
+      --accent: #fbbf24;
+      --accent-bright: #f59e0b;
+      --mark: rgba(245, 158, 11, 0.22);
+      --ai: #a78bfa;
+      --gate: #22d3ee;
+      --prod: #4ade80;
+      --stop: #f87171;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 34px rgba(0,0,0,.42);
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #faf8f5; --surface: #ffffff; --surface-2: #f4efe8;
+    --ink: #1c1a17; --ink-soft: #56514a; --ink-faint: #8a8378; --line: #e6ded3;
+    --accent: #b45309; --accent-bright: #f59e0b; --mark: rgba(245,158,11,.28);
+    --ai: #7c3aed; --gate: #0e7490; --prod: #15803d; --stop: #b91c1c;
+    --shadow: 0 1px 2px rgba(28,26,23,.04), 0 8px 28px rgba(28,26,23,.07);
+  }
+  :root[data-theme="dark"] {
+    --bg: #15120e; --surface: #201c16; --surface-2: #2a251d;
+    --ink: #f5f1ea; --ink-soft: #b6ac9d; --ink-faint: #857c6e; --line: #37302a;
+    --accent: #fbbf24; --accent-bright: #f59e0b; --mark: rgba(245,158,11,.22);
+    --ai: #a78bfa; --gate: #22d3ee; --prod: #4ade80; --stop: #f87171;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 34px rgba(0,0,0,.42);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  /* ---- Deck mechanics ---- */
+  .deck { position: fixed; inset: 0; overflow: hidden; }
+  .track {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    transition: transform .5s cubic-bezier(.6,.01,.2,1);
+    will-change: transform;
+  }
+  .slide {
+    flex: 0 0 100%;
+    height: 100%;
+    overflow-y: auto;
+    display: grid;
+    place-items: center;
+    padding: clamp(1.5rem, 5vw, 5rem) clamp(1.25rem, 6vw, 6rem) 6rem;
+  }
+  .slide-inner { width: 100%; max-width: 1080px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .track { transition: none; }
+  }
+
+  /* ---- Type ---- */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: .72rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+  }
+  .eyebrow .mark {
+    background: linear-gradient(120deg, transparent 4%, var(--mark) 4% 96%, transparent 96%);
+    padding: .12em .45em;
+    box-decoration-break: clone;
+  }
+  h1.title {
+    font-size: clamp(2.4rem, 6.5vw, 4.6rem);
+    line-height: 1.02;
+    letter-spacing: -.03em;
+    font-weight: 800;
+    margin: 0 0 1.2rem;
+    text-wrap: balance;
+  }
+  h2.slide-h {
+    font-size: clamp(1.7rem, 3.8vw, 2.9rem);
+    line-height: 1.08;
+    letter-spacing: -.02em;
+    font-weight: 800;
+    margin: 0 0 .6rem;
+    text-wrap: balance;
+  }
+  .lead {
+    font-size: clamp(1.02rem, 1.7vw, 1.28rem);
+    color: var(--ink-soft);
+    max-width: 60ch;
+    margin: 0 0 2.2rem;
+  }
+  .kicker-line {
+    border-left: 3px solid var(--accent-bright);
+    padding-left: 1rem;
+    color: var(--ink-soft);
+    font-size: clamp(1rem, 1.6vw, 1.18rem);
+    max-width: 62ch;
+    margin: 0 0 2.4rem;
+  }
+  .kicker-line strong { color: var(--ink); font-weight: 650; }
+
+  /* ---- Card grid ---- */
+  .grid { display: grid; gap: 1rem; }
+  .grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 860px) {
+    .grid.cols-3, .grid.cols-2 { grid-template-columns: 1fr; }
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 1.25rem 1.3rem 1.35rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: .55rem;
+  }
+  .card .tool {
+    font-family: var(--mono);
+    font-size: .82rem;
+    font-weight: 600;
+    letter-spacing: .02em;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .card .tool::before {
+    content: "";
+    width: 7px; height: 7px; border-radius: 2px;
+    background: var(--accent-bright);
+    flex: none;
+  }
+  .card h3 {
+    font-size: 1.08rem;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: -.01em;
+  }
+  .card p { margin: 0; font-size: .95rem; color: var(--ink-soft); line-height: 1.45; }
+  .card p .hl { color: var(--ink); font-weight: 600; }
+
+  .section-note {
+    margin-top: 1.6rem;
+    font-family: var(--mono);
+    font-size: .78rem;
+    color: var(--ink-faint);
+    letter-spacing: .02em;
+  }
+
+  /* ---- Title slide ---- */
+  .title-meta {
+    display: flex; flex-wrap: wrap; gap: .5rem;
+    margin-top: 2rem;
+  }
+  .chip {
+    font-family: var(--mono);
+    font-size: .74rem;
+    letter-spacing: .04em;
+    padding: .4rem .7rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--ink-soft);
+    background: var(--surface);
+  }
+
+  /* ---- Flow diagram ---- */
+  .flow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    margin-top: .5rem;
+  }
+  .node {
+    width: min(560px, 100%);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: .8rem 1rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: center;
+    gap: .8rem;
+  }
+  .node .num {
+    font-family: var(--mono);
+    font-size: .8rem;
+    font-weight: 700;
+    color: var(--ink-faint);
+    flex: none;
+    width: 1.6rem;
+    text-align: right;
+  }
+  .node .body { display: flex; flex-direction: column; gap: .12rem; }
+  .node .body strong { font-size: .98rem; letter-spacing: -.01em; }
+  .node .body span { font-family: var(--mono); font-size: .72rem; color: var(--ink-faint); }
+  .node.tagged { border-left: 4px solid var(--tag, var(--accent-bright)); }
+  .node.ai { --tag: var(--ai); }
+  .node.gate { --tag: var(--gate); }
+  .node.prod { --tag: var(--prod); background: color-mix(in srgb, var(--prod) 8%, var(--surface)); }
+  .node.stop { --tag: var(--stop); background: color-mix(in srgb, var(--stop) 8%, var(--surface)); }
+
+  .badge {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: .66rem;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: .22rem .5rem;
+    border-radius: 6px;
+    font-weight: 700;
+    flex: none;
+  }
+  .badge.ai { color: var(--ai); background: color-mix(in srgb, var(--ai) 15%, transparent); }
+  .badge.gate { color: var(--gate); background: color-mix(in srgb, var(--gate) 15%, transparent); }
+  .badge.prod { color: var(--prod); background: color-mix(in srgb, var(--prod) 16%, transparent); }
+  .badge.stop { color: var(--stop); background: color-mix(in srgb, var(--stop) 16%, transparent); }
+
+  .conn { width: 2px; height: 22px; background: var(--line); flex: none; }
+  .conn.arrow { position: relative; }
+  .conn.arrow::after {
+    content: ""; position: absolute; bottom: -1px; left: 50%; transform: translateX(-50%);
+    border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top: 6px solid var(--line);
+  }
+  .conn-label {
+    font-family: var(--mono); font-size: .66rem; color: var(--ink-faint);
+    padding: .1rem 0;
+  }
+
+  .split {
+    display: flex; gap: 1rem; width: min(560px, 100%); justify-content: center;
+  }
+  .split .node { width: 100%; }
+  @media (max-width: 620px) { .split { flex-direction: column; } }
+
+  /* ---- Nav / chrome ---- */
+  .chrome {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem;
+    padding: .7rem clamp(1rem, 4vw, 2.4rem);
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--line);
+    z-index: 20;
+  }
+  .dots { display: flex; gap: .5rem; flex-wrap: wrap; }
+  .dot {
+    width: 9px; height: 9px; border-radius: 999px;
+    border: none; padding: 0; cursor: pointer;
+    background: var(--line);
+    transition: background .2s, transform .2s;
+  }
+  .dot[aria-current="true"] { background: var(--accent-bright); transform: scale(1.25); }
+  .dot:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .nav-right { display: flex; align-items: center; gap: .8rem; }
+  .counter { font-family: var(--mono); font-size: .78rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+  .navbtn {
+    font-family: var(--mono); font-size: .8rem;
+    background: var(--surface); color: var(--ink);
+    border: 1px solid var(--line); border-radius: 8px;
+    width: 34px; height: 34px; cursor: pointer;
+    display: grid; place-items: center;
+    transition: border-color .2s, background .2s;
+  }
+  .navbtn:hover { border-color: var(--accent); }
+  .navbtn:disabled { opacity: .35; cursor: default; }
+  .navbtn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .brand { font-family: var(--mono); font-size: .74rem; color: var(--ink-faint); letter-spacing: .04em; }
+  .hint { font-family: var(--mono); font-size: .68rem; color: var(--ink-faint); }
+  @media (max-width: 720px) { .hint, .brand { display: none; } }
+</style>
+
+<div class="deck">
+  <div class="track" id="track">
+
+    <!-- 1. Title -->
+    <section class="slide" aria-label="Title">
+      <div class="slide-inner">
+        <p class="eyebrow"><span class="mark">Frontend Enablement · Internal Showcase</span></p>
+        <h1 class="title">The tech under the product</h1>
+        <p class="lead">A tour of the concepts and tooling that make this frontend contract-driven, testable, and AI-operated &mdash; the product is just what they add up to.</p>
+        <div class="title-meta">
+          <span class="chip">Contract-driven dev</span>
+          <span class="chip">ATDD / BDD</span>
+          <span class="chip">AI in CI</span>
+          <span class="chip">Feature flags</span>
+          <span class="chip">Gated deploys</span>
+        </div>
+        <p class="section-note">Use → / ← or the dots below to move through the deck.</p>
+      </div>
+    </section>
+
+    <!-- 2. Spine -->
+    <section class="slide" aria-label="Contract-driven development">
+      <div class="slide-inner">
+        <p class="eyebrow"><span class="mark">The spine</span></p>
+        <h2 class="slide-h">Contract-driven development</h2>
+        <p class="kicker-line">One <strong>OpenAPI spec</strong> is the shared contract between backend and frontend. Everything else hangs off it.</p>
+        <div class="grid cols-3">
+          <div class="card">
+            <span class="tool">Orval</span>
+            <h3>Generated client from the spec</h3>
+            <p>The TS API client <span class="hl">and types are generated</span> straight from the OpenAPI spec &mdash; no hand-written fetch code. Spec changes surface as <span class="hl">compile errors</span>, not prod surprises.</p>
+          </div>
+          <div class="card">
+            <span class="tool">MSW</span>
+            <h3>Mock the server from the same contract</h3>
+            <p>Mock Service Worker answers real network calls with contract-shaped responses. Build <span class="hl">without a live backend</span>, and the same mocks run in tests.</p>
+          </div>
+          <div class="card">
+            <span class="tool">Zod</span>
+            <h3>Validate at the boundary</h3>
+            <p>Generated types are compile-time only. Responses are <span class="hl">validated + normalized at runtime</span> &mdash; contract drift is caught at the seam, not deep in the UI.</p>
+          </div>
+        </div>
+        <p class="section-note">// one spec → generated client + mocked server + runtime guard</p>
+      </div>
+    </section>
+
+    <!-- 3. Testing -->
+    <section class="slide" aria-label="ATDD and BDD">
+      <div class="slide-inner">
+        <p class="eyebrow"><span class="mark">Testing</span></p>
+        <h2 class="slide-h">Acceptance tests as behavior</h2>
+        <p class="kicker-line">Tests read like <strong>specifications</strong>, not implementation details &mdash; and they run end to end.</p>
+        <div class="grid cols-2">
+          <div class="card">
+            <span class="tool">Gherkin + playwright-bdd</span>
+            <h3>Given / When / Then, executable</h3>
+            <p><span class="hl">.feature files</span> describe business behavior; playwright-bdd drives them through a real browser. Non-devs can read the scenarios; the suite verifies real user flows.</p>
+          </div>
+          <div class="card">
+            <span class="tool">MSW · Vitest · Playwright</span>
+            <h3>One test stack, three levels</h3>
+            <p>Unit and component tests against <span class="hl">contract mocks</span>, acceptance scenarios in Gherkin, and end-to-end runs against a real deployment &mdash; the same contract underneath all three.</p>
+          </div>
+        </div>
+        <p class="section-note">// the ATDD label routes AI-authored work through these steps first — see the pipeline</p>
+      </div>
+    </section>
+
+    <!-- 4. Platform -->
+    <section class="slide" aria-label="Server state and platform">
+      <div class="slide-inner">
+        <p class="eyebrow"><span class="mark">Server-state &amp; platform</span></p>
+        <h2 class="slide-h">Data, flags &amp; access</h2>
+        <div class="grid cols-2">
+          <div class="card">
+            <span class="tool">TanStack Query</span>
+            <h3>Client-side data &amp; caching layer</h3>
+            <p>Request dedup, caching, background refetch, cache invalidation, query-key factories. <span class="hl">One source of truth</span> for what the server said &mdash; no hand-rolled loading/error state.</p>
+          </div>
+          <div class="card">
+            <span class="tool">Unleash</span>
+            <h3>Feature flags</h3>
+            <p>Runtime flags per environment/user <span class="hl">decouple deploy from release</span> &mdash; ship dark, roll out gradually, kill-switch without a redeploy. Enables trunk-based dev.</p>
+          </div>
+          <div class="card">
+            <span class="tool">Ability seeding</span>
+            <h3>Authorization on the frontend</h3>
+            <p>Abilities are <span class="hl">seeded and checked before rendering</span> privileged UI, mirroring the backend permission model &mdash; no leaking actions a user can't perform.</p>
+          </div>
+          <div class="card">
+            <span class="tool">OIDC · Keycloak</span>
+            <h3>Standards-based auth</h3>
+            <p>Auth-callback / token flow via Keycloak &mdash; <span class="hl">no bespoke auth</span>, the same IdP the backend already trusts.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. GitHub AI workflow -->
+    <section class="slide" aria-label="GitHub-native AI workflow">
+      <div class="slide-inner">
+        <p class="eyebrow"><span class="mark">GitHub-native AI workflow</span></p>
+        <h2 class="slide-h">The repo is the interface</h2>
+        <p class="kicker-line">Claude runs <strong>inside CI</strong> via <code>anthropics/claude-code-action</code> &mdash; the contributor needs no local setup.</p>
+        <div class="grid cols-3">
+          <div class="card">
+            <span class="tool">claude-auto-implement</span>
+            <h3>Assign an issue → get a PR</h3>
+            <p>Assigning a GitHub issue is the entire trigger. Claude reads it, implements on a new branch, and <span class="hl">opens a PR that closes the issue</span>. An <span class="hl">ATDD</span> label routes it through test-first steps.</p>
+          </div>
+          <div class="card">
+            <span class="tool">@claude in comments</span>
+            <h3>Iterate in-thread</h3>
+            <p>Mention <span class="hl">@claude</span> in an issue or PR review and the same action responds &mdash; answering or pushing follow-up commits without leaving GitHub.</p>
+          </div>
+          <div class="card">
+            <span class="tool">e2e-deployed</span>
+            <h3>Deploy → E2E → promote</h3>
+            <p>On merge to main: deploy a Vercel preview, run Playwright <span class="hl">against the real URL</span>, and promote to production <span class="hl">only if E2E passes</span>.</p>
+          </div>
+        </div>
+        <p class="section-note">// kickoff is an assignment, not a keystroke</p>
+      </div>
+    </section>
+
+    <!-- 6. Flow diagram -->
+    <section class="slide" aria-label="End to end pipeline">
+      <div class="slide-inner">
+        <p class="eyebrow"><span class="mark">End to end</span></p>
+        <h2 class="slide-h">Issue → Claude → PR → CI → E2E → Prod</h2>
+        <div class="flow">
+          <div class="node">
+            <span class="num">1</span>
+            <span class="body"><strong>GitHub issue assigned to me</strong><span>trigger: issues.assigned</span></span>
+          </div>
+          <div class="conn arrow"></div>
+          <span class="conn-label">claude-auto-implement.yml</span>
+          <div class="conn arrow"></div>
+          <div class="node tagged ai">
+            <span class="num">2</span>
+            <span class="body"><strong>Claude runs in the cloud</strong><span>reads issue · ATDD label → test-first · new branch</span></span>
+            <span class="badge ai">AI</span>
+          </div>
+          <div class="conn arrow"></div>
+          <div class="node">
+            <span class="num">3</span>
+            <span class="body"><strong>Push branch + open PR</strong><span>Closes #issue</span></span>
+          </div>
+          <div class="conn arrow"></div>
+          <div class="node tagged gate">
+            <span class="num">4</span>
+            <span class="body"><strong>PR-gate CI</strong><span>Steiger · typecheck · lint · a11y · vitest · Playwright</span></span>
+            <span class="badge gate">Gate</span>
+          </div>
+          <div class="conn arrow"></div>
+          <span class="conn-label">↺ @claude in comments iterates on the PR</span>
+          <div class="conn arrow"></div>
+          <div class="node">
+            <span class="num">5</span>
+            <span class="body"><strong>Merge to main</strong><span>trigger: push.main → e2e-deployed.yml</span></span>
+          </div>
+          <div class="conn arrow"></div>
+          <div class="node tagged gate">
+            <span class="num">6</span>
+            <span class="body"><strong>Deploy preview + Playwright E2E</strong><span>against the real deployed URL</span></span>
+            <span class="badge gate">Gate</span>
+          </div>
+          <div class="conn arrow"></div>
+          <div class="split">
+            <div class="node tagged prod">
+              <span class="body"><strong>Promote to production</strong><span>on pass</span></span>
+              <span class="badge prod">Prod</span>
+            </div>
+            <div class="node tagged stop">
+              <span class="body"><strong>Stop — no promotion</strong><span>on fail · report uploaded</span></span>
+              <span class="badge stop">Halt</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Worktrees + guardrails -->
+    <section class="slide" aria-label="Worktrees and guardrails">
+      <div class="slide-inner">
+        <p class="eyebrow"><span class="mark">Working in parallel · guardrails</span></p>
+        <h2 class="slide-h">Isolation &amp; gates</h2>
+        <div class="grid cols-2">
+          <div class="card">
+            <span class="tool">git worktrees</span>
+            <h3>Parallel isolated workspaces</h3>
+            <p>Each task or agent gets its <span class="hl">own working directory on its own branch</span>, sharing one repo. Multiple streams of work run side by side &mdash; no stashing, no branch-switching, no agents stomping each other's files. The local counterpart to issue-per-branch AI runs.</p>
+          </div>
+          <div class="card">
+            <span class="tool">Husky</span>
+            <h3>Commit / push gates</h3>
+            <p>Pre-commit and pre-push hooks run lint, typecheck and commitlint. Contract, types and format are enforced <span class="hl">before code lands</span> &mdash; CI confirms, it never discovers.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Close -->
+    <section class="slide" aria-label="Summary">
+      <div class="slide-inner">
+        <p class="eyebrow"><span class="mark">The through-line</span></p>
+        <h2 class="slide-h">One contract, verified all the way to prod</h2>
+        <p class="kicker-line">A single spec generates the client, mocks the server, and guards the boundary. Behavior is pinned in <strong>Gherkin</strong>, work is kicked off by <strong>assigning an issue</strong>, and nothing reaches production until <strong>real end-to-end tests</strong> pass against a real deployment.</p>
+        <div class="grid cols-3">
+          <div class="card"><span class="tool">Contract</span><p>Orval · MSW · Zod &mdash; spec is the source of truth.</p></div>
+          <div class="card"><span class="tool">Behavior</span><p>ATDD in Gherkin, run end to end by Playwright.</p></div>
+          <div class="card"><span class="tool">Delivery</span><p>Assign → Claude → PR → gated deploy to prod.</p></div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+
+<div class="chrome">
+  <span class="brand">frontend / enablement</span>
+  <div class="dots" id="dots" role="tablist" aria-label="Slides"></div>
+  <div class="nav-right">
+    <span class="hint">← / → to navigate</span>
+    <span class="counter" id="counter">01 / 08</span>
+    <button class="navbtn" id="prev" aria-label="Previous slide">&#8592;</button>
+    <button class="navbtn" id="next" aria-label="Next slide">&#8594;</button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var track = document.getElementById('track');
+    var slides = Array.prototype.slice.call(track.children);
+    var dotsWrap = document.getElementById('dots');
+    var counter = document.getElementById('counter');
+    var prev = document.getElementById('prev');
+    var next = document.getElementById('next');
+    var i = 0;
+    var n = slides.length;
+
+    function pad(x) { return (x < 10 ? '0' : '') + x; }
+
+    slides.forEach(function (_, idx) {
+      var b = document.createElement('button');
+      b.className = 'dot';
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-label', 'Go to slide ' + (idx + 1));
+      b.addEventListener('click', function () { go(idx); });
+      dotsWrap.appendChild(b);
+    });
+    var dots = Array.prototype.slice.call(dotsWrap.children);
+
+    function go(idx) {
+      i = Math.max(0, Math.min(n - 1, idx));
+      track.style.transform = 'translateX(' + (-i * 100) + '%)';
+      counter.textContent = pad(i + 1) + ' / ' + pad(n);
+      dots.forEach(function (d, k) { d.setAttribute('aria-current', k === i ? 'true' : 'false'); });
+      prev.disabled = i === 0;
+      next.disabled = i === n - 1;
+    }
+
+    prev.addEventListener('click', function () { go(i - 1); });
+    next.addEventListener('click', function () { go(i + 1); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') { go(i + 1); }
+      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { go(i - 1); }
+      else if (e.key === 'Home') { go(0); }
+      else if (e.key === 'End') { go(n - 1); }
+    });
+
+    go(0);
+  })();
+</script>
