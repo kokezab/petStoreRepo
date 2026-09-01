@@ -9,7 +9,10 @@ import type { PeriodicIntervalCommand } from './periodicIntervalCommand';
 import type { SyncTaskCommandType } from './syncTaskCommandType';
 
 export interface SyncTaskCommand {
-  /** @minLength 1 */
+  /**
+     * @minLength 0
+     * @maxLength 50
+     */
   key: string;
   interval?: PeriodicIntervalCommand;
   type: SyncTaskCommandType;

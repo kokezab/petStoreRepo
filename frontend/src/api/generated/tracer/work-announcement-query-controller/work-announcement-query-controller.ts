@@ -26,11 +26,11 @@ import type {
 
 import type {
   ApiErrorResponse,
-  ExportWorkAnnouncementCommand,
   GetOverlappingWorkAnnouncementsParams,
   GetWorkAnnouncementsParams,
   PageableResponseWorkAnnouncementTableResponse,
   WorkAnnouncementPeriodResponse,
+  WorkAnnouncementQueryParameters,
   WorkAnnouncementResponse
 } from '../models';
 
@@ -245,7 +245,7 @@ export function useGetWorkAnnouncements<TData = Awaited<ReturnType<typeof getWor
  * @summary Export work announcements to XLSX
  */
 export const exportWorkAnnouncements = (
-    exportWorkAnnouncementCommand: ExportWorkAnnouncementCommand,
+    workAnnouncementQueryParameters: WorkAnnouncementQueryParameters,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
 
@@ -253,7 +253,7 @@ export const exportWorkAnnouncements = (
       return customInstance<Blob>(
       {url: `/v1/work-announcements/export`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: exportWorkAnnouncementCommand,
+      data: workAnnouncementQueryParameters,
         responseType: 'blob', signal
     },
       options);
@@ -263,8 +263,8 @@ export const exportWorkAnnouncements = (
 
 
 export const getExportWorkAnnouncementsMutationOptions = <TError = ApiErrorResponse | void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof exportWorkAnnouncements>>, TError,{data: ExportWorkAnnouncementCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof exportWorkAnnouncements>>, TError,{data: ExportWorkAnnouncementCommand}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof exportWorkAnnouncements>>, TError,{data: WorkAnnouncementQueryParameters}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof exportWorkAnnouncements>>, TError,{data: WorkAnnouncementQueryParameters}, TContext> => {
 
 const mutationKey = ['exportWorkAnnouncements'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -276,7 +276,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof exportWorkAnnouncements>>, {data: ExportWorkAnnouncementCommand}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof exportWorkAnnouncements>>, {data: WorkAnnouncementQueryParameters}> = (props) => {
           const {data} = props ?? {};
 
           return  exportWorkAnnouncements(data,requestOptions)
@@ -290,18 +290,18 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type ExportWorkAnnouncementsMutationResult = NonNullable<Awaited<ReturnType<typeof exportWorkAnnouncements>>>
-    export type ExportWorkAnnouncementsMutationBody = ExportWorkAnnouncementCommand
+    export type ExportWorkAnnouncementsMutationBody = WorkAnnouncementQueryParameters
     export type ExportWorkAnnouncementsMutationError = ApiErrorResponse | void
 
     /**
  * @summary Export work announcements to XLSX
  */
 export const useExportWorkAnnouncements = <TError = ApiErrorResponse | void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof exportWorkAnnouncements>>, TError,{data: ExportWorkAnnouncementCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof exportWorkAnnouncements>>, TError,{data: WorkAnnouncementQueryParameters}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof exportWorkAnnouncements>>,
         TError,
-        {data: ExportWorkAnnouncementCommand},
+        {data: WorkAnnouncementQueryParameters},
         TContext
       > => {
       return useMutation(getExportWorkAnnouncementsMutationOptions(options), queryClient);

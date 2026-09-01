@@ -1,14 +1,12 @@
 import { expect } from '@playwright/test';
 import { createBdd, DataTable } from 'playwright-bdd';
+
+import { toLabel } from '../support/playwright-helpers';
 const { When, Then } = createBdd();
 
 Then('I should see a {string} form', async ({ page }, name: string) => {
   await expect(page.getByRole('form', { name })).toBeVisible();
 });
-
-function toLabel(field: string): string {
-  return field.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (c) => c.toUpperCase());
-}
 
 Then(
   'the form {string} should have the following fields:',

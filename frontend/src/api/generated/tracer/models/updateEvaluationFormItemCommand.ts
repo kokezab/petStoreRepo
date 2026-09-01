@@ -8,5 +8,9 @@
 
 export interface UpdateEvaluationFormItemCommand {
   id: string;
+  /**
+     * @minLength 0
+     * @maxLength 500
+     */
   itemValue?: string;
 }

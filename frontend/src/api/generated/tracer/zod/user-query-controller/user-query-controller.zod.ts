@@ -88,7 +88,8 @@ export const GetUserWithDataResponse = zod.object({
 })).optional(),
   "workLogSegments": zod.array(zod.object({
   "id": zod.int().optional(),
-  "name": zod.string().optional()
+  "name": zod.string().optional(),
+  "primary": zod.boolean().optional()
 })).optional()
 })
 
@@ -115,7 +116,8 @@ export const GetUserInfoResponse = zod.object({
 })).optional(),
   "workLogSegments": zod.array(zod.object({
   "id": zod.int().optional(),
-  "name": zod.string().optional()
+  "name": zod.string().optional(),
+  "primary": zod.boolean().optional()
 })).optional()
 })
 

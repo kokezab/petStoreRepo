@@ -21,7 +21,6 @@ year: number;
  */
 month: number;
 'preventiveMaintenance.included'?: boolean;
-'preventiveMaintenance.workLogSegmentId'?: number;
 /**
  * @minItems 0
  * @maxItems 200
@@ -36,7 +35,7 @@ month: number;
  * @minItems 0
  * @maxItems 200
  */
-'preventiveMaintenance.otherMaintenances'?: string[];
+'preventiveMaintenance.workLogSegmentIds'?: number[];
 'preventiveMaintenance.statuses'?: GetCalendarPreventiveMaintenanceStatusesItem[];
 'preventiveMaintenance.periodicities'?: GetCalendarPreventiveMaintenancePeriodicitiesItem[];
 'workAnnouncement.included'?: boolean;

@@ -23,14 +23,20 @@ export const updateWorkLogSegmentBodyAbbreviationMax = 10;
 
 
 
+export const updateWorkLogSegmentBodyColorRegExp = new RegExp('^#[A-Fa-f0-9]{6}$');
+
+
+
 
 
 export const UpdateWorkLogSegmentBody = zod.object({
   "name": zod.string().min(updateWorkLogSegmentBodyNameMin).max(updateWorkLogSegmentBodyNameMax),
   "abbreviation": zod.string().min(updateWorkLogSegmentBodyAbbreviationMin).max(updateWorkLogSegmentBodyAbbreviationMax).optional(),
+  "color": zod.string().min(1).regex(updateWorkLogSegmentBodyColorRegExp),
   "parentId": zod.int().optional(),
   "locationIds": zod.array(zod.int()).min(1),
-  "orgUnitIds": zod.array(zod.int()).min(1)
+  "orgUnitIds": zod.array(zod.int()).min(1),
+  "dutyCandidateUserIds": zod.array(zod.uuid()).min(1)
 })
 
 export const UpdateWorkLogSegmentResponse = zod.void()
@@ -46,14 +52,20 @@ export const createWorkLogSegmentBodyAbbreviationMax = 10;
 
 
 
+export const createWorkLogSegmentBodyColorRegExp = new RegExp('^#[A-Fa-f0-9]{6}$');
+
+
+
 
 
 export const CreateWorkLogSegmentBody = zod.object({
   "name": zod.string().min(createWorkLogSegmentBodyNameMin).max(createWorkLogSegmentBodyNameMax),
   "abbreviation": zod.string().min(createWorkLogSegmentBodyAbbreviationMin).max(createWorkLogSegmentBodyAbbreviationMax).optional(),
+  "color": zod.string().min(1).regex(createWorkLogSegmentBodyColorRegExp),
   "parentId": zod.int().optional(),
   "locationIds": zod.array(zod.int()).min(1),
-  "orgUnitIds": zod.array(zod.int()).min(1)
+  "orgUnitIds": zod.array(zod.int()).min(1),
+  "dutyCandidateUserIds": zod.array(zod.uuid()).min(1)
 })
 
 export const CreateWorkLogSegmentResponse = zod.void()

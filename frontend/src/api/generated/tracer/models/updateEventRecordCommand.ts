@@ -12,7 +12,7 @@ export interface UpdateEventRecordCommand {
   endDateTime?: string;
   /**
      * @minLength 0
-     * @maxLength 500
+     * @maxLength 512
      */
   description: string;
   organizationalUnitId: number;

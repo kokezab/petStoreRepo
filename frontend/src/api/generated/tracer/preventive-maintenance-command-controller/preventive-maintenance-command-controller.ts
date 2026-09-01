@@ -18,7 +18,8 @@ import type {
 import type {
   ApiErrorResponse,
   CancelPreventiveMaintenanceCommand,
-  UpdatePreventiveMaintenanceCommand
+  UpdatePreventiveMaintenanceCommand,
+  UpdatePreventiveMaintenanceStartDateCommand
 } from '../models';
 
 import { customInstance } from '../../../axios-instance';
@@ -92,6 +93,71 @@ export const useUpdatePreventiveMaintenance = <TError = ApiErrorResponse | void,
         TContext
       > => {
       return useMutation(getUpdatePreventiveMaintenanceMutationOptions(options), queryClient);
+    }
+    /**
+ * @summary Update preventive maintenance start date
+ */
+export const updatePreventiveMaintenanceStartDate = (
+    id: string,
+    updatePreventiveMaintenanceStartDateCommand: UpdatePreventiveMaintenanceStartDateCommand,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<void>(
+      {url: `/v1/preventive-maintenance/${id}/start-date`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: updatePreventiveMaintenanceStartDateCommand, signal
+    },
+      options);
+    }
+
+
+
+
+export const getUpdatePreventiveMaintenanceStartDateMutationOptions = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatePreventiveMaintenanceStartDate>>, TError,{id: string;data: UpdatePreventiveMaintenanceStartDateCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof updatePreventiveMaintenanceStartDate>>, TError,{id: string;data: UpdatePreventiveMaintenanceStartDateCommand}, TContext> => {
+
+const mutationKey = ['updatePreventiveMaintenanceStartDate'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updatePreventiveMaintenanceStartDate>>, {id: string;data: UpdatePreventiveMaintenanceStartDateCommand}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  updatePreventiveMaintenanceStartDate(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdatePreventiveMaintenanceStartDateMutationResult = NonNullable<Awaited<ReturnType<typeof updatePreventiveMaintenanceStartDate>>>
+    export type UpdatePreventiveMaintenanceStartDateMutationBody = UpdatePreventiveMaintenanceStartDateCommand
+    export type UpdatePreventiveMaintenanceStartDateMutationError = ApiErrorResponse | void
+
+    /**
+ * @summary Update preventive maintenance start date
+ */
+export const useUpdatePreventiveMaintenanceStartDate = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updatePreventiveMaintenanceStartDate>>, TError,{id: string;data: UpdatePreventiveMaintenanceStartDateCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updatePreventiveMaintenanceStartDate>>,
+        TError,
+        {id: string;data: UpdatePreventiveMaintenanceStartDateCommand},
+        TContext
+      > => {
+      return useMutation(getUpdatePreventiveMaintenanceStartDateMutationOptions(options), queryClient);
     }
     /**
  * @summary Complete preventive maintenance record

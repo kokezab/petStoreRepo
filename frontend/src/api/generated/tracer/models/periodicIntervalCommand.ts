@@ -9,7 +9,15 @@ import type { PeriodicIntervalCommandInterval } from './periodicIntervalCommandI
 
 export interface PeriodicIntervalCommand {
   interval: PeriodicIntervalCommandInterval;
+  /**
+     * @minLength 0
+     * @maxLength 100
+     */
   selectedDays?: string;
+  /**
+     * @minLength 0
+     * @maxLength 150
+     */
   selectedHours?: string;
   selectedMinute?: number;
   frequencyMinutes?: number;

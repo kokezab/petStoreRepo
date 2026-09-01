@@ -15,6 +15,11 @@ export const UpdatePreventiveMaintenanceParams = zod.object({
   "id": zod.uuid()
 })
 
+export const updatePreventiveMaintenanceBodyEvaluationFormItemsItemItemValueMin = 0;
+export const updatePreventiveMaintenanceBodyEvaluationFormItemsItemItemValueMax = 500;
+
+
+
 export const UpdatePreventiveMaintenanceBody = zod.object({
   "assignedWorkerIds": zod.array(zod.uuid()).optional(),
   "note": zod.string().optional(),
@@ -22,11 +27,24 @@ export const UpdatePreventiveMaintenanceBody = zod.object({
   "workAnnouncementIds": zod.array(zod.uuid()).optional(),
   "evaluationFormItems": zod.array(zod.object({
   "id": zod.uuid(),
-  "itemValue": zod.string().optional()
+  "itemValue": zod.string().min(updatePreventiveMaintenanceBodyEvaluationFormItemsItemItemValueMin).max(updatePreventiveMaintenanceBodyEvaluationFormItemsItemItemValueMax).optional()
 })).optional()
 })
 
 export const UpdatePreventiveMaintenanceResponse = zod.void()
+
+/**
+ * @summary Update preventive maintenance start date
+ */
+export const UpdatePreventiveMaintenanceStartDateParams = zod.object({
+  "id": zod.uuid()
+})
+
+export const UpdatePreventiveMaintenanceStartDateBody = zod.object({
+  "startDate": zod.iso.date()
+})
+
+export const UpdatePreventiveMaintenanceStartDateResponse = zod.unknown()
 
 /**
  * @summary Complete preventive maintenance record

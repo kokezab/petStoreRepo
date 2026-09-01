@@ -6,17 +6,20 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { CalendarPreventiveMaintenanceResponsePeriodicity } from './calendarPreventiveMaintenanceResponsePeriodicity';
+import type { CalendarPreventiveMaintenanceResponseStatus } from './calendarPreventiveMaintenanceResponseStatus';
 
 export interface CalendarPreventiveMaintenanceResponse {
   id?: string;
   equipmentId?: number;
   otherMaintenance?: string;
   workLogSegmentAbbreviation?: string;
-  daysSinceLastMaintenance?: number;
-  previousMaintenanceCancelled?: boolean;
+  isPreviousCancelled?: boolean;
   periodicity?: CalendarPreventiveMaintenanceResponsePeriodicity;
+  status?: CalendarPreventiveMaintenanceResponseStatus;
   workAnnouncementId?: string;
   higherLevelMaintenanceIds?: string[];
   lowerLevelMaintenanceIds?: string[];
   startDate?: string;
+  previousDate?: string;
+  nextDate?: string;
 }

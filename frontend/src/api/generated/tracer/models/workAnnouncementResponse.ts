@@ -8,6 +8,7 @@
 import type { WorkAnnouncementElementDetailResponse } from './workAnnouncementElementDetailResponse';
 import type { WorkAnnouncementGroupLinkResponse } from './workAnnouncementGroupLinkResponse';
 import type { WorkAnnouncementResponseStatus } from './workAnnouncementResponseStatus';
+import type { WorkAnnouncementResponseWorkAnnouncementGroupIdToBlockedUserIds } from './workAnnouncementResponseWorkAnnouncementGroupIdToBlockedUserIds';
 
 export interface WorkAnnouncementResponse {
   id?: string;
@@ -34,6 +35,6 @@ export interface WorkAnnouncementResponse {
   eventRecordIds?: string[];
   elements?: WorkAnnouncementElementDetailResponse[];
   workAnnouncementGroups?: WorkAnnouncementGroupLinkResponse[];
-  blockedVoterUserIds?: string[];
+  workAnnouncementGroupIdToBlockedUserIds?: WorkAnnouncementResponseWorkAnnouncementGroupIdToBlockedUserIds;
   wasInfo?: boolean;
 }

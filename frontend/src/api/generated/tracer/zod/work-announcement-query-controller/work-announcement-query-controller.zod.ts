@@ -54,7 +54,7 @@ export const GetWorkAnnouncementByIdResponse = zod.object({
   "rejectionReason": zod.string().optional()
 }).optional()
 })).optional(),
-  "blockedVoterUserIds": zod.array(zod.uuid()).optional(),
+  "workAnnouncementGroupIdToBlockedUserIds": zod.record(zod.string(), zod.array(zod.uuid())).optional(),
   "wasInfo": zod.boolean().optional()
 })
 
@@ -76,11 +76,12 @@ export const GetWorkAnnouncementsQueryParams = zod.object({
   "telecomId": zod.int().optional(),
   "responsibleUserId": zod.uuid().optional(),
   "announcerUserId": zod.uuid().optional(),
-  "workLogSegmentIds": zod.array(zod.int()).optional(),
   "companyId": zod.int().optional(),
   "statuses": zod.array(zod.enum(['DRAFT', 'PENDING_APPROVAL', 'APPROVED', 'NOTIFICATION', 'INFO', 'IN_PROGRESS', 'ON_HOLD', 'REJECTED', 'COMPLETED', 'CANCELLED'])).optional(),
   "longTermWorks": zod.boolean().optional(),
   "areaLocationIds": zod.array(zod.int()).optional(),
+  "workLogSegmentIds": zod.array(zod.int()).optional(),
+  "periodInHours": zod.enum(['ONE_HOUR', 'TWO_HOURS', 'THREE_HOURS', 'SIX_HOURS', 'TWELVE_HOURS', 'TWENTY_FOUR_HOURS']).optional(),
   "pageable": zod.object({
   "page": zod.int().min(getWorkAnnouncementsQueryPageablePageMin).optional(),
   "size": zod.int().min(1).optional(),
@@ -96,6 +97,9 @@ export const GetWorkAnnouncementsResponse = zod.object({
   "plannedStart": zod.iso.datetime({"offset":true}).optional(),
   "plannedEnd": zod.iso.datetime({"offset":true}).optional(),
   "status": zod.enum(['DRAFT', 'PENDING_APPROVAL', 'APPROVED', 'NOTIFICATION', 'INFO', 'IN_PROGRESS', 'ON_HOLD', 'REJECTED', 'COMPLETED', 'CANCELLED']).optional(),
+  "notam": zod.string().optional(),
+  "notamRequired": zod.boolean().optional(),
+  "workLogSegmentId": zod.int().optional(),
   "elements": zod.array(zod.object({
   "elementName": zod.enum(['EQUIPMENT', 'TELECOM_CAPACITY', 'MASTER_DATA_FUNCTION']).optional(),
   "elementId": zod.int().optional(),
@@ -113,12 +117,21 @@ export const GetWorkAnnouncementsResponse = zod.object({
  * @summary Export work announcements to XLSX
  */
 export const ExportWorkAnnouncementsBody = zod.object({
+  "search": zod.string().optional(),
+  "workAnnouncementGroupIds": zod.array(zod.int()).optional(),
+  "locationId": zod.int().optional(),
   "equipmentFunctionId": zod.int().optional(),
   "telecomCapacityFunctionId": zod.int().optional(),
   "equipmentId": zod.int().optional(),
   "telecomId": zod.int().optional(),
+  "responsibleUserId": zod.uuid().optional(),
   "announcerUserId": zod.uuid().optional(),
-  "statuses": zod.array(zod.enum(['DRAFT', 'PENDING_APPROVAL', 'APPROVED', 'NOTIFICATION', 'INFO', 'IN_PROGRESS', 'ON_HOLD', 'REJECTED', 'COMPLETED', 'CANCELLED'])).optional()
+  "companyId": zod.int().optional(),
+  "statuses": zod.array(zod.enum(['DRAFT', 'PENDING_APPROVAL', 'APPROVED', 'NOTIFICATION', 'INFO', 'IN_PROGRESS', 'ON_HOLD', 'REJECTED', 'COMPLETED', 'CANCELLED'])).optional(),
+  "longTermWorks": zod.boolean().optional(),
+  "areaLocationIds": zod.array(zod.int()).optional(),
+  "workLogSegmentIds": zod.array(zod.int()).optional(),
+  "periodInHours": zod.enum(['ONE_HOUR', 'TWO_HOURS', 'THREE_HOURS', 'SIX_HOURS', 'TWELVE_HOURS', 'TWENTY_FOUR_HOURS']).optional()
 })
 
 export const ExportWorkAnnouncementsResponse = zod.instanceof(File)

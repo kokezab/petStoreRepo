@@ -25,6 +25,16 @@ export const getUpdatePreventiveMaintenanceMockHandler = (overrideResponse?: voi
   }, options)
 }
 
+export const getUpdatePreventiveMaintenanceStartDateMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
+  return http.patch('*/v1/preventive-maintenance/:id/start-date', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+
+    return new HttpResponse(null,
+      { status: 200
+      })
+  }, options)
+}
+
 export const getCompletePreventiveMaintenanceMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
   return http.patch('*/v1/preventive-maintenance/:id/complete', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
   if (typeof overrideResponse === 'function') {await overrideResponse(info); }
@@ -46,6 +56,7 @@ export const getCancelPreventiveMaintenanceMockHandler = (overrideResponse?: voi
 }
 export const getPreventiveMaintenanceCommandControllerMock = () => [
   getUpdatePreventiveMaintenanceMockHandler(),
+  getUpdatePreventiveMaintenanceStartDateMockHandler(),
   getCompletePreventiveMaintenanceMockHandler(),
   getCancelPreventiveMaintenanceMockHandler()
 ]

@@ -15,6 +15,8 @@ export const UpdatePreventiveMaintenanceTemplateParams = zod.object({
   "id": zod.int()
 })
 
+export const updatePreventiveMaintenanceTemplateBodyNameMin = 0;
+export const updatePreventiveMaintenanceTemplateBodyNameMax = 200;
 
 
 export const updatePreventiveMaintenanceTemplateBodyFormItemsItemNameMin = 0;
@@ -25,8 +27,9 @@ export const updatePreventiveMaintenanceTemplateBodyFormItemsItemPredefinedOptio
 
 
 
+
 export const UpdatePreventiveMaintenanceTemplateBody = zod.object({
-  "name": zod.string().min(1),
+  "name": zod.string().min(updatePreventiveMaintenanceTemplateBodyNameMin).max(updatePreventiveMaintenanceTemplateBodyNameMax),
   "description": zod.string().min(1),
   "organizationalUnitId": zod.int(),
   "startDate": zod.iso.date(),
@@ -45,7 +48,7 @@ export const UpdatePreventiveMaintenanceTemplateBody = zod.object({
   "name": zod.string().min(updatePreventiveMaintenanceTemplateBodyFormItemsItemPredefinedOptionsItemNameMin).max(updatePreventiveMaintenanceTemplateBodyFormItemsItemPredefinedOptionsItemNameMax),
   "orderNumber": zod.int()
 })).optional()
-})).optional()
+})).min(1)
 })
 
 export const UpdatePreventiveMaintenanceTemplateResponse = zod.unknown()
@@ -62,6 +65,8 @@ export const DeletePreventiveMaintenanceTemplateResponse = zod.void()
 /**
  * @summary Create preventive maintenance template
  */
+export const createPreventiveMaintenanceTemplateBodyNameMin = 0;
+export const createPreventiveMaintenanceTemplateBodyNameMax = 200;
 
 
 export const createPreventiveMaintenanceTemplateBodyFormItemsItemNameMin = 0;
@@ -72,8 +77,9 @@ export const createPreventiveMaintenanceTemplateBodyFormItemsItemPredefinedOptio
 
 
 
+
 export const CreatePreventiveMaintenanceTemplateBody = zod.object({
-  "name": zod.string().min(1),
+  "name": zod.string().min(createPreventiveMaintenanceTemplateBodyNameMin).max(createPreventiveMaintenanceTemplateBodyNameMax),
   "description": zod.string().min(1),
   "organizationalUnitId": zod.int(),
   "startDate": zod.iso.date(),
@@ -91,7 +97,7 @@ export const CreatePreventiveMaintenanceTemplateBody = zod.object({
   "name": zod.string().min(createPreventiveMaintenanceTemplateBodyFormItemsItemPredefinedOptionsItemNameMin).max(createPreventiveMaintenanceTemplateBodyFormItemsItemPredefinedOptionsItemNameMax),
   "orderNumber": zod.int()
 })).optional()
-})).optional()
+})).min(1)
 })
 
 export const CreatePreventiveMaintenanceTemplateResponse = zod.void()

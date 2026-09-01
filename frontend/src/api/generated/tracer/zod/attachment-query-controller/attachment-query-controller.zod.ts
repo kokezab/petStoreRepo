@@ -13,7 +13,7 @@ import * as zod from 'zod';
  */
 export const GetAttachmentsQueryParams = zod.object({
   "attachmentAssociatedEntityId": zod.string(),
-  "attachmentAssociatedEntity": zod.enum(['EVENT_RECORD', 'WORK_ANNOUNCEMENT', 'WORK_ANNOUNCEMENT_TEMPLATE'])
+  "attachmentAssociatedEntity": zod.enum(['EVENT_RECORD', 'WORK_ANNOUNCEMENT', 'WORK_ANNOUNCEMENT_TEMPLATE', 'PREVENTIVE_MAINTENANCE'])
 })
 
 export const GetAttachmentsResponseItem = zod.object({

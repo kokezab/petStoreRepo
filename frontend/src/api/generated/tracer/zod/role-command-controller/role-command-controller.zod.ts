@@ -18,11 +18,14 @@ export const UpdateRoleParams = zod.object({
 export const updateRoleBodyNameMin = 0;
 export const updateRoleBodyNameMax = 100;
 
+export const updateRoleBodyDescriptionMin = 0;
+export const updateRoleBodyDescriptionMax = 500;
+
 
 
 export const UpdateRoleBody = zod.object({
   "name": zod.string().min(updateRoleBodyNameMin).max(updateRoleBodyNameMax),
-  "description": zod.string().optional(),
+  "description": zod.string().min(updateRoleBodyDescriptionMin).max(updateRoleBodyDescriptionMax).optional(),
   "permissionIds": zod.array(zod.uuid()).optional()
 })
 
@@ -43,11 +46,14 @@ export const DeleteRoleResponse = zod.void()
 export const createRoleBodyNameMin = 0;
 export const createRoleBodyNameMax = 100;
 
+export const createRoleBodyDescriptionMin = 0;
+export const createRoleBodyDescriptionMax = 500;
+
 
 
 export const CreateRoleBody = zod.object({
   "name": zod.string().min(createRoleBodyNameMin).max(createRoleBodyNameMax),
-  "description": zod.string().optional(),
+  "description": zod.string().min(createRoleBodyDescriptionMin).max(createRoleBodyDescriptionMax).optional(),
   "permissionIds": zod.array(zod.uuid()).optional()
 })
 

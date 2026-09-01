@@ -10,7 +10,10 @@ import type { CreatePreventiveMaintenanceTemplateCommandPeriodicity } from './cr
 import type { FormItemCommand } from './formItemCommand';
 
 export interface CreatePreventiveMaintenanceTemplateCommand {
-  /** @minLength 1 */
+  /**
+     * @minLength 0
+     * @maxLength 200
+     */
   name: string;
   /** @minLength 1 */
   description: string;
@@ -22,5 +25,6 @@ export interface CreatePreventiveMaintenanceTemplateCommand {
   equipmentId?: number;
   otherMaintenance?: string;
   workAnnouncementTemplateId?: number;
-  formItems?: FormItemCommand[];
+  /** @minItems 1 */
+  formItems: FormItemCommand[];
 }

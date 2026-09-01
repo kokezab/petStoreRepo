@@ -16,5 +16,4 @@ export const EquipmentWithLocationResponseEquipmentType = {
   SUBSYSTEM: 'SUBSYSTEM',
   DEVICE: 'DEVICE',
   MODULE: 'MODULE',
-  SPARE: 'SPARE',
 } as const;

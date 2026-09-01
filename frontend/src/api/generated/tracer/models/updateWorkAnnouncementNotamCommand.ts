@@ -7,6 +7,9 @@
  */
 
 export interface UpdateWorkAnnouncementNotamCommand {
-  /** @minLength 1 */
+  /**
+     * @minLength 0
+     * @maxLength 1000
+     */
   notam: string;
 }

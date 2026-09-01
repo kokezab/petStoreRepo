@@ -10,8 +10,10 @@ export interface WorkLogSegmentResponse {
   id?: number;
   name?: string;
   abbreviation?: string;
+  color?: string;
   parentId?: number;
   active?: boolean;
   locationIds?: number[];
   orgUnitIds?: number[];
+  dutyCandidateUserIds?: string[];
 }

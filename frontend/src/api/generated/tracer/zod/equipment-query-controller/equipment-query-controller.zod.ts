@@ -27,8 +27,8 @@ export const GetEquipmentByIdResponse = zod.object({
   "code": zod.int().optional(),
   "fullPath": zod.string().optional()
 }).optional(),
-  "equipmentType": zod.enum(['DOMAIN', 'UNIT', 'SYSTEM', 'SUBSYSTEM', 'DEVICE', 'MODULE', 'SPARE']).optional(),
-  "deviceStatus": zod.enum(['INSTALLED', 'INSTALLED_FAULTY', 'IN_RESERVE', 'RESERVE_FAULTY', 'UNDER_REPAIR', 'DECOMMISSIONED', 'AWAITING_VERIFICATION']).optional(),
+  "equipmentType": zod.enum(['DOMAIN', 'UNIT', 'SYSTEM', 'SUBSYSTEM', 'DEVICE', 'MODULE']).optional(),
+  "deviceStatus": zod.enum(['INSTALLED', 'FAULTY', 'IN_RESERVE', 'UNDER_REPAIR']).optional(),
   "companyId": zod.int().optional(),
   "model": zod.string().optional(),
   "hardwareSoftware": zod.enum(['HARDWARE', 'SOFTWARE']).optional(),
@@ -55,8 +55,8 @@ export const GetEquipmentResponseItem = zod.object({
   "code": zod.int().optional(),
   "fullPath": zod.string().optional()
 }).optional(),
-  "equipmentType": zod.enum(['DOMAIN', 'UNIT', 'SYSTEM', 'SUBSYSTEM', 'DEVICE', 'MODULE', 'SPARE']).optional(),
-  "deviceStatus": zod.enum(['INSTALLED', 'INSTALLED_FAULTY', 'IN_RESERVE', 'RESERVE_FAULTY', 'UNDER_REPAIR', 'DECOMMISSIONED', 'AWAITING_VERIFICATION']).optional(),
+  "equipmentType": zod.enum(['DOMAIN', 'UNIT', 'SYSTEM', 'SUBSYSTEM', 'DEVICE', 'MODULE']).optional(),
+  "deviceStatus": zod.enum(['INSTALLED', 'FAULTY', 'IN_RESERVE', 'UNDER_REPAIR']).optional(),
   "companyId": zod.int().optional(),
   "model": zod.string().optional(),
   "hardwareSoftware": zod.enum(['HARDWARE', 'SOFTWARE']).optional(),

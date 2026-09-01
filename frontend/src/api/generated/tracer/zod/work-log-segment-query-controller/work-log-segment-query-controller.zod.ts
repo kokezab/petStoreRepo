@@ -19,10 +19,12 @@ export const GetWorkLogSegmentByIdResponse = zod.object({
   "id": zod.int().optional(),
   "name": zod.string().optional(),
   "abbreviation": zod.string().optional(),
+  "color": zod.string().optional(),
   "parentId": zod.int().optional(),
   "active": zod.boolean().optional(),
   "locationIds": zod.array(zod.int()).optional(),
-  "orgUnitIds": zod.array(zod.int()).optional()
+  "orgUnitIds": zod.array(zod.int()).optional(),
+  "dutyCandidateUserIds": zod.array(zod.uuid()).optional()
 })
 
 /**
@@ -32,10 +34,22 @@ export const GetWorkLogSegmentsResponseItem = zod.object({
   "id": zod.int().optional(),
   "name": zod.string().optional(),
   "abbreviation": zod.string().optional(),
+  "color": zod.string().optional(),
   "parentId": zod.int().optional(),
   "active": zod.boolean().optional(),
   "locationIds": zod.array(zod.int()).optional(),
-  "orgUnitIds": zod.array(zod.int()).optional()
+  "orgUnitIds": zod.array(zod.int()).optional(),
+  "dutyCandidateUserIds": zod.array(zod.uuid()).optional()
 })
 export const GetWorkLogSegmentsResponse = zod.array(GetWorkLogSegmentsResponseItem)
+
+/**
+ * @summary Get duty candidates for work log segment
+ */
+export const GetWorkLogSegmentDutyCandidatesParams = zod.object({
+  "id": zod.int()
+})
+
+export const GetWorkLogSegmentDutyCandidatesResponseItem = zod.uuid()
+export const GetWorkLogSegmentDutyCandidatesResponse = zod.array(GetWorkLogSegmentDutyCandidatesResponseItem)
 

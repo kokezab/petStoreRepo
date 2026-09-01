@@ -10,5 +10,9 @@ export interface UpdateWorkAnnouncementWorkProgressCommand {
   workStartedAt?: string;
   workCompletedAt?: string;
   workCompletionDescription?: string;
+  /**
+     * @minLength 0
+     * @maxLength 1000
+     */
   notam?: string;
 }

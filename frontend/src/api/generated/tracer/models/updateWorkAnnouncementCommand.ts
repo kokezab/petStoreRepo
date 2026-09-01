@@ -17,13 +17,16 @@ export interface UpdateWorkAnnouncementCommand {
      */
   plannedDuration?: string;
   announcerUserId?: string;
+  /**
+     * @minLength 0
+     * @maxLength 1000
+     */
   notam?: string;
   notamRequired?: boolean;
   workLogSegmentId: number;
   /**
      * @minLength 0
      * @maxLength 255
-     * @pattern ^(\+?[0-9]+)?$
      */
   contactPhone?: string;
   /** @minLength 1 */

@@ -22,8 +22,8 @@ export const getCalendarQueryPreventiveMaintenanceOrganizationalUnitIdsMax = 200
 export const getCalendarQueryPreventiveMaintenanceEquipmentIdsMin = 0;
 export const getCalendarQueryPreventiveMaintenanceEquipmentIdsMax = 200;
 
-export const getCalendarQueryPreventiveMaintenanceOtherMaintenancesMin = 0;
-export const getCalendarQueryPreventiveMaintenanceOtherMaintenancesMax = 200;
+export const getCalendarQueryPreventiveMaintenanceWorkLogSegmentIdsMin = 0;
+export const getCalendarQueryPreventiveMaintenanceWorkLogSegmentIdsMax = 200;
 
 export const getCalendarQueryWorkAnnouncementLocationIdsMin = 0;
 export const getCalendarQueryWorkAnnouncementLocationIdsMax = 200;
@@ -52,10 +52,9 @@ export const GetCalendarQueryParams = zod.object({
   "year": zod.int().min(getCalendarQueryYearMin).max(getCalendarQueryYearMax),
   "month": zod.int().min(1).max(getCalendarQueryMonthMax),
   "preventiveMaintenance.included": zod.boolean().optional(),
-  "preventiveMaintenance.workLogSegmentId": zod.int().optional(),
   "preventiveMaintenance.organizationalUnitIds": zod.array(zod.int()).min(getCalendarQueryPreventiveMaintenanceOrganizationalUnitIdsMin).max(getCalendarQueryPreventiveMaintenanceOrganizationalUnitIdsMax).optional(),
   "preventiveMaintenance.equipmentIds": zod.array(zod.int()).min(getCalendarQueryPreventiveMaintenanceEquipmentIdsMin).max(getCalendarQueryPreventiveMaintenanceEquipmentIdsMax).optional(),
-  "preventiveMaintenance.otherMaintenances": zod.array(zod.string()).min(getCalendarQueryPreventiveMaintenanceOtherMaintenancesMin).max(getCalendarQueryPreventiveMaintenanceOtherMaintenancesMax).optional(),
+  "preventiveMaintenance.workLogSegmentIds": zod.array(zod.int()).min(getCalendarQueryPreventiveMaintenanceWorkLogSegmentIdsMin).max(getCalendarQueryPreventiveMaintenanceWorkLogSegmentIdsMax).optional(),
   "preventiveMaintenance.statuses": zod.array(zod.enum(['PLANNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED'])).optional(),
   "preventiveMaintenance.periodicities": zod.array(zod.enum(['DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY', 'BIMONTHLY', 'QUARTERLY', 'SEMIANNUAL', 'ANNUAL', 'BIENNIAL', 'TRIENNIAL'])).optional(),
   "workAnnouncement.included": zod.boolean().optional(),
@@ -76,13 +75,15 @@ export const GetCalendarResponse = zod.object({
   "equipmentId": zod.int().optional(),
   "otherMaintenance": zod.string().optional(),
   "workLogSegmentAbbreviation": zod.string().optional(),
-  "daysSinceLastMaintenance": zod.int().optional(),
-  "previousMaintenanceCancelled": zod.boolean().optional(),
+  "isPreviousCancelled": zod.boolean().optional(),
   "periodicity": zod.enum(['DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY', 'BIMONTHLY', 'QUARTERLY', 'SEMIANNUAL', 'ANNUAL', 'BIENNIAL', 'TRIENNIAL']).optional(),
+  "status": zod.enum(['PLANNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED']).optional(),
   "workAnnouncementId": zod.uuid().optional(),
   "higherLevelMaintenanceIds": zod.array(zod.uuid()).optional(),
   "lowerLevelMaintenanceIds": zod.array(zod.uuid()).optional(),
-  "startDate": zod.iso.date().optional()
+  "startDate": zod.iso.date().optional(),
+  "previousDate": zod.iso.date().optional(),
+  "nextDate": zod.iso.date().optional()
 })).optional(),
   "workAnnouncements": zod.array(zod.object({
   "id": zod.uuid().optional(),

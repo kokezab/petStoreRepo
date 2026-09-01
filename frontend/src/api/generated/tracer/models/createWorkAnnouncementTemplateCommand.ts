@@ -9,7 +9,10 @@ import type { TemplateElementCommand } from './templateElementCommand';
 import type { TemplateGroupLinkCommand } from './templateGroupLinkCommand';
 
 export interface CreateWorkAnnouncementTemplateCommand {
-  /** @minLength 1 */
+  /**
+     * @minLength 0
+     * @maxLength 200
+     */
   name: string;
   /** @minLength 1 */
   description: string;
@@ -20,7 +23,6 @@ export interface CreateWorkAnnouncementTemplateCommand {
   /**
      * @minLength 0
      * @maxLength 255
-     * @pattern ^(\+?\d+)?$
      */
   contactPhone?: string;
   workDescription?: string;

@@ -11,10 +11,7 @@ export type CreateEquipmentCommandDeviceStatus = typeof CreateEquipmentCommandDe
 
 export const CreateEquipmentCommandDeviceStatus = {
   INSTALLED: 'INSTALLED',
-  INSTALLED_FAULTY: 'INSTALLED_FAULTY',
+  FAULTY: 'FAULTY',
   IN_RESERVE: 'IN_RESERVE',
-  RESERVE_FAULTY: 'RESERVE_FAULTY',
   UNDER_REPAIR: 'UNDER_REPAIR',
-  DECOMMISSIONED: 'DECOMMISSIONED',
-  AWAITING_VERIFICATION: 'AWAITING_VERIFICATION',
 } as const;

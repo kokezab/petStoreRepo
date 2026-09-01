@@ -18,11 +18,12 @@ export const UpdateWorkAnnouncementParams = zod.object({
 export const updateWorkAnnouncementBodyPlannedDurationMin = 0;
 export const updateWorkAnnouncementBodyPlannedDurationMax = 255;
 
+export const updateWorkAnnouncementBodyNotamMin = 0;
+export const updateWorkAnnouncementBodyNotamMax = 1000;
+
 export const updateWorkAnnouncementBodyContactPhoneMin = 0;
 export const updateWorkAnnouncementBodyContactPhoneMax = 255;
 
-
-export const updateWorkAnnouncementBodyContactPhoneRegExp = new RegExp('^(\\+?[0-9]+)?$');
 
 
 
@@ -33,10 +34,10 @@ export const UpdateWorkAnnouncementBody = zod.object({
   "plannedEnd": zod.iso.datetime({"offset":true}),
   "plannedDuration": zod.string().min(updateWorkAnnouncementBodyPlannedDurationMin).max(updateWorkAnnouncementBodyPlannedDurationMax).optional(),
   "announcerUserId": zod.uuid().optional(),
-  "notam": zod.string().optional(),
+  "notam": zod.string().min(updateWorkAnnouncementBodyNotamMin).max(updateWorkAnnouncementBodyNotamMax).optional(),
   "notamRequired": zod.boolean().optional(),
   "workLogSegmentId": zod.int(),
-  "contactPhone": zod.string().min(updateWorkAnnouncementBodyContactPhoneMin).max(updateWorkAnnouncementBodyContactPhoneMax).regex(updateWorkAnnouncementBodyContactPhoneRegExp).optional(),
+  "contactPhone": zod.string().min(updateWorkAnnouncementBodyContactPhoneMin).max(updateWorkAnnouncementBodyContactPhoneMax).optional(),
   "workDescription": zod.string().min(1),
   "impactDescription": zod.string().min(1),
   "longTermWorks": zod.boolean().optional(),
@@ -62,11 +63,12 @@ export const UpdateWorkAnnouncementResponse = zod.unknown()
 export const createWorkAnnouncementBodyPlannedDurationMin = 0;
 export const createWorkAnnouncementBodyPlannedDurationMax = 255;
 
+export const createWorkAnnouncementBodyNotamMin = 0;
+export const createWorkAnnouncementBodyNotamMax = 1000;
+
 export const createWorkAnnouncementBodyContactPhoneMin = 0;
 export const createWorkAnnouncementBodyContactPhoneMax = 255;
 
-
-export const createWorkAnnouncementBodyContactPhoneRegExp = new RegExp('^(\\+?[0-9]+)?$');
 
 
 
@@ -78,10 +80,10 @@ export const CreateWorkAnnouncementBody = zod.object({
   "plannedEnd": zod.iso.datetime({"offset":true}),
   "plannedDuration": zod.string().min(createWorkAnnouncementBodyPlannedDurationMin).max(createWorkAnnouncementBodyPlannedDurationMax).optional(),
   "announcerUserId": zod.uuid().optional(),
-  "notam": zod.string().optional(),
+  "notam": zod.string().min(createWorkAnnouncementBodyNotamMin).max(createWorkAnnouncementBodyNotamMax).optional(),
   "notamRequired": zod.boolean().optional(),
   "workLogSegmentId": zod.int(),
-  "contactPhone": zod.string().min(createWorkAnnouncementBodyContactPhoneMin).max(createWorkAnnouncementBodyContactPhoneMax).regex(createWorkAnnouncementBodyContactPhoneRegExp).optional(),
+  "contactPhone": zod.string().min(createWorkAnnouncementBodyContactPhoneMin).max(createWorkAnnouncementBodyContactPhoneMax).optional(),
   "workDescription": zod.string().min(1),
   "impactDescription": zod.string().min(1),
   "longTermWorks": zod.boolean().optional(),
@@ -136,11 +138,16 @@ export const UpdateWorkAnnouncementWorkProgressParams = zod.object({
   "id": zod.uuid()
 })
 
+export const updateWorkAnnouncementWorkProgressBodyNotamMin = 0;
+export const updateWorkAnnouncementWorkProgressBodyNotamMax = 1000;
+
+
+
 export const UpdateWorkAnnouncementWorkProgressBody = zod.object({
   "workStartedAt": zod.iso.datetime({"offset":true}).optional(),
   "workCompletedAt": zod.iso.datetime({"offset":true}).optional(),
   "workCompletionDescription": zod.string().optional(),
-  "notam": zod.string().optional()
+  "notam": zod.string().min(updateWorkAnnouncementWorkProgressBodyNotamMin).max(updateWorkAnnouncementWorkProgressBodyNotamMax).optional()
 })
 
 export const UpdateWorkAnnouncementWorkProgressResponse = zod.unknown()
@@ -174,11 +181,13 @@ export const UpdateWorkAnnouncementNotamParams = zod.object({
   "id": zod.uuid()
 })
 
+export const updateWorkAnnouncementNotamBodyNotamMin = 0;
+export const updateWorkAnnouncementNotamBodyNotamMax = 1000;
 
 
 
 export const UpdateWorkAnnouncementNotamBody = zod.object({
-  "notam": zod.string().min(1)
+  "notam": zod.string().min(updateWorkAnnouncementNotamBodyNotamMin).max(updateWorkAnnouncementNotamBodyNotamMax)
 })
 
 export const UpdateWorkAnnouncementNotamResponse = zod.unknown()

@@ -24,3 +24,11 @@ export async function clearAntdDropdown(page: Page, name: string) {
   await select.hover();
   await select.locator('.ant-select-clear').click();
 }
+
+// Feature tables name fields the way a person would ("First Name") or the way
+// a DTO does ("firstName"). Antd's Form.Item label is the accessible name, so
+// getByLabel needs the human form — normalize camelCase to spaced Title Case
+// so either spelling in a .feature table resolves to the same control.
+export function toLabel(field: string): string {
+  return field.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (c) => c.toUpperCase());
+}

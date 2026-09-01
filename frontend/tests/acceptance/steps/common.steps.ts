@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
-import { createBdd } from 'playwright-bdd';
+import { createBdd, DataTable } from 'playwright-bdd';
 
 import { mockFeatureFlag, mockPetApi } from '../support/mock-api';
-import { clearAntdDropdown, selectAntDesignOption } from '../support/playwright-helpers';
+import { clearAntdDropdown, selectAntDesignOption, toLabel } from '../support/playwright-helpers';
 
 export const { Given, When, Then } = createBdd();
 
@@ -118,4 +118,44 @@ Then('I should see the {string} dropdown', async ({ page }, name: string) => {
 
 When('I clear the {string} dropdown', async ({ page }, name: string) => {
   await clearAntdDropdown(page, name);
+});
+
+// Generic form fill: scope to the dialog by its accessible name, then drive
+// each field from a Field/Value table. Antd Selects can't be `.fill()`-ed —
+// they portal their options to <body> — so a row opts into select handling
+// via the optional Control column (default "text"). This replaces the
+// per-form positional fill steps (pet-creation, order-creation) so new forms
+// get field entry for free instead of another bespoke step.
+When(
+  'I fill in the {string} form with:',
+  async ({ page }, name: string, dataTable: DataTable) => {
+    const dialog = page.getByRole('dialog', { name });
+
+    for (const row of dataTable.hashes()) {
+      const label = toLabel(row.Field);
+      const control = (row.Control ?? 'text').toLowerCase();
+
+      switch (control) {
+        case 'select':
+          await selectAntDesignOption(dialog, page, label, row.Value);
+          break;
+        case 'text':
+        case 'date':
+          await dialog.getByLabel(label).fill(row.Value);
+          break;
+        default:
+          throw new Error(
+            `Unknown control "${row.Control}" for field "${row.Field}" — use text, select, or date.`,
+          );
+      }
+    }
+  },
+);
+
+When('I submit the {string} form', async ({ page }, name: string) => {
+  await page.getByRole('dialog', { name }).getByRole('button', { name: 'Save' }).click();
+});
+
+When('I submit the {string} form without filling it in', async ({ page }, name: string) => {
+  await page.getByRole('dialog', { name }).getByRole('button', { name: 'Save' }).click();
 });

@@ -16,7 +16,7 @@ export const UpdateEventRecordParams = zod.object({
 })
 
 export const updateEventRecordBodyDescriptionMin = 0;
-export const updateEventRecordBodyDescriptionMax = 500;
+export const updateEventRecordBodyDescriptionMax = 512;
 
 
 export const updateEventRecordBodyNotamDescriptionMin = 0;
@@ -82,7 +82,7 @@ export const DeleteWorksheetResponse = zod.void()
  * @summary Create event record
  */
 export const createEventRecordBodyDescriptionMin = 0;
-export const createEventRecordBodyDescriptionMax = 500;
+export const createEventRecordBodyDescriptionMax = 512;
 
 
 export const createEventRecordBodyNotamDescriptionMin = 0;
@@ -104,7 +104,8 @@ export const CreateEventRecordBody = zod.object({
   "eventType": zod.enum(['ALARM', 'CORRECT', 'FAILURE', 'INTERRUPTION', 'REDUNDANCY_LOSS', 'RADIO_INTERFERENCE']),
   "startDateTime": zod.iso.datetime({"offset":true}).optional(),
   "endDateTime": zod.iso.datetime({"offset":true}).optional()
-})).min(1)
+})).min(1),
+  "originWorkLogSegmentId": zod.int()
 })
 
 export const CreateEventRecordResponse = zod.void()

@@ -11,7 +11,10 @@ import type { UpdatePreventiveMaintenanceTemplateCommandPeriodicity } from './up
 import type { UpdatePreventiveMaintenanceTemplateCommandStatus } from './updatePreventiveMaintenanceTemplateCommandStatus';
 
 export interface UpdatePreventiveMaintenanceTemplateCommand {
-  /** @minLength 1 */
+  /**
+     * @minLength 0
+     * @maxLength 200
+     */
   name: string;
   /** @minLength 1 */
   description: string;
@@ -24,5 +27,6 @@ export interface UpdatePreventiveMaintenanceTemplateCommand {
   equipmentId?: number;
   otherMaintenance?: string;
   workAnnouncementTemplateId?: number;
-  formItems?: FormItemCommand[];
+  /** @minItems 1 */
+  formItems: FormItemCommand[];
 }

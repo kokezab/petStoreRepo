@@ -12,6 +12,10 @@ export interface CreateRoleCommand {
      * @maxLength 100
      */
   name: string;
+  /**
+     * @minLength 0
+     * @maxLength 500
+     */
   description?: string;
   permissionIds?: string[];
 }

@@ -5,6 +5,7 @@
  * API for Tracer service - version 0.0.1 (local)
  * OpenAPI spec version: 0.0.1
  */
+import type { GetWorkAnnouncementsPeriodInHours } from './getWorkAnnouncementsPeriodInHours';
 import type { GetWorkAnnouncementsStatusesItem } from './getWorkAnnouncementsStatusesItem';
 import type { Pageable } from './pageable';
 
@@ -18,10 +19,11 @@ equipmentId?: number;
 telecomId?: number;
 responsibleUserId?: string;
 announcerUserId?: string;
-workLogSegmentIds?: number[];
 companyId?: number;
 statuses?: GetWorkAnnouncementsStatusesItem[];
 longTermWorks?: boolean;
 areaLocationIds?: number[];
+workLogSegmentIds?: number[];
+periodInHours?: GetWorkAnnouncementsPeriodInHours;
 pageable: Pageable;
 };

@@ -2,14 +2,11 @@ import { expect, type Locator } from '@playwright/test';
 import { createBdd, DataTable } from 'playwright-bdd';
 
 import { mockCreateUsersError } from '../support/mock-api';
+import { toLabel } from '../support/playwright-helpers';
 
 const { Given, When, Then } = createBdd();
 
 const FORM_NAME = 'Add users';
-
-function toLabel(field: string): string {
-  return field.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (c) => c.toUpperCase());
-}
 
 function form(page: import('@playwright/test').Page): Locator {
   return page.getByRole('form', { name: FORM_NAME });

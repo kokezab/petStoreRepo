@@ -122,7 +122,11 @@ export const GetMasterDataFunctionByIdResponse = zod.object({
   "active": zod.boolean().optional(),
   "equipmentOperandIds": zod.array(zod.int()).optional(),
   "telecomCapacityOperandIds": zod.array(zod.int()).optional(),
-  "workLogSegmentIds": zod.array(zod.int()).optional()
+  "workLogSegmentIds": zod.array(zod.int()).optional(),
+  "workAnnouncementGroups": zod.array(zod.object({
+  "workAnnouncementGroupId": zod.int().optional(),
+  "groupDecision": zod.enum(['COMPLIANCE', 'NOTICE', 'INFORMATION']).optional()
+})).optional()
 })
 
 /**

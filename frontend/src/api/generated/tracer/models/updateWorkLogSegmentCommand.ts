@@ -17,9 +17,16 @@ export interface UpdateWorkLogSegmentCommand {
      * @maxLength 10
      */
   abbreviation?: string;
+  /**
+     * @minLength 1
+     * @pattern ^#[A-Fa-f0-9]{6}$
+     */
+  color: string;
   parentId?: number;
   /** @minItems 1 */
   locationIds: number[];
   /** @minItems 1 */
   orgUnitIds: number[];
+  /** @minItems 1 */
+  dutyCandidateUserIds: string[];
 }

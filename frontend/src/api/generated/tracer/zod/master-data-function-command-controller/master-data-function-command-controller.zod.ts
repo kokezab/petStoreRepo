@@ -28,7 +28,11 @@ export const UpdateTelecomCapacityFunctionBody = zod.object({
   "expression": zod.string().min(1),
   "type": zod.enum(['OPERATIONAL', 'FREQUENCY', 'SUPPORT', 'OTHER']).optional(),
   "responseTime": zod.int().optional(),
-  "workLogSegmentIds": zod.array(zod.int()).optional()
+  "workLogSegmentIds": zod.array(zod.int()).optional(),
+  "workAnnouncementGroups": zod.array(zod.object({
+  "workAnnouncementGroupId": zod.int(),
+  "groupDecision": zod.enum(['COMPLIANCE', 'NOTICE', 'INFORMATION'])
+})).optional()
 })
 
 export const UpdateTelecomCapacityFunctionResponse = zod.unknown()
@@ -62,7 +66,11 @@ export const UpdateEquipmentFunctionBody = zod.object({
   "expression": zod.string().min(1),
   "type": zod.enum(['OPERATIONAL', 'FREQUENCY', 'SUPPORT', 'OTHER']).optional(),
   "responseTime": zod.int().optional(),
-  "workLogSegmentIds": zod.array(zod.int()).optional()
+  "workLogSegmentIds": zod.array(zod.int()).optional(),
+  "workAnnouncementGroups": zod.array(zod.object({
+  "workAnnouncementGroupId": zod.int(),
+  "groupDecision": zod.enum(['COMPLIANCE', 'NOTICE', 'INFORMATION'])
+})).optional()
 })
 
 export const UpdateEquipmentFunctionResponse = zod.unknown()
@@ -92,7 +100,11 @@ export const CreateTelecomCapacityFunctionBody = zod.object({
   "expression": zod.string().min(1),
   "type": zod.enum(['OPERATIONAL', 'FREQUENCY', 'SUPPORT', 'OTHER']).optional(),
   "responseTime": zod.int().optional(),
-  "workLogSegmentIds": zod.array(zod.int()).optional()
+  "workLogSegmentIds": zod.array(zod.int()).optional(),
+  "workAnnouncementGroups": zod.array(zod.object({
+  "workAnnouncementGroupId": zod.int(),
+  "groupDecision": zod.enum(['COMPLIANCE', 'NOTICE', 'INFORMATION'])
+})).optional()
 })
 
 export const CreateTelecomCapacityFunctionResponse = zod.int()
@@ -113,7 +125,11 @@ export const CreateEquipmentFunctionBody = zod.object({
   "expression": zod.string().min(1),
   "type": zod.enum(['OPERATIONAL', 'FREQUENCY', 'SUPPORT', 'OTHER']).optional(),
   "responseTime": zod.int().optional(),
-  "workLogSegmentIds": zod.array(zod.int()).optional()
+  "workLogSegmentIds": zod.array(zod.int()).optional(),
+  "workAnnouncementGroups": zod.array(zod.object({
+  "workAnnouncementGroupId": zod.int(),
+  "groupDecision": zod.enum(['COMPLIANCE', 'NOTICE', 'INFORMATION'])
+})).optional()
 })
 
 export const CreateEquipmentFunctionResponse = zod.int()

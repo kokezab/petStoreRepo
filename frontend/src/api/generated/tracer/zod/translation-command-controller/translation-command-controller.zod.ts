@@ -55,11 +55,13 @@ export const CreateTranslationsResponse = zod.unknown()
 /**
  * @summary Delete translations
  */
+export const deleteTranslationsBodyKeyMin = 0;
+export const deleteTranslationsBodyKeyMax = 150;
 
 
 
 export const DeleteTranslationsBody = zod.object({
-  "key": zod.string().min(1)
+  "key": zod.string().min(deleteTranslationsBodyKeyMin).max(deleteTranslationsBodyKeyMax)
 })
 
 export const DeleteTranslationsResponse = zod.unknown()

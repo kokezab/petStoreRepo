@@ -15,23 +15,23 @@ export const UpdateWorkAnnouncementTemplateParams = zod.object({
   "id": zod.int()
 })
 
+export const updateWorkAnnouncementTemplateBodyNameMin = 0;
+export const updateWorkAnnouncementTemplateBodyNameMax = 200;
 
 
 export const updateWorkAnnouncementTemplateBodyContactPhoneMin = 0;
 export const updateWorkAnnouncementTemplateBodyContactPhoneMax = 255;
 
 
-export const updateWorkAnnouncementTemplateBodyContactPhoneRegExp = new RegExp('^(\\+?\\d+)?$');
-
 
 export const UpdateWorkAnnouncementTemplateBody = zod.object({
-  "name": zod.string().min(1),
+  "name": zod.string().min(updateWorkAnnouncementTemplateBodyNameMin).max(updateWorkAnnouncementTemplateBodyNameMax),
   "description": zod.string().min(1),
   "announcerUserId": zod.uuid().optional(),
   "notam": zod.string().optional(),
   "notamRequired": zod.boolean().optional(),
   "workLogSegmentId": zod.int().optional(),
-  "contactPhone": zod.string().min(updateWorkAnnouncementTemplateBodyContactPhoneMin).max(updateWorkAnnouncementTemplateBodyContactPhoneMax).regex(updateWorkAnnouncementTemplateBodyContactPhoneRegExp).optional(),
+  "contactPhone": zod.string().min(updateWorkAnnouncementTemplateBodyContactPhoneMin).max(updateWorkAnnouncementTemplateBodyContactPhoneMax).optional(),
   "workDescription": zod.string().optional(),
   "impactDescription": zod.string().optional(),
   "userIds": zod.array(zod.uuid()).optional(),
@@ -61,23 +61,23 @@ export const DeleteWorkAnnouncementTemplateResponse = zod.void()
 /**
  * @summary Create work announcement template
  */
+export const createWorkAnnouncementTemplateBodyNameMin = 0;
+export const createWorkAnnouncementTemplateBodyNameMax = 200;
 
 
 export const createWorkAnnouncementTemplateBodyContactPhoneMin = 0;
 export const createWorkAnnouncementTemplateBodyContactPhoneMax = 255;
 
 
-export const createWorkAnnouncementTemplateBodyContactPhoneRegExp = new RegExp('^(\\+?\\d+)?$');
-
 
 export const CreateWorkAnnouncementTemplateBody = zod.object({
-  "name": zod.string().min(1),
+  "name": zod.string().min(createWorkAnnouncementTemplateBodyNameMin).max(createWorkAnnouncementTemplateBodyNameMax),
   "description": zod.string().min(1),
   "announcerUserId": zod.uuid().optional(),
   "notam": zod.string().optional(),
   "notamRequired": zod.boolean().optional(),
   "workLogSegmentId": zod.int().optional(),
-  "contactPhone": zod.string().min(createWorkAnnouncementTemplateBodyContactPhoneMin).max(createWorkAnnouncementTemplateBodyContactPhoneMax).regex(createWorkAnnouncementTemplateBodyContactPhoneRegExp).optional(),
+  "contactPhone": zod.string().min(createWorkAnnouncementTemplateBodyContactPhoneMin).max(createWorkAnnouncementTemplateBodyContactPhoneMax).optional(),
   "workDescription": zod.string().optional(),
   "impactDescription": zod.string().optional(),
   "userIds": zod.array(zod.uuid()).optional(),

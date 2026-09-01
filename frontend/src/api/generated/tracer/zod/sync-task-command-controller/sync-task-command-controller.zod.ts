@@ -15,10 +15,18 @@ export const UpdateSyncTaskRepeatScheduleParams = zod.object({
   "id": zod.int()
 })
 
+export const updateSyncTaskRepeatScheduleBodySelectedDaysMin = 0;
+export const updateSyncTaskRepeatScheduleBodySelectedDaysMax = 100;
+
+export const updateSyncTaskRepeatScheduleBodySelectedHoursMin = 0;
+export const updateSyncTaskRepeatScheduleBodySelectedHoursMax = 150;
+
+
+
 export const UpdateSyncTaskRepeatScheduleBody = zod.object({
   "interval": zod.enum(['WEEKLY_WITH_HOURLY_RANGED', 'MINUTELY', 'DAILY', 'WEEKLY', 'MONTHLY', 'NEVER']),
-  "selectedDays": zod.string().optional(),
-  "selectedHours": zod.string().optional(),
+  "selectedDays": zod.string().min(updateSyncTaskRepeatScheduleBodySelectedDaysMin).max(updateSyncTaskRepeatScheduleBodySelectedDaysMax).optional(),
+  "selectedHours": zod.string().min(updateSyncTaskRepeatScheduleBodySelectedHoursMin).max(updateSyncTaskRepeatScheduleBodySelectedHoursMax).optional(),
   "selectedMinute": zod.int().optional(),
   "frequencyMinutes": zod.int().optional(),
   "startHour": zod.int().optional(),
@@ -39,15 +47,23 @@ export const DeleteSyncTaskResponse = zod.void()
 /**
  * @summary Insert sync task
  */
+export const insertSyncTaskBodyKeyMin = 0;
+export const insertSyncTaskBodyKeyMax = 50;
+
+export const insertSyncTaskBodyIntervalSelectedDaysMin = 0;
+export const insertSyncTaskBodyIntervalSelectedDaysMax = 100;
+
+export const insertSyncTaskBodyIntervalSelectedHoursMin = 0;
+export const insertSyncTaskBodyIntervalSelectedHoursMax = 150;
 
 
 
 export const InsertSyncTaskBody = zod.object({
-  "key": zod.string().min(1),
+  "key": zod.string().min(insertSyncTaskBodyKeyMin).max(insertSyncTaskBodyKeyMax),
   "interval": zod.object({
   "interval": zod.enum(['WEEKLY_WITH_HOURLY_RANGED', 'MINUTELY', 'DAILY', 'WEEKLY', 'MONTHLY', 'NEVER']),
-  "selectedDays": zod.string().optional(),
-  "selectedHours": zod.string().optional(),
+  "selectedDays": zod.string().min(insertSyncTaskBodyIntervalSelectedDaysMin).max(insertSyncTaskBodyIntervalSelectedDaysMax).optional(),
+  "selectedHours": zod.string().min(insertSyncTaskBodyIntervalSelectedHoursMin).max(insertSyncTaskBodyIntervalSelectedHoursMax).optional(),
   "selectedMinute": zod.int().optional(),
   "frequencyMinutes": zod.int().optional(),
   "startHour": zod.int().optional(),

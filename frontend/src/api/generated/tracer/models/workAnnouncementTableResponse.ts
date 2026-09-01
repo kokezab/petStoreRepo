@@ -15,5 +15,8 @@ export interface WorkAnnouncementTableResponse {
   plannedStart?: string;
   plannedEnd?: string;
   status?: WorkAnnouncementTableResponseStatus;
+  notam?: string;
+  notamRequired?: boolean;
+  workLogSegmentId?: number;
   elements?: WorkAnnouncementElementResponse[];
 }

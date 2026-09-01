@@ -5,6 +5,7 @@
  * API for Tracer service - version 0.0.1 (local)
  * OpenAPI spec version: 0.0.1
  */
+import type { FunctionWorkAnnouncementGroupCommand } from './functionWorkAnnouncementGroupCommand';
 import type { MasterDataFunctionCommandType } from './masterDataFunctionCommandType';
 
 export interface MasterDataFunctionCommand {
@@ -20,4 +21,5 @@ export interface MasterDataFunctionCommand {
   type?: MasterDataFunctionCommandType;
   responseTime?: number;
   workLogSegmentIds?: number[];
+  workAnnouncementGroups?: FunctionWorkAnnouncementGroupCommand[];
 }

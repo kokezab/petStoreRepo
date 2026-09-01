@@ -5,6 +5,7 @@
  * API for Tracer service - version 0.0.1 (local)
  * OpenAPI spec version: 0.0.1
  */
+import type { FunctionWorkAnnouncementGroupResponse } from './functionWorkAnnouncementGroupResponse';
 import type { MasterDataFunctionByIdResponseManualStatus } from './masterDataFunctionByIdResponseManualStatus';
 import type { MasterDataFunctionByIdResponseMasterDataType } from './masterDataFunctionByIdResponseMasterDataType';
 import type { MasterDataFunctionByIdResponseResultStatus } from './masterDataFunctionByIdResponseResultStatus';
@@ -24,4 +25,5 @@ export interface MasterDataFunctionByIdResponse {
   equipmentOperandIds?: number[];
   telecomCapacityOperandIds?: number[];
   workLogSegmentIds?: number[];
+  workAnnouncementGroups?: FunctionWorkAnnouncementGroupResponse[];
 }

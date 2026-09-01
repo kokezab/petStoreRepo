@@ -19,10 +19,11 @@ import type {
 
 import {
   getGetWorkLogSegmentByIdResponseMock,
+  getGetWorkLogSegmentDutyCandidatesResponseMock,
   getGetWorkLogSegmentsResponseMock
 } from './work-log-segment-query-controller.faker';
 
-export { getGetWorkLogSegmentByIdResponseMock, getGetWorkLogSegmentsResponseMock } from './work-log-segment-query-controller.faker';
+export { getGetWorkLogSegmentByIdResponseMock, getGetWorkLogSegmentsResponseMock, getGetWorkLogSegmentDutyCandidatesResponseMock } from './work-log-segment-query-controller.faker';
 
 
 export const getGetWorkLogSegmentByIdMockHandler = (overrideResponse?: WorkLogSegmentResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<WorkLogSegmentResponse> | WorkLogSegmentResponse), options?: RequestHandlerOptions) => {
@@ -48,7 +49,20 @@ export const getGetWorkLogSegmentsMockHandler = (overrideResponse?: WorkLogSegme
       })
   }, options)
 }
+
+export const getGetWorkLogSegmentDutyCandidatesMockHandler = (overrideResponse?: string[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<string[]> | string[]), options?: RequestHandlerOptions) => {
+  return http.get('*/v1/work-log-segments/:id/duty-candidates', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetWorkLogSegmentDutyCandidatesResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
 export const getWorkLogSegmentQueryControllerMock = () => [
   getGetWorkLogSegmentByIdMockHandler(),
-  getGetWorkLogSegmentsMockHandler()
+  getGetWorkLogSegmentsMockHandler(),
+  getGetWorkLogSegmentDutyCandidatesMockHandler()
 ]

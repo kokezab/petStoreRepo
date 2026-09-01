@@ -7,6 +7,9 @@
  */
 
 export interface RemoveTranslationCommand {
-  /** @minLength 1 */
+  /**
+     * @minLength 0
+     * @maxLength 150
+     */
   key: string;
 }

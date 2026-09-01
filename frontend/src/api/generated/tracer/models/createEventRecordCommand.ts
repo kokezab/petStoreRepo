@@ -12,7 +12,7 @@ export interface CreateEventRecordCommand {
   endDateTime?: string;
   /**
      * @minLength 0
-     * @maxLength 500
+     * @maxLength 512
      */
   description: string;
   organizationalUnitId: number;
@@ -25,4 +25,5 @@ export interface CreateEventRecordCommand {
   notamDescription?: string;
   /** @minItems 1 */
   elements: CreateEventRecordElementCommand[];
+  originWorkLogSegmentId: number;
 }

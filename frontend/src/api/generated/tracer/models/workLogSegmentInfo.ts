@@ -9,4 +9,5 @@
 export interface WorkLogSegmentInfo {
   id?: number;
   name?: string;
+  primary?: boolean;
 }

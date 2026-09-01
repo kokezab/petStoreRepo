@@ -231,3 +231,95 @@ export function useGetWorkLogSegments<TData = Awaited<ReturnType<typeof getWorkL
 
 
 
+/**
+ * @summary Get duty candidates for work log segment
+ */
+export const getWorkLogSegmentDutyCandidates = (
+    id: number,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<string[]>(
+      {url: `/v1/work-log-segments/${id}/duty-candidates`, method: 'GET', signal
+    },
+      options);
+    }
+
+
+
+
+export const getGetWorkLogSegmentDutyCandidatesQueryKey = (id: number,) => {
+    return [
+    `/v1/work-log-segments/${id}/duty-candidates`
+    ] as const;
+    }
+
+
+export const getGetWorkLogSegmentDutyCandidatesQueryOptions = <TData = Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>, TError = ApiErrorResponse | void>(id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetWorkLogSegmentDutyCandidatesQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>> = ({ signal }) => getWorkLogSegmentDutyCandidates(id, requestOptions, signal);
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetWorkLogSegmentDutyCandidatesQueryResult = NonNullable<Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>>
+export type GetWorkLogSegmentDutyCandidatesQueryError = ApiErrorResponse | void
+
+
+export function useGetWorkLogSegmentDutyCandidates<TData = Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>, TError = ApiErrorResponse | void>(
+ id: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>,
+          TError,
+          Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWorkLogSegmentDutyCandidates<TData = Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>, TError = ApiErrorResponse | void>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>,
+          TError,
+          Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWorkLogSegmentDutyCandidates<TData = Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>, TError = ApiErrorResponse | void>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get duty candidates for work log segment
+ */
+
+export function useGetWorkLogSegmentDutyCandidates<TData = Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>, TError = ApiErrorResponse | void>(
+ id: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogSegmentDutyCandidates>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetWorkLogSegmentDutyCandidatesQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
