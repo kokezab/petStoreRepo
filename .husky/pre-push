@@ -1,3 +1,4 @@
 #!/bin/sh
 cd frontend
+npm run test:unit 
 npm run check
