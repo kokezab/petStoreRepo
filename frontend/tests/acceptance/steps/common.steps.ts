@@ -1,4 +1,4 @@
-import { expect } from '@playwright/test';
+import { expect, type Locator, type Page } from '@playwright/test';
 import { createBdd, DataTable } from 'playwright-bdd';
 
 import { mockFeatureFlag, mockPetApi } from '../support/mock-api';
@@ -93,14 +93,22 @@ Then('I should see the {string} form', async ({ page }, name: string) => {
 });
 
 Then('I should see the {string} dialog', async ({ page }, name: string) => {
-  await expect(page.getByRole('form', { name })).toBeVisible();
+  await expect(page.getByRole('dialog', { name })).toBeVisible();
 });
 
 Then('the {string} form should close', async ({ page }, name: string) => {
-  await expect(page.getByRole('dialog', { name })).toHaveCount(0);
+  await expect(page.getByRole('form', { name })).toHaveCount(0);
 });
 
 Then('the {string} form should still be open', async ({ page }, name: string) => {
+  await expect(page.getByRole('form', { name })).toBeVisible();
+});
+
+Then('the {string} dialog should close', async ({ page }, name: string) => {
+  await expect(page.getByRole('dialog', { name })).toHaveCount(0);
+});
+
+Then('the {string} dialog should still be open', async ({ page }, name: string) => {
   await expect(page.getByRole('dialog', { name })).toBeVisible();
 });
 
@@ -120,42 +128,61 @@ When('I clear the {string} dropdown', async ({ page }, name: string) => {
   await clearAntdDropdown(page, name);
 });
 
-// Generic form fill: scope to the dialog by its accessible name, then drive
-// each field from a Field/Value table. Antd Selects can't be `.fill()`-ed —
-// they portal their options to <body> — so a row opts into select handling
-// via the optional Control column (default "text"). This replaces the
-// per-form positional fill steps (pet-creation, order-creation) so new forms
-// get field entry for free instead of another bespoke step.
-When(
-  'I fill in the {string} form with:',
-  async ({ page }, name: string, dataTable: DataTable) => {
-    const dialog = page.getByRole('dialog', { name });
+// Generic field fill: given a locator scoping to a single form (whether that's
+// a plain `role="form"` or a modal `role="dialog"`), drive each field from a
+// Field/Value table. Antd Selects can't be `.fill()`-ed — they portal their
+// options to <body> — so a row opts into select handling via the optional
+// Control column (default "text"). Sharing this lets both the form-scoped and
+// dialog-scoped steps below reuse the same entry logic instead of a bespoke
+// per-form step.
+async function fillFields(scope: Locator, page: Page, dataTable: DataTable) {
+  for (const row of dataTable.hashes()) {
+    const label = toLabel(row.Field);
+    const control = (row.Control ?? 'text').toLowerCase();
 
-    for (const row of dataTable.hashes()) {
-      const label = toLabel(row.Field);
-      const control = (row.Control ?? 'text').toLowerCase();
-
-      switch (control) {
-        case 'select':
-          await selectAntDesignOption(dialog, page, label, row.Value);
-          break;
-        case 'text':
-        case 'date':
-          await dialog.getByLabel(label).fill(row.Value);
-          break;
-        default:
-          throw new Error(
-            `Unknown control "${row.Control}" for field "${row.Field}" — use text, select, or date.`,
-          );
-      }
+    switch (control) {
+      case 'select':
+        await selectAntDesignOption(scope, page, label, row.Value);
+        break;
+      case 'text':
+      case 'date':
+        await scope.getByLabel(label).fill(row.Value);
+        break;
+      default:
+        throw new Error(
+          `Unknown control "${row.Control}" for field "${row.Field}" — use text, select, or date.`,
+        );
     }
+  }
+}
+
+// Two scope families: "form" targets a plain `role="form"` page (order,
+// org-unit, bulk); "dialog" targets a modal `role="dialog"` (pet), whose
+// accessible name sits on the dialog rather than the inner form. Both submit
+// via the shared "Save" button.
+When('I fill in the {string} form with:', async ({ page }, name: string, dataTable: DataTable) => {
+  await fillFields(page.getByRole('form', { name }), page, dataTable);
+});
+
+When(
+  'I fill in the {string} dialog with:',
+  async ({ page }, name: string, dataTable: DataTable) => {
+    await fillFields(page.getByRole('dialog', { name }), page, dataTable);
   },
 );
 
 When('I submit the {string} form', async ({ page }, name: string) => {
-  await page.getByRole('dialog', { name }).getByRole('button', { name: 'Save' }).click();
+  await page.getByRole('form', { name }).getByRole('button', { name: 'Save' }).click();
 });
 
 When('I submit the {string} form without filling it in', async ({ page }, name: string) => {
+  await page.getByRole('form', { name }).getByRole('button', { name: 'Save' }).click();
+});
+
+When('I submit the {string} dialog', async ({ page }, name: string) => {
+  await page.getByRole('dialog', { name }).getByRole('button', { name: 'Save' }).click();
+});
+
+When('I submit the {string} dialog without filling it in', async ({ page }, name: string) => {
   await page.getByRole('dialog', { name }).getByRole('button', { name: 'Save' }).click();
 });

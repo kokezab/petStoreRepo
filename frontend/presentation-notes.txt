@@ -1,0 +1,40 @@
+TECH STACK & TOOLING — it-frontend-repo
+
+- Feature-Sliced Design (FSD): "clean code" architecture for frontend
+- Steiger — FSD architecture linter (enforced in CI)
+
+- Orval — generates client SDK + zod validators from OpenAPI spec
+
+- Unleash — feature flags
+
+- Vitest + React Testing Library + jsdom — unit
+- MSW — network mocking
+- @faker-js/faker — test data
+- Playwright — e2e/acceptance (page-object-model)
+- ATDD/BDD: playwright-bdd (bddgen) + Gherkin .feature files
+  tests/acceptance/features + steps
+
+- ESLint (flat config) + typescript-eslint
+- Prettier - formatting
+
+GIT HOOKS (Husky v9, hooksPath=.husky)
+- pre-push: npm run test:unit + npm run check (tsc + eslint + steiger + prettier)
+- commit-msg: commitlint (@commitlint/cli)
+
+CI (GitHub Actions — .github/workflows)
+- e2e-deployed.yml — Playwright against deployed env
+- claude-pr-review.yml — Claude PR review
+- claude-auto-implement.yml — Claude auto-implement
+
+DEPLOY / RUNTIME
+- Vercel (vercel.json)
+
+KEY SCRIPTS
+- dev / build (tsc -b && vite) / preview
+- check (tsc + eslint + steiger + prettier), lint, format
+- test:unit (vitest), test:e2e (bddgen && playwright)
+- test:e2e:acceptance (--grep @), test:full
+- generate:api (orval), lint:fsd (steiger), storybook
+
+CLAUDE HOOKS
+- PostToolUsage / PreToolUsage -> exc. format code after claude coding session 

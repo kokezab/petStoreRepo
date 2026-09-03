@@ -95,6 +95,15 @@
       "statusLabel": "Status"
     }
   },
+  "organizationalUnit": {
+    "createForm": {
+      "label": "Add organizational unit",
+      "addButton": "Add organizational unit",
+      "nameLabel": "Name",
+      "nameRequired": "Name is required",
+      "saveButton": "Save"
+    }
+  },
   "petList": {
     "listLabel": "Pets",
     "categoryFilterLabel": "Category filter",

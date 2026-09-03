@@ -1,0 +1,56 @@
+TECH STACK & TOOLING — it-frontend-repo (ultrashort)
+
+CORE
+- React 19 + TypeScript, Vite, Tailwind v4, Ant Design v6 (incl. Antd Form)
+- Tanstack Query (server state), Zustand (client/UI state), Immer
+- React Router v8, Axios (one instance w/ interceptors)
+- Zod (API response boundary only), qs
+
+ARCHITECTURE
+- Feature-Sliced Design (FSD): app/pages/widgets/features/entities/shared
+- Steiger — FSD architecture linter (enforced in CI)
+
+API / SDK
+- Orval — generates client SDK + zod validators from OpenAPI spec
+- DTO normalization at API boundary (contract-drift logging)
+
+AUTH / FEATURE FLAGS / OBSERVABILITY
+- OIDC (oidc-client-ts, react-oidc-context) — Keycloak
+- Unleash — feature flags
+- Sentry (@sentry/react + vite-plugin source maps)
+- i18next / react-i18next — i18n
+
+TESTING
+- Vitest + React Testing Library + jsdom — unit (colocated)
+- MSW — network mocking
+- Playwright — e2e/acceptance (page-object-model)
+- ATDD/BDD: playwright-bdd (bddgen) + Gherkin .feature files
+  tests/acceptance/features + steps
+- Storybook — component dev/docs
+- @faker-js/faker — test data
+
+LINT / FORMAT / QUALITY
+- ESLint (flat config) + typescript-eslint
+- Plugins: react-hooks, react-refresh, jsx-a11y, simple-import-sort,
+  unused-imports, tanstack/query, storybook
+- Local ESLint rule: require-aria-label-i18n (eslint-rules/)
+- Prettier, React Compiler (babel-plugin-react-compiler)
+
+GIT HOOKS (Husky v9, hooksPath=.husky)
+- pre-push: npm run test:unit + npm run check (tsc + eslint + steiger + prettier)
+- commit-msg: commitlint (@commitlint/cli)
+
+CI (GitHub Actions — .github/workflows)
+- e2e-deployed.yml — Playwright against deployed env
+- claude-pr-review.yml — Claude PR review
+- claude-auto-implement.yml — Claude auto-implement
+
+DEPLOY / RUNTIME
+- Vercel (vercel.json)
+
+KEY SCRIPTS
+- dev / build (tsc -b && vite) / preview
+- check (tsc + eslint + steiger + prettier), lint, format
+- test:unit (vitest), test:e2e (bddgen && playwright)
+- test:e2e:acceptance (--grep @), test:full
+- generate:api (orval), lint:fsd (steiger), storybook

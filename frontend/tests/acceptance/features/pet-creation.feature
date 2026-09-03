@@ -16,13 +16,13 @@ Feature: Pet creation
 
   Scenario: AT-16 Add pet button visible and opens the form when the feature flag is enabled
     Given the pet-creation common flow
-    Then I should see the "Add pet" form
+    Then I should see the "Add pet" dialog
 
   Scenario: AT-17 Submitting a valid form adds the pet to the list
     Given the pet-creation common flow
     And I fill in the pet creation form with name "Buddy", category "Dogs" and status "available"
     And I submit the pet creation form
-    Then the "Add pet" form should close
+    Then the "Add pet" dialog should close
     And the pet list should include a pet named "Buddy"
 
   Scenario: AT-18 Empty required fields show validation errors
@@ -30,7 +30,7 @@ Feature: Pet creation
     And I submit the pet creation form without filling it in
     Then I should see a "Name is required" validation message
     And I should see a "Category is required" validation message
-    And the "Add pet" form should still be open
+    And the "Add pet" dialog should still be open
 
   Scenario: AT-19 An API failure keeps the form open with an error
     Given the "pet-creation" feature flag is enabled
@@ -40,11 +40,11 @@ Feature: Pet creation
     And I fill in the pet creation form with name "Buddy", category "Dogs" and status "available"
     And I submit the pet creation form
     Then I should see an error message instead of a blank page
-    And the "Add pet" form should still be open
+    And the "Add pet" dialog should still be open
 
   Scenario: AT-20 Cancelling the form closes it without creating a pet
     Given the pet-creation common flow
     And I fill in the pet creation form with name "Buddy", category "Dogs" and status "available"
     And I cancel the pet creation form
-    Then the "Add pet" form should close
+    Then the "Add pet" dialog should close
     And the pet list should not include a pet named "Buddy"

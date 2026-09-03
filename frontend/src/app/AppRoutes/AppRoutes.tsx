@@ -11,6 +11,7 @@ import { BulkUserCreationPage } from '@/pages/bulk-user-creation';
 import { InventoryPage } from '@/pages/inventory';
 import { LoginPage } from '@/pages/login';
 import { OrdersPage } from '@/pages/order';
+import { CreateOrganizationalUnitPage } from '@/pages/organizational-unit-creation';
 import { PetDetailsPage } from '@/pages/pet-details';
 import { PetListPage } from '@/pages/pet-list';
 import { SettingsPage } from '@/pages/settings';
@@ -22,6 +23,9 @@ function withRouteErrorBoundary(element: ReactNode) {
 
 export function AppRoutes() {
   const isOrderCreationFlagEnabled = useFeatureFlag(FEATURE_FLAGS.orderCreation);
+  const isOrganizationalUnitCreationEnabled = useFeatureFlag(
+    FEATURE_FLAGS.organizationalUnitCreation,
+  );
 
   return (
     <Routes>
@@ -40,6 +44,16 @@ export function AppRoutes() {
       {isOrderCreationFlagEnabled && (
         <Route path='/orders' element={withRouteErrorBoundary(<OrdersPage />)} />
       )}
+      {isOrganizationalUnitCreationEnabled && (
+        <Route
+          path='/organizational-units'
+          element={withRouteErrorBoundary(<CreateOrganizationalUnitPage />)}
+        />
+      )}
+      <Route
+        path='/organizational-units'
+        element={withRouteErrorBoundary(<CreateOrganizationalUnitPage />)}
+      />
     </Routes>
   );
 }
