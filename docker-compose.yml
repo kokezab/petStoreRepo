@@ -31,8 +31,26 @@ services:
     networks:
       - unleash_net
 
+  app-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: zerocode
+      POSTGRES_PASSWORD: zerocode
+      POSTGRES_DB: zerocode
+    ports:
+      - "5433:5432"
+    volumes:
+      - app_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zerocode -d zerocode"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
 networks:
   unleash_net:
 
 volumes:
   unleash_db_data:
+  app_db_data:

@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: zerocode-backend
+  datasource:
+    url: jdbc:postgresql://localhost:5433/zerocode
+    username: zerocode
+    password: zerocode
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.format_sql: true
+  flyway:
+    enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+server:
+  port: 8080
