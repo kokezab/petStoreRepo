@@ -27,4 +27,10 @@ class FieldKeysTest {
         assertThatThrownBy(() -> FieldKeys.slugify("---"))
                 .isInstanceOf(IllegalArgumentException.class);
     }
+
+    @Test
+    void rejectsNullLabel() {
+        assertThatThrownBy(() -> FieldKeys.slugify(null))
+                .isInstanceOf(IllegalArgumentException.class);
+    }
 }
