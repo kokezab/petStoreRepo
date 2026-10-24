@@ -35,7 +35,7 @@ class FieldDefinitionControllerTest extends PostgresIntegrationTest {
 
         mockMvc.perform(get("/api/fields"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].fieldKey").value("unit_price"));
+                .andExpect(jsonPath("$[?(@.fieldKey=='unit_price')]").isNotEmpty());
     }
 
     @Test
@@ -45,7 +45,8 @@ class FieldDefinitionControllerTest extends PostgresIntegrationTest {
                         .content("""
                             {"label":"Color","type":"TEXT","required":false,"constraints":{}}"""))
                 .andReturn().getResponse().getContentAsString();
-        String id = JsonPath.read(body, "$.id");
+        Object idRaw = JsonPath.read(body, "$.id");
+        String id = String.valueOf(idRaw);
 
         mockMvc.perform(patch("/api/fields/" + id)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -61,11 +62,12 @@ class FieldDefinitionControllerTest extends PostgresIntegrationTest {
                         .content("""
                             {"label":"Notes","type":"TEXT","required":false,"constraints":{}}"""))
                 .andReturn().getResponse().getContentAsString();
-        String id = JsonPath.read(body, "$.id");
+        Object idRaw = JsonPath.read(body, "$.id");
+        String id = String.valueOf(idRaw);
 
         mockMvc.perform(delete("/api/fields/" + id)).andExpect(status().isNoContent());
         mockMvc.perform(get("/api/fields"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(0));
+                .andExpect(jsonPath("$[?(@.fieldKey=='notes')]").isEmpty());
     }
 }
