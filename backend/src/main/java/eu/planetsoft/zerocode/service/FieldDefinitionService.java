@@ -33,6 +33,7 @@ public class FieldDefinitionService {
         def.setType(type);
         def.setRequired(required);
         def.setConstraints(constraints == null ? new HashMap<>() : constraints);
+        type.validateConstraints(def.getConstraints());
         def.setDisplayOrder((int) repository.countByDeletedFalse());
         def.setCreatedAt(OffsetDateTime.now());
         return repository.save(def);
@@ -51,6 +52,7 @@ public class FieldDefinitionService {
         def.setRequired(required);
         if (constraints != null) {
             def.setConstraints(constraints);
+            def.getType().validateConstraints(def.getConstraints());
         }
         if (displayOrder != null) {
             def.setDisplayOrder(displayOrder);
@@ -70,7 +72,10 @@ public class FieldDefinitionService {
     private String uniqueKey(String base) {
         String candidate = base;
         int suffix = 2;
-        while (repository.findByFieldKeyAndDeletedFalse(candidate).isPresent()) {
+        // Check across ALL rows (including soft-deleted) so a key freed by a
+        // delete is never reused — that would orphan a stored value whose type
+        // may no longer match the resurrected field.
+        while (repository.existsByFieldKey(candidate)) {
             candidate = base + "_" + suffix++;
         }
         return candidate;

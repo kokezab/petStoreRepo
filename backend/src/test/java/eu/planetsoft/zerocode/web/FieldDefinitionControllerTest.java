@@ -70,4 +70,35 @@ class FieldDefinitionControllerTest extends PostgresIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[?(@.fieldKey=='notes')]").isEmpty());
     }
+
+    @Test
+    void recreatingASoftDeletedLabelDoesNotReuseItsKey() throws Exception {
+        String body = mockMvc.perform(post("/api/fields")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {"label":"Palette","type":"TEXT","required":false,"constraints":{}}"""))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.fieldKey").value("palette"))
+                .andReturn().getResponse().getContentAsString();
+        Object idRaw = JsonPath.read(body, "$.id");
+        String id = String.valueOf(idRaw);
+
+        mockMvc.perform(delete("/api/fields/" + id)).andExpect(status().isNoContent());
+
+        mockMvc.perform(post("/api/fields")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {"label":"Palette","type":"NUMBER","required":false,"constraints":{}}"""))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.fieldKey").value("palette_2"));
+    }
+
+    @Test
+    void rejectsMalformedConstraintAtCreation() throws Exception {
+        mockMvc.perform(post("/api/fields")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {"label":"Size","type":"TEXT","required":false,"constraints":{"maxLength":"abc"}}"""))
+                .andExpect(status().isBadRequest());
+    }
 }

@@ -12,5 +12,7 @@ public interface FieldDefinitionRepository extends JpaRepository<FieldDefinition
 
     Optional<FieldDefinition> findByFieldKeyAndDeletedFalse(String fieldKey);
 
+    boolean existsByFieldKey(String fieldKey);
+
     long countByDeletedFalse();
 }

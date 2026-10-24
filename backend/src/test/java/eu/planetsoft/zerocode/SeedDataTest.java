@@ -15,6 +15,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest
 @Testcontainers
+@org.springframework.test.context.ActiveProfiles("demo")
 class SeedDataTest {
 
     @Container

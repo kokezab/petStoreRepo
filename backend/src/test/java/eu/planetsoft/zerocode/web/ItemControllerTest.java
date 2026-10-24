@@ -67,4 +67,16 @@ class ItemControllerTest extends PostgresIntegrationTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.errors.qty").exists());
     }
+
+    @Test
+    void collectsMultipleErrorsInOneResponse() throws Exception {
+        // missing required "qty" AND an unknown key "bogus" -> both reported
+        mockMvc.perform(post("/api/items")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                            {"name":"Widget","customValues":{"bogus":"x"}}"""))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.errors.qty").exists())
+                .andExpect(jsonPath("$.errors.bogus").exists());
+    }
 }

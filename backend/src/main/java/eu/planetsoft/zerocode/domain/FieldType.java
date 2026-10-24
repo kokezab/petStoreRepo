@@ -127,4 +127,33 @@ public enum FieldType {
         }
         throw new FieldValidationException("constraint must be numeric");
     }
+
+    /**
+     * Validate that this type's supported constraint keys, if present, hold
+     * values of the right JSON type. Throws {@link FieldValidationException}
+     * on a malformed constraint so it is rejected at field-definition time
+     * rather than surfacing later as a confusing item-write failure.
+     */
+    public void validateConstraints(Map<String, Object> constraints) {
+        if (constraints == null) {
+            return;
+        }
+        switch (this) {
+            case TEXT -> {
+                if (constraints.containsKey("maxLength")) {
+                    asInt(constraints.get("maxLength"));
+                }
+            }
+            case NUMBER -> {
+                if (constraints.containsKey("min")) {
+                    asDecimal(constraints.get("min"));
+                }
+                if (constraints.containsKey("max")) {
+                    asDecimal(constraints.get("max"));
+                }
+            }
+            default -> {
+            }
+        }
+    }
 }

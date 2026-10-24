@@ -1,6 +1,7 @@
 package eu.planetsoft.zerocode.web;
 
 import eu.planetsoft.zerocode.service.FieldTypeChangeException;
+import eu.planetsoft.zerocode.service.FieldValidationException;
 import eu.planetsoft.zerocode.service.ItemValidationException;
 import eu.planetsoft.zerocode.service.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,14 @@ public class GlobalExceptionHandler {
         ProblemDetail pd = ProblemDetail.forStatusAndDetail(
                 HttpStatus.CONFLICT, ex.getMessage());
         pd.setTitle("Field type is immutable");
+        return pd;
+    }
+
+    @ExceptionHandler(FieldValidationException.class)
+    ProblemDetail onFieldValidation(FieldValidationException ex) {
+        ProblemDetail pd = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST, ex.getMessage());
+        pd.setTitle("Invalid field constraint");
         return pd;
     }
 
