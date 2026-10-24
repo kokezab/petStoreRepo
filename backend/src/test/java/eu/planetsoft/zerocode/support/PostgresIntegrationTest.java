@@ -5,17 +5,25 @@ import org.springframework.boot.testcontainers.service.connection.ServiceConnect
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 @SpringBootTest
-@Testcontainers
 public abstract class PostgresIntegrationTest {
 
-    @Container
+    // Singleton container pattern: intentionally NOT managed by the
+    // @Testcontainers JUnit extension (no @Container/@Testcontainers here).
+    // That extension stops a static container after every test class that
+    // declares it, which breaks reuse of the SAME container (and any cached
+    // Spring ApplicationContext bound to it) across the multiple test classes
+    // that extend this base. Starting it once, manually, and never stopping
+    // it (Testcontainers' Ryuk reaper cleans it up on JVM exit) keeps it alive
+    // for the whole test run.
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres =
+    static final PostgreSQLContainer<?> postgres =
             new PostgreSQLContainer<>("postgres:16-alpine");
+
+    static {
+        postgres.start();
+    }
 
     @DynamicPropertySource
     static void overrideValidation(DynamicPropertyRegistry registry) {
