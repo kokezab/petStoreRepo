@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Map;
 
@@ -72,11 +73,10 @@ public enum FieldType {
         public Object normalize(Object raw, Map<String, Object> constraints) {
             String s = asString(raw);
             try {
-                LocalTime.parse(s);
+                return LocalTime.parse(s).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
             } catch (DateTimeParseException e) {
                 throw new FieldValidationException("expected a time (HH:mm:ss)");
             }
-            return s;
         }
     },
 

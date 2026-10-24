@@ -72,4 +72,22 @@ class FieldTypeTest {
         assertThatThrownBy(() -> FieldType.DATETIME.normalize("not-a-datetime", Map.of()))
                 .isInstanceOf(FieldValidationException.class);
     }
+
+    @Test
+    void timeNormalizesToCanonicalSecondsForm() {
+        assertThat(FieldType.TIME.normalize("14:30", Map.of())).isEqualTo("14:30:00");
+    }
+
+    @Test
+    void numberAcceptsInclusiveBoundaries() {
+        assertThat(FieldType.NUMBER.normalize(0, Map.of("min", 0, "max", 10)))
+                .isEqualTo(new BigDecimal("0"));
+        assertThat(FieldType.NUMBER.normalize(10, Map.of("min", 0, "max", 10)))
+                .isEqualTo(new BigDecimal("10"));
+    }
+
+    @Test
+    void textAcceptsExactMaxLength() {
+        assertThat(FieldType.TEXT.normalize("abc", Map.of("maxLength", 3))).isEqualTo("abc");
+    }
 }
