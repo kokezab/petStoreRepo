@@ -29,5 +29,11 @@ public abstract class PostgresIntegrationTest {
     static void overrideValidation(DynamicPropertyRegistry registry) {
         // Flyway owns the schema; keep validate.
         registry.add("spring.jpa.hibernate.ddl-auto", () -> "validate");
+        // Keep the shared integration-test database seed-free: the demo seed
+        // migration (classpath:db/seed) lives outside the schema location and
+        // must not be applied here, since the committed seed rows would leak
+        // across the singleton Testcontainers container into every test class
+        // that extends this base.
+        registry.add("spring.flyway.locations", () -> "classpath:db/migration");
     }
 }
