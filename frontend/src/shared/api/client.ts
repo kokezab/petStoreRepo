@@ -24,4 +24,12 @@ handleTracerAuthErrors(api);
  */
 export const tracerRequest: AxiosRequestConfig = { baseURL: config.tracerApiBaseUrl };
 
+/**
+ * Per-request override pointing a call at the Zero-Code Entity backend instead
+ * of the default (petstore demo) base URL. The generated zerocode SDK shares
+ * this one axios instance/mutator, so its hooks must pass this as their
+ * `request` option to reach the right host.
+ */
+export const zerocodeRequest: AxiosRequestConfig = { baseURL: config.zerocodeApiBaseUrl };
+
 export default api;

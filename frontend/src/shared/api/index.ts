@@ -1,1 +1,1 @@
-export { default as apiClient, tracerRequest } from './client';
+export { default as apiClient, tracerRequest, zerocodeRequest } from './client';

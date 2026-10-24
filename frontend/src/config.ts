@@ -3,6 +3,11 @@ export const config = {
   // Tracer is a separate backend service from the petstore demo above. Its
   // generated SDK paths are like `/v1/equipment`, served from this base.
   tracerApiBaseUrl: import.meta.env.VITE_TRACER_API_BASE_URL || 'http://localhost:8080/api',
+  // Zero-Code Entity backend — another separate service. Its generated SDK
+  // paths are like `/api/items`. Defaults to the dev proxy prefix (`/zerocode-api`,
+  // same-origin -> forwarded to :8090 by Vite, so no CORS in dev). In prod,
+  // set VITE_ZEROCODE_API_BASE_URL to the backend's real origin.
+  zerocodeApiBaseUrl: import.meta.env.VITE_ZEROCODE_API_BASE_URL || '/zerocode-api',
   // Keycloak OIDC for the Tracer backend. Reuses the Tracer realm; this app's
   // redirect URI must be registered in that Keycloak client. All env-driven so no
   // secret lives in tracked source — put real values in the gitignored `.env.local`.

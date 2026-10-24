@@ -7,6 +7,10 @@ import { defineConfig } from 'vite'
 
 const version = process.env.npm_package_version ?? '0.0.0-dev'
 
+// Where the Zero-Code backend actually runs. Defaults to the local springdoc
+// port; override for a different local host without touching this file.
+const zerocodeTarget = process.env.VITE_ZEROCODE_PROXY_TARGET ?? 'http://localhost:8090'
+
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
@@ -30,6 +34,18 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    // Dev-only reverse proxy for the Zero-Code backend. The browser talks to
+    // same-origin `localhost:5173`, Vite forwards server-side to :8090, so
+    // there is no cross-origin request and no CORS to negotiate. The `/zerocode-api`
+    // prefix is stripped before forwarding: `/zerocode-api/api/items` -> `/api/items`.
+    // In prod, set VITE_ZEROCODE_API_BASE_URL to the real backend origin instead.
+    proxy: {
+      '/zerocode-api': {
+        target: zerocodeTarget,
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/zerocode-api/, ''),
+      },
+    },
   },
   build: {
     sourcemap: true,

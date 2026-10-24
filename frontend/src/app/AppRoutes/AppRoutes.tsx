@@ -16,6 +16,7 @@ import { PetDetailsPage } from '@/pages/pet-details';
 import { PetListPage } from '@/pages/pet-list';
 import { SettingsPage } from '@/pages/settings';
 import { SignupPage } from '@/pages/signup';
+import ZerocodePage from '@/pages/ZerocodePage';
 
 function withRouteErrorBoundary(element: ReactNode) {
   return <RouteErrorBoundary>{element}</RouteErrorBoundary>;
@@ -41,6 +42,7 @@ export function AppRoutes() {
       <Route path='/countries' element={withRouteErrorBoundary(<CountriesPage />)} />
       <Route path='/equipment' element={withRouteErrorBoundary(<EquipmentPage />)} />
       <Route path='/companies' element={withRouteErrorBoundary(<CompaniesPage />)} />
+      <Route path='/zerocode' element={withRouteErrorBoundary(<ZerocodePage />)} />
       {isOrderCreationFlagEnabled && (
         <Route path='/orders' element={withRouteErrorBoundary(<OrdersPage />)} />
       )}
