@@ -6,6 +6,8 @@ import eu.planetsoft.zerocode.domain.FieldDefinition;
 import eu.planetsoft.zerocode.domain.FieldType;
 import eu.planetsoft.zerocode.domain.Item;
 import eu.planetsoft.zerocode.support.PostgresIntegrationTest;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,9 @@ class RepositoryIntegrationTest extends PostgresIntegrationTest {
 
     @Autowired
     ItemRepository items;
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     @Test
     void persistsFieldDefinitionWithJsonbConstraints() {
@@ -53,7 +58,12 @@ class RepositoryIntegrationTest extends PostgresIntegrationTest {
         Item saved = items.save(item);
 
         assertThat(saved.getId()).isNotNull();
+
+        entityManager.flush();
+        entityManager.clear();
+
         Item loaded = items.findById(saved.getId()).orElseThrow();
         assertThat(loaded.getCustomValues()).containsEntry("color", "red");
+        assertThat(loaded.getCustomValues()).containsEntry("qty", 5);
     }
 }
