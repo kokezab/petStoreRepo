@@ -5,6 +5,7 @@ import eu.planetsoft.zerocode.service.FieldDefinitionService;
 import eu.planetsoft.zerocode.web.dto.FieldDefinitionDtos.CreateRequest;
 import eu.planetsoft.zerocode.web.dto.FieldDefinitionDtos.Response;
 import eu.planetsoft.zerocode.web.dto.FieldDefinitionDtos.UpdateRequest;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -31,12 +32,14 @@ public class FieldDefinitionController {
     }
 
     @GetMapping
+    @Operation(operationId = "listFields")
     public List<Response> list() {
         return service.list().stream().map(Response::from).toList();
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(operationId = "createField")
     public Response create(@Valid @RequestBody CreateRequest req) {
         FieldDefinition def = service.create(
                 req.label(), req.type(), req.required(), req.constraints());
@@ -44,6 +47,7 @@ public class FieldDefinitionController {
     }
 
     @PatchMapping("/{id}")
+    @Operation(operationId = "updateField")
     public Response update(@PathVariable UUID id, @Valid @RequestBody UpdateRequest req) {
         FieldDefinition def = service.update(
                 id, req.label(), req.type(), req.required(),
@@ -52,6 +56,7 @@ public class FieldDefinitionController {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(operationId = "deleteField")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         service.softDelete(id);
         return ResponseEntity.noContent().build();

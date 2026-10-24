@@ -13,6 +13,14 @@ const tracerInput = {
   },
 };
 
+// Zero-Code Entity backend spec. Points at the running backend's OpenAPI
+// document (springdoc default path, no `/api` prefix). No sanitizer needed —
+// this backend declares no security schemes. Generated output is committed, so
+// CI never needs the backend up — only local `npm run generate:api` does.
+const zerocodeInput = {
+  target: 'http://localhost:8090/v3/api-docs',
+};
+
 export default defineConfig({
   petstore: {
     input: {
@@ -79,6 +87,39 @@ export default defineConfig({
     input: tracerInput,
     output: {
       target: './src/api/generated/tracer/zod',
+      client: 'zod',
+      mode: 'tags-split',
+      fileExtension: '.zod.ts',
+    },
+  },
+  // Zero-Code Entity backend. Isolated in its own `generated/zerocode/` subtree
+  // so it never clobbers the petstore/tracer SDKs. Uses the existing
+  // `customInstance` mutator; point that instance at the zerocode base URL
+  // (http://localhost:8090) when wiring these hooks up.
+  zerocode: {
+    input: zerocodeInput,
+    output: {
+      target: './src/api/generated/zerocode/endpoints.ts',
+      schemas: './src/api/generated/zerocode/models',
+      client: 'react-query',
+      httpClient: 'axios',
+      mock: false,
+      mode: 'tags-split',
+      override: {
+        mutator: {
+          path: './src/api/axios-instance.ts',
+          name: 'customInstance',
+        },
+      },
+    },
+  },
+  // Runtime validators generated from the SAME zerocode spec as the SDK above,
+  // so the zod schemas and TS types can never drift. Use ONLY at the API
+  // response boundary (see CLAUDE.md) — not for Antd form validation.
+  zerocodeZod: {
+    input: zerocodeInput,
+    output: {
+      target: './src/api/generated/zerocode/zod',
       client: 'zod',
       mode: 'tags-split',
       fileExtension: '.zod.ts',

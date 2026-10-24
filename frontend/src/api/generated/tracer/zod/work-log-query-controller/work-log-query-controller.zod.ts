@@ -9,6 +9,23 @@ import * as zod from 'zod';
 
 
 /**
+ * @summary Get work log note by note id
+ */
+export const GetWorkLogNoteByIdParams = zod.object({
+  "noteId": zod.uuid()
+})
+
+export const GetWorkLogNoteByIdResponse = zod.object({
+  "noteId": zod.uuid().optional(),
+  "workLogSegmentId": zod.int().optional(),
+  "relatedWorkLogSegmentIds": zod.array(zod.int()).optional(),
+  "note": zod.string().optional(),
+  "createdDate": zod.iso.datetime({"offset":true}).optional(),
+  "createdBy": zod.uuid().optional(),
+  "author": zod.string().optional()
+})
+
+/**
  * @summary Get work logs for a work log segment
  */
 export const GetWorkLogsParams = zod.object({
@@ -19,7 +36,7 @@ export const GetWorkLogsQueryParams = zod.object({
   "search": zod.string().optional(),
   "createdFrom": zod.iso.datetime({"offset":true}).optional(),
   "createdTo": zod.iso.datetime({"offset":true}).optional(),
-  "entityNames": zod.array(zod.enum(['USER', 'COMPANY', 'EQUIPMENT', 'TELECOM_CAPACITY', 'LOCATION', 'ORGANIZATIONAL_UNIT', 'MASTER_DATA_FUNCTION', 'EQUIPMENT_STATUS', 'TELECOM_CAPACITY_STATUS', 'WORK_LOG_SEGMENT', 'EVENT_RECORD', 'WORK_ANNOUNCEMENT', 'WORK_ANNOUNCEMENT_GROUP', 'WORK_ANNOUNCEMENT_LINK', 'WORK_ANNOUNCEMENT_TEMPLATE', 'PREVENTIVE_MAINTENANCE_TEMPLATE', 'PREVENTIVE_MAINTENANCE', 'INFORMATIVE_REVIEW', 'DUTY_HANDOVER', 'WORK_LOG_NOTE'])).optional(),
+  "entityNames": zod.array(zod.enum(['USER', 'COMPANY', 'EQUIPMENT', 'TELECOM_CAPACITY', 'LOCATION', 'ORGANIZATIONAL_UNIT', 'MASTER_DATA_FUNCTION', 'EQUIPMENT_STATUS', 'TELECOM_CAPACITY_STATUS', 'WORK_LOG_SEGMENT', 'EVENT_RECORD', 'WORK_ANNOUNCEMENT', 'WORK_ANNOUNCEMENT_GROUP', 'WORK_ANNOUNCEMENT_LINK', 'WORK_ANNOUNCEMENT_TEMPLATE', 'PREVENTIVE_MAINTENANCE_TEMPLATE', 'PREVENTIVE_MAINTENANCE', 'INFORMATIVE_REVIEW', 'DUTY_HANDOVER', 'DUTY_SIGN_OFF', 'WORK_LOG_NOTE', 'MALFUNCTION_REPORT', 'OCCURRENCE_REPORT'])).optional(),
   "workLogSegmentIds": zod.array(zod.int()).optional()
 })
 
@@ -34,8 +51,38 @@ export const GetWorkLogsResponseItem = zod.object({
   "eventStart": zod.iso.datetime({"offset":true}).optional(),
   "eventEnd": zod.iso.datetime({"offset":true}).optional(),
   "createdDate": zod.iso.datetime({"offset":true}).optional(),
+  "createdBy": zod.uuid().optional(),
   "description": zod.string().optional(),
-  "completed": zod.boolean().optional()
+  "completed": zod.boolean().optional(),
+  "pinned": zod.boolean().optional()
 })
 export const GetWorkLogsResponse = zod.array(GetWorkLogsResponseItem)
+
+/**
+ * @summary Get work logs created since the segment was signed off
+ */
+export const GetWorkLogsSinceSignOffParams = zod.object({
+  "workLogSegmentId": zod.int()
+})
+
+export const GetWorkLogsSinceSignOffResponse = zod.object({
+  "periodStart": zod.iso.datetime({"offset":true}).optional(),
+  "periodEnd": zod.iso.datetime({"offset":true}).optional(),
+  "workLogs": zod.array(zod.object({
+  "id": zod.uuid().optional(),
+  "workLogSegmentId": zod.int().optional(),
+  "relatedWorkLogSegmentId": zod.int().optional(),
+  "areaLocationId": zod.int().optional(),
+  "relatedAreaLocationId": zod.int().optional(),
+  "entityName": zod.string().optional(),
+  "entityId": zod.string().optional(),
+  "eventStart": zod.iso.datetime({"offset":true}).optional(),
+  "eventEnd": zod.iso.datetime({"offset":true}).optional(),
+  "createdDate": zod.iso.datetime({"offset":true}).optional(),
+  "createdBy": zod.uuid().optional(),
+  "description": zod.string().optional(),
+  "completed": zod.boolean().optional(),
+  "pinned": zod.boolean().optional()
+})).optional()
+})
 

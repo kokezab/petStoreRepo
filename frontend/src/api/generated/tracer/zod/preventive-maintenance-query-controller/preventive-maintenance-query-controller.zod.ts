@@ -84,3 +84,29 @@ export const GetPreventiveMaintenancesResponse = zod.object({
   "totalPages": zod.int().optional()
 })
 
+/**
+ * Returns records from today onwards in status IN_PROGRESS, COMPLETED or CANCELLED, plus earlier records still in status IN_PROGRESS. PLANNED records are never returned.
+ * @summary Get preventive maintenance records of a work log segment for the work log screen
+ */
+export const GetPreventiveMaintenancesByWorkLogSegmentIdParams = zod.object({
+  "workLogSegmentId": zod.int()
+})
+
+export const GetPreventiveMaintenancesByWorkLogSegmentIdQueryParams = zod.object({
+  "name": zod.string().optional(),
+  "organizationalUnitIds": zod.array(zod.int()).optional(),
+  "equipmentId": zod.int().optional()
+})
+
+export const GetPreventiveMaintenancesByWorkLogSegmentIdResponseItem = zod.object({
+  "id": zod.uuid().optional(),
+  "code": zod.string().optional(),
+  "name": zod.string().optional(),
+  "organizationalUnitId": zod.int().optional(),
+  "periodicity": zod.enum(['DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY', 'BIMONTHLY', 'QUARTERLY', 'SEMIANNUAL', 'ANNUAL', 'BIENNIAL', 'TRIENNIAL']).optional(),
+  "startDate": zod.iso.date().optional(),
+  "status": zod.enum(['PLANNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED']).optional(),
+  "plannedInPastNotCompleted": zod.boolean().optional()
+})
+export const GetPreventiveMaintenancesByWorkLogSegmentIdResponse = zod.array(GetPreventiveMaintenancesByWorkLogSegmentIdResponseItem)
+

@@ -9,5 +9,8 @@ import type { ChildSegmentDutyInfoResponse } from './childSegmentDutyInfoRespons
 
 export interface WorkLogSegmentDutyInfoResponse {
   hasActiveDuty?: boolean;
+  dutyId?: number;
+  dutyMasterUserId?: string;
+  dutyOtherUserIds?: string[];
   children?: ChildSegmentDutyInfoResponse[];
 }

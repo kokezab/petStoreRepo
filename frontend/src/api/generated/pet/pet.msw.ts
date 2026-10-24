@@ -25,20 +25,8 @@ import {
   getUploadFileResponseMock
 } from './pet.faker';
 
-export { getUploadFileResponseMock, getFindPetsByStatusResponseMock, getFindPetsByTagsResponseMock, getGetPetByIdResponseMock } from './pet.faker';
+export { getFindPetsByStatusResponseMock, getFindPetsByTagsResponseMock, getGetPetByIdResponseMock, getUploadFileResponseMock } from './pet.faker';
 
-
-export const getUploadFileMockHandler = (overrideResponse?: ApiResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponse> | ApiResponse), options?: RequestHandlerOptions) => {
-  return http.post('*/pet/:petId/uploadImage', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
-
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getUploadFileResponseMock(),
-      { status: 200
-      })
-  }, options)
-}
 
 export const getAddPetMockHandler = (overrideResponse?: unknown | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<unknown> | unknown), options?: RequestHandlerOptions) => {
   return http.post('*/pet', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
@@ -115,13 +103,25 @@ export const getDeletePetMockHandler = (overrideResponse?: unknown | ((info: Par
       })
   }, options)
 }
+
+export const getUploadFileMockHandler = (overrideResponse?: ApiResponse | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<ApiResponse> | ApiResponse), options?: RequestHandlerOptions) => {
+  return http.post('*/pet/:petId/uploadImage', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getUploadFileResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
 export const getPetMock = () => [
-  getUploadFileMockHandler(),
   getAddPetMockHandler(),
   getUpdatePetMockHandler(),
   getFindPetsByStatusMockHandler(),
   getFindPetsByTagsMockHandler(),
   getGetPetByIdMockHandler(),
   getUpdatePetWithFormMockHandler(),
-  getDeletePetMockHandler()
+  getDeletePetMockHandler(),
+  getUploadFileMockHandler()
 ]

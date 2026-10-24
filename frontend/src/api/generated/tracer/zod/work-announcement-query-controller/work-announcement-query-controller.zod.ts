@@ -38,6 +38,7 @@ export const GetWorkAnnouncementByIdResponse = zod.object({
   "companyIds": zod.array(zod.int()).optional(),
   "locationIds": zod.array(zod.int()).optional(),
   "eventRecordIds": zod.array(zod.uuid()).optional(),
+  "preventiveMaintenanceIds": zod.array(zod.uuid()).optional(),
   "elements": zod.array(zod.object({
   "elementName": zod.enum(['EQUIPMENT', 'TELECOM_CAPACITY', 'MASTER_DATA_FUNCTION']).optional(),
   "elementId": zod.int().optional()
@@ -93,6 +94,7 @@ export const GetWorkAnnouncementsResponse = zod.object({
   "data": zod.array(zod.object({
   "id": zod.uuid().optional(),
   "code": zod.string().optional(),
+  "announcerUserId": zod.uuid().optional(),
   "announcerName": zod.string().optional(),
   "plannedStart": zod.iso.datetime({"offset":true}).optional(),
   "plannedEnd": zod.iso.datetime({"offset":true}).optional(),

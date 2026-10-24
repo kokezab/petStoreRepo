@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { UpdateEventRecordWorksheetCommandStatus } from './updateEventRecordWorksheetCommandStatus';
+import type { WorksheetEquipmentReplacementCommand } from './worksheetEquipmentReplacementCommand';
 
 export interface UpdateEventRecordWorksheetCommand {
   workStartDateTime?: string;
@@ -19,4 +20,5 @@ export interface UpdateEventRecordWorksheetCommand {
   /** @minItems 1 */
   userIds: string[];
   companyIds?: number[];
+  replacements?: WorksheetEquipmentReplacementCommand[];
 }

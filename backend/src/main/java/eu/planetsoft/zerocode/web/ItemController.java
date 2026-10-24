@@ -5,6 +5,7 @@ import eu.planetsoft.zerocode.service.ItemService;
 import eu.planetsoft.zerocode.web.dto.ItemDtos.CreateRequest;
 import eu.planetsoft.zerocode.web.dto.ItemDtos.Response;
 import eu.planetsoft.zerocode.web.dto.ItemDtos.UpdateRequest;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -31,29 +32,34 @@ public class ItemController {
     }
 
     @GetMapping
+    @Operation(operationId = "listItems")
     public List<Response> list() {
         return service.list().stream().map(Response::from).toList();
     }
 
     @GetMapping("/{id}")
+    @Operation(operationId = "getItem")
     public Response get(@PathVariable UUID id) {
         return Response.from(service.get(id));
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(operationId = "createItem")
     public Response create(@Valid @RequestBody CreateRequest req) {
         Item item = service.create(req.name(), req.description(), req.customValues());
         return Response.from(item);
     }
 
     @PutMapping("/{id}")
+    @Operation(operationId = "updateItem")
     public Response update(@PathVariable UUID id, @Valid @RequestBody UpdateRequest req) {
         Item item = service.update(id, req.name(), req.description(), req.customValues());
         return Response.from(item);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(operationId = "deleteItem")
     public ResponseEntity<Void> delete(@PathVariable UUID id) {
         service.delete(id);
         return ResponseEntity.noContent().build();

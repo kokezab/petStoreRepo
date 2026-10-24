@@ -52,7 +52,8 @@ export const UpdateWorkAnnouncementBody = zod.object({
   "workAnnouncementGroupId": zod.int(),
   "groupDecision": zod.enum(['COMPLIANCE', 'NOTICE', 'INFORMATION'])
 })).min(1),
-  "eventRecordIds": zod.array(zod.uuid()).optional()
+  "eventRecordIds": zod.array(zod.uuid()).optional(),
+  "preventiveMaintenanceIds": zod.array(zod.uuid()).optional()
 })
 
 export const UpdateWorkAnnouncementResponse = zod.unknown()
@@ -102,7 +103,8 @@ export const CreateWorkAnnouncementBody = zod.object({
   "groupDecision": zod.enum(['COMPLIANCE', 'NOTICE', 'INFORMATION'])
 })).min(1),
   "eventRecordIds": zod.array(zod.uuid()).optional(),
-  "templateId": zod.int().optional()
+  "templateId": zod.int().optional(),
+  "preventiveMaintenanceId": zod.uuid().optional()
 })
 
 export const CreateWorkAnnouncementResponse = zod.void()

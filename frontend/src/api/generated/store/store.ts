@@ -145,70 +145,6 @@ export function useGetInventory<TData = Awaited<ReturnType<typeof getInventory>>
 
 
 /**
- * @summary Place an order for a pet
- */
-export const placeOrder = (
-    order: Order,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-
-
-      return customInstance<Order>(
-      {url: `/store/order`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: order, signal
-    },
-      options);
-    }
-
-
-
-
-export const getPlaceOrderMutationOptions = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof placeOrder>>, TError,{data: Order}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof placeOrder>>, TError,{data: Order}, TContext> => {
-
-const mutationKey = ['placeOrder'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof placeOrder>>, {data: Order}> = (props) => {
-          const {data} = props ?? {};
-
-          return  placeOrder(data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type PlaceOrderMutationResult = NonNullable<Awaited<ReturnType<typeof placeOrder>>>
-    export type PlaceOrderMutationBody = Order
-    export type PlaceOrderMutationError = void
-
-    /**
- * @summary Place an order for a pet
- */
-export const usePlaceOrder = <TError = void,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof placeOrder>>, TError,{data: Order}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof placeOrder>>,
-        TError,
-        {data: Order},
-        TContext
-      > => {
-      return useMutation(getPlaceOrderMutationOptions(options), queryClient);
-    }
-    /**
  * For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
  * @summary Find purchase order by ID
  */
@@ -363,4 +299,68 @@ export const useDeleteOrder = <TError = void,
         TContext
       > => {
       return useMutation(getDeleteOrderMutationOptions(options), queryClient);
+    }
+    /**
+ * @summary Place an order for a pet
+ */
+export const placeOrder = (
+    order: Order,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<Order>(
+      {url: `/store/order`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: order, signal
+    },
+      options);
+    }
+
+
+
+
+export const getPlaceOrderMutationOptions = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof placeOrder>>, TError,{data: Order}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof placeOrder>>, TError,{data: Order}, TContext> => {
+
+const mutationKey = ['placeOrder'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof placeOrder>>, {data: Order}> = (props) => {
+          const {data} = props ?? {};
+
+          return  placeOrder(data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type PlaceOrderMutationResult = NonNullable<Awaited<ReturnType<typeof placeOrder>>>
+    export type PlaceOrderMutationBody = Order
+    export type PlaceOrderMutationError = void
+
+    /**
+ * @summary Place an order for a pet
+ */
+export const usePlaceOrder = <TError = void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof placeOrder>>, TError,{data: Order}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof placeOrder>>,
+        TError,
+        {data: Order},
+        TContext
+      > => {
+      return useMutation(getPlaceOrderMutationOptions(options), queryClient);
     }

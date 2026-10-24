@@ -41,4 +41,5 @@ export interface UpdateWorkAnnouncementCommand {
   /** @minItems 1 */
   workAnnouncementGroups: UpdateWorkAnnouncementGroupLinkCommand[];
   eventRecordIds?: string[];
+  preventiveMaintenanceIds?: string[];
 }

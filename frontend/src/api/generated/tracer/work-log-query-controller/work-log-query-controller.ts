@@ -23,6 +23,8 @@ import type {
 import type {
   ApiErrorResponse,
   GetWorkLogsParams,
+  PeriodWorkLogsResponse,
+  WorkLogNoteResponse,
   WorkLogResponse
 } from '../models';
 
@@ -47,6 +49,98 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   }
   return result;
 };
+
+/**
+ * @summary Get work log note by note id
+ */
+export const getWorkLogNoteById = (
+    noteId: string,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<WorkLogNoteResponse>(
+      {url: `/v1/work-logs/note/${noteId}`, method: 'GET', signal
+    },
+      options);
+    }
+
+
+
+
+export const getGetWorkLogNoteByIdQueryKey = (noteId: string,) => {
+    return [
+    `/v1/work-logs/note/${noteId}`
+    ] as const;
+    }
+
+
+export const getGetWorkLogNoteByIdQueryOptions = <TData = Awaited<ReturnType<typeof getWorkLogNoteById>>, TError = ApiErrorResponse | void>(noteId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogNoteById>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetWorkLogNoteByIdQueryKey(noteId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWorkLogNoteById>>> = ({ signal }) => getWorkLogNoteById(noteId, requestOptions, signal);
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: noteId !== null && noteId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWorkLogNoteById>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetWorkLogNoteByIdQueryResult = NonNullable<Awaited<ReturnType<typeof getWorkLogNoteById>>>
+export type GetWorkLogNoteByIdQueryError = ApiErrorResponse | void
+
+
+export function useGetWorkLogNoteById<TData = Awaited<ReturnType<typeof getWorkLogNoteById>>, TError = ApiErrorResponse | void>(
+ noteId: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogNoteById>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWorkLogNoteById>>,
+          TError,
+          Awaited<ReturnType<typeof getWorkLogNoteById>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWorkLogNoteById<TData = Awaited<ReturnType<typeof getWorkLogNoteById>>, TError = ApiErrorResponse | void>(
+ noteId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogNoteById>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWorkLogNoteById>>,
+          TError,
+          Awaited<ReturnType<typeof getWorkLogNoteById>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWorkLogNoteById<TData = Awaited<ReturnType<typeof getWorkLogNoteById>>, TError = ApiErrorResponse | void>(
+ noteId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogNoteById>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get work log note by note id
+ */
+
+export function useGetWorkLogNoteById<TData = Awaited<ReturnType<typeof getWorkLogNoteById>>, TError = ApiErrorResponse | void>(
+ noteId: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogNoteById>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetWorkLogNoteByIdQueryOptions(noteId,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
 
 /**
  * @summary Get work logs for a work log segment
@@ -137,6 +231,98 @@ export function useGetWorkLogs<TData = Awaited<ReturnType<typeof getWorkLogs>>, 
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetWorkLogsQueryOptions(workLogSegmentId,params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+/**
+ * @summary Get work logs created since the segment was signed off
+ */
+export const getWorkLogsSinceSignOff = (
+    workLogSegmentId: number,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<PeriodWorkLogsResponse>(
+      {url: `/v1/work-logs/work-log-segments/${workLogSegmentId}/since-sign-off`, method: 'GET', signal
+    },
+      options);
+    }
+
+
+
+
+export const getGetWorkLogsSinceSignOffQueryKey = (workLogSegmentId: number,) => {
+    return [
+    `/v1/work-logs/work-log-segments/${workLogSegmentId}/since-sign-off`
+    ] as const;
+    }
+
+
+export const getGetWorkLogsSinceSignOffQueryOptions = <TData = Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>, TError = ApiErrorResponse | void>(workLogSegmentId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetWorkLogsSinceSignOffQueryKey(workLogSegmentId);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>> = ({ signal }) => getWorkLogsSinceSignOff(workLogSegmentId, requestOptions, signal);
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: workLogSegmentId !== null && workLogSegmentId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetWorkLogsSinceSignOffQueryResult = NonNullable<Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>>
+export type GetWorkLogsSinceSignOffQueryError = ApiErrorResponse | void
+
+
+export function useGetWorkLogsSinceSignOff<TData = Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>, TError = ApiErrorResponse | void>(
+ workLogSegmentId: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>,
+          TError,
+          Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWorkLogsSinceSignOff<TData = Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>, TError = ApiErrorResponse | void>(
+ workLogSegmentId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>,
+          TError,
+          Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetWorkLogsSinceSignOff<TData = Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>, TError = ApiErrorResponse | void>(
+ workLogSegmentId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get work logs created since the segment was signed off
+ */
+
+export function useGetWorkLogsSinceSignOff<TData = Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>, TError = ApiErrorResponse | void>(
+ workLogSegmentId: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getWorkLogsSinceSignOff>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetWorkLogsSinceSignOffQueryOptions(workLogSegmentId,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

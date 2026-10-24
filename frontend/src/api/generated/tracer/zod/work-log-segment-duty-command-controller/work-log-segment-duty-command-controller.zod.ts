@@ -46,10 +46,34 @@ export const CreateWorkLogSegmentDutyBody = zod.object({
 export const CreateWorkLogSegmentDutyResponse = zod.void()
 
 /**
- * @summary Sign off from the current active duty of a work log segment
+ * @summary Force sign off duty from a child work log segment
  */
-export const SignOffWorkLogSegmentDutyBody = zod.object({
+export const ForceSignOffWorkLogSegmentDutyParams = zod.object({
   "workLogSegmentId": zod.int()
+})
+
+export const forceSignOffWorkLogSegmentDutyBodyReasonMin = 0;
+export const forceSignOffWorkLogSegmentDutyBodyReasonMax = 1000;
+
+
+
+export const ForceSignOffWorkLogSegmentDutyBody = zod.object({
+  "reason": zod.string().min(forceSignOffWorkLogSegmentDutyBodyReasonMin).max(forceSignOffWorkLogSegmentDutyBodyReasonMax)
+})
+
+export const ForceSignOffWorkLogSegmentDutyResponse = zod.void()
+
+/**
+ * @summary Sign off from the current active duty of a work log segment, optionally stating a reason
+ */
+export const signOffWorkLogSegmentDutyBodyReasonMin = 0;
+export const signOffWorkLogSegmentDutyBodyReasonMax = 1000;
+
+
+
+export const SignOffWorkLogSegmentDutyBody = zod.object({
+  "workLogSegmentId": zod.int(),
+  "reason": zod.string().min(signOffWorkLogSegmentDutyBodyReasonMin).max(signOffWorkLogSegmentDutyBodyReasonMax).optional()
 })
 
 export const SignOffWorkLogSegmentDutyResponse = zod.void()

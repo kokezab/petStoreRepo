@@ -18,4 +18,8 @@ export interface EventRecordResponse {
   status?: EventRecordResponseStatus;
   workLogSegmentIds?: number[];
   elements?: EventRecordElementResponse[];
+  workAnnouncementIds?: string[];
+  preventiveMaintenanceIds?: string[];
+  malfunctionReportIds?: number[];
+  occurrenceReportIds?: number[];
 }

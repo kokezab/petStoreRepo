@@ -21,7 +21,7 @@ export const updateActivityPropertiesBodyNameMax = 50;
 
 export const UpdateActivityPropertiesBody = zod.object({
   "name": zod.string().min(1).max(updateActivityPropertiesBodyNameMax),
-  "activityType": zod.enum(['EVENT_RECORD_STATUS_IN_PROGRESS', 'EVENT_RECORD_STATUS_ARCHIVE', 'WORK_ANNOUNCEMENT_STATUS_IN_PROGRESS', 'WORK_ANNOUNCEMENT_STATUS_COMPLETED', 'PREVENTIVE_MAINTENANCE_GENERATE', 'PREVENTIVE_MAINTENANCE_ACTIVATION']),
+  "activityType": zod.enum(['EVENT_RECORD_STATUS_IN_PROGRESS', 'EVENT_RECORD_STATUS_ARCHIVE', 'WORK_ANNOUNCEMENT_STATUS_IN_PROGRESS', 'WORK_ANNOUNCEMENT_STATUS_COMPLETED', 'PREVENTIVE_MAINTENANCE_GENERATE', 'PREVENTIVE_MAINTENANCE_ACTIVATION', 'OCCURRENCE_REPORT_NOTIFICATION_RETRY']),
   "syncTaskId": zod.int(),
   "customProperties": zod.record(zod.string(), zod.string())
 })
@@ -46,7 +46,7 @@ export const insertActivityPropertiesBodyNameMax = 50;
 
 export const InsertActivityPropertiesBody = zod.object({
   "name": zod.string().min(1).max(insertActivityPropertiesBodyNameMax),
-  "activityType": zod.enum(['EVENT_RECORD_STATUS_IN_PROGRESS', 'EVENT_RECORD_STATUS_ARCHIVE', 'WORK_ANNOUNCEMENT_STATUS_IN_PROGRESS', 'WORK_ANNOUNCEMENT_STATUS_COMPLETED', 'PREVENTIVE_MAINTENANCE_GENERATE', 'PREVENTIVE_MAINTENANCE_ACTIVATION']),
+  "activityType": zod.enum(['EVENT_RECORD_STATUS_IN_PROGRESS', 'EVENT_RECORD_STATUS_ARCHIVE', 'WORK_ANNOUNCEMENT_STATUS_IN_PROGRESS', 'WORK_ANNOUNCEMENT_STATUS_COMPLETED', 'PREVENTIVE_MAINTENANCE_GENERATE', 'PREVENTIVE_MAINTENANCE_ACTIVATION', 'OCCURRENCE_REPORT_NOTIFICATION_RETRY']),
   "syncTaskId": zod.int(),
   "customProperties": zod.record(zod.string(), zod.string())
 })

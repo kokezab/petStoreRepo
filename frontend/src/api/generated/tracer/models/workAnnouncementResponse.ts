@@ -33,6 +33,7 @@ export interface WorkAnnouncementResponse {
   companyIds?: number[];
   locationIds?: number[];
   eventRecordIds?: string[];
+  preventiveMaintenanceIds?: string[];
   elements?: WorkAnnouncementElementDetailResponse[];
   workAnnouncementGroups?: WorkAnnouncementGroupLinkResponse[];
   workAnnouncementGroupIdToBlockedUserIds?: WorkAnnouncementResponseWorkAnnouncementGroupIdToBlockedUserIds;

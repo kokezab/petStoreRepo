@@ -15,15 +15,17 @@ import type {
 
 import type {
   PageableResponseReducedPreventiveMaintenanceResponse,
-  PreventiveMaintenanceResponse
+  PreventiveMaintenanceResponse,
+  WorkLogPreventiveMaintenanceResponse
 } from '../models';
 
 import {
   getGetPreventiveMaintenanceByIdResponseMock,
+  getGetPreventiveMaintenancesByWorkLogSegmentIdResponseMock,
   getGetPreventiveMaintenancesResponseMock
 } from './preventive-maintenance-query-controller.faker';
 
-export { getGetPreventiveMaintenanceByIdResponseMock, getGetPreventiveMaintenancesResponseMock } from './preventive-maintenance-query-controller.faker';
+export { getGetPreventiveMaintenanceByIdResponseMock, getGetPreventiveMaintenancesResponseMock, getGetPreventiveMaintenancesByWorkLogSegmentIdResponseMock } from './preventive-maintenance-query-controller.faker';
 
 
 export const getGetPreventiveMaintenanceByIdMockHandler = (overrideResponse?: PreventiveMaintenanceResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PreventiveMaintenanceResponse> | PreventiveMaintenanceResponse), options?: RequestHandlerOptions) => {
@@ -49,7 +51,20 @@ export const getGetPreventiveMaintenancesMockHandler = (overrideResponse?: Pagea
       })
   }, options)
 }
+
+export const getGetPreventiveMaintenancesByWorkLogSegmentIdMockHandler = (overrideResponse?: WorkLogPreventiveMaintenanceResponse[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<WorkLogPreventiveMaintenanceResponse[]> | WorkLogPreventiveMaintenanceResponse[]), options?: RequestHandlerOptions) => {
+  return http.get('*/v1/preventive-maintenance/work-log-segments/:workLogSegmentId', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetPreventiveMaintenancesByWorkLogSegmentIdResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
 export const getPreventiveMaintenanceQueryControllerMock = () => [
   getGetPreventiveMaintenanceByIdMockHandler(),
-  getGetPreventiveMaintenancesMockHandler()
+  getGetPreventiveMaintenancesMockHandler(),
+  getGetPreventiveMaintenancesByWorkLogSegmentIdMockHandler()
 ]

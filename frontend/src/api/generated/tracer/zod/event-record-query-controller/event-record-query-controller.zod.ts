@@ -30,8 +30,13 @@ export const GetEventRecordByIdResponse = zod.object({
   "elementId": zod.int().optional(),
   "eventType": zod.enum(['ALARM', 'CORRECT', 'FAILURE', 'INTERRUPTION', 'REDUNDANCY_LOSS', 'RADIO_INTERFERENCE']).optional(),
   "startDateTime": zod.iso.datetime({"offset":true}).optional(),
-  "endDateTime": zod.iso.datetime({"offset":true}).optional()
-})).optional()
+  "endDateTime": zod.iso.datetime({"offset":true}).optional(),
+  "malfunctionReportCreated": zod.boolean().optional()
+})).optional(),
+  "workAnnouncementIds": zod.array(zod.uuid()).optional(),
+  "preventiveMaintenanceIds": zod.array(zod.uuid()).optional(),
+  "malfunctionReportIds": zod.array(zod.int()).optional(),
+  "occurrenceReportIds": zod.array(zod.int()).optional()
 })
 
 /**
@@ -97,7 +102,16 @@ export const GetWorksheetsByEventRecordIdResponseItem = zod.object({
   "description": zod.string().optional(),
   "status": zod.enum(['OPEN', 'CLOSED', 'CLOSED_INCOMPLETE']).optional(),
   "userIds": zod.array(zod.uuid()).optional(),
-  "companyIds": zod.array(zod.int()).optional()
+  "companyIds": zod.array(zod.int()).optional(),
+  "replacements": zod.array(zod.object({
+  "faultyEquipmentId": zod.int().optional(),
+  "spareEquipmentId": zod.int().optional(),
+  "faultyFullCode": zod.string().optional(),
+  "spareFullCode": zod.string().optional(),
+  "faultyFullPath": zod.string().optional(),
+  "spareFullPath": zod.string().optional(),
+  "replacedDate": zod.iso.datetime({"offset":true}).optional()
+})).optional()
 })
 export const GetWorksheetsByEventRecordIdResponse = zod.array(GetWorksheetsByEventRecordIdResponseItem)
 
@@ -132,6 +146,15 @@ export const GetWorksheetByIdResponse = zod.object({
   "description": zod.string().optional(),
   "status": zod.enum(['OPEN', 'CLOSED', 'CLOSED_INCOMPLETE']).optional(),
   "userIds": zod.array(zod.uuid()).optional(),
-  "companyIds": zod.array(zod.int()).optional()
+  "companyIds": zod.array(zod.int()).optional(),
+  "replacements": zod.array(zod.object({
+  "faultyEquipmentId": zod.int().optional(),
+  "spareEquipmentId": zod.int().optional(),
+  "faultyFullCode": zod.string().optional(),
+  "spareFullCode": zod.string().optional(),
+  "faultyFullPath": zod.string().optional(),
+  "spareFullPath": zod.string().optional(),
+  "replacedDate": zod.iso.datetime({"offset":true}).optional()
+})).optional()
 })
 

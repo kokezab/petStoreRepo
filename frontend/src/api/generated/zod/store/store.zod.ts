@@ -15,27 +15,6 @@ import * as zod from 'zod';
 export const GetInventoryResponse = zod.record(zod.string(), zod.int())
 
 /**
- * @summary Place an order for a pet
- */
-export const PlaceOrderBody = zod.object({
-  "id": zod.int().optional(),
-  "petId": zod.int().optional(),
-  "quantity": zod.int().optional(),
-  "shipDate": zod.iso.datetime({"offset":true}).optional(),
-  "status": zod.enum(['placed', 'approved', 'delivered']).optional().describe('Order Status'),
-  "complete": zod.boolean().optional()
-})
-
-export const PlaceOrderResponse = zod.object({
-  "id": zod.int().optional(),
-  "petId": zod.int().optional(),
-  "quantity": zod.int().optional(),
-  "shipDate": zod.iso.datetime({"offset":true}).optional(),
-  "status": zod.enum(['placed', 'approved', 'delivered']).optional().describe('Order Status'),
-  "complete": zod.boolean().optional()
-})
-
-/**
  * For valid response try integer IDs with value >= 1 and <= 10. Other values will generated exceptions
  * @summary Find purchase order by ID
  */
@@ -68,4 +47,25 @@ export const DeleteOrderParams = zod.object({
 })
 
 export const DeleteOrderResponse = zod.void()
+
+/**
+ * @summary Place an order for a pet
+ */
+export const PlaceOrderBody = zod.object({
+  "id": zod.int().optional(),
+  "petId": zod.int().optional(),
+  "quantity": zod.int().optional(),
+  "shipDate": zod.iso.datetime({"offset":true}).optional(),
+  "status": zod.enum(['placed', 'approved', 'delivered']).optional().describe('Order Status'),
+  "complete": zod.boolean().optional()
+})
+
+export const PlaceOrderResponse = zod.object({
+  "id": zod.int().optional(),
+  "petId": zod.int().optional(),
+  "quantity": zod.int().optional(),
+  "shipDate": zod.iso.datetime({"offset":true}).optional(),
+  "status": zod.enum(['placed', 'approved', 'delivered']).optional().describe('Order Status'),
+  "complete": zod.boolean().optional()
+})
 

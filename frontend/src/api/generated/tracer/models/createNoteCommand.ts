@@ -8,6 +8,7 @@
 
 export interface CreateNoteCommand {
   workLogSegmentId: number;
+  relatedWorkLogSegmentIds?: number[];
   /**
      * @minLength 0
      * @maxLength 1000

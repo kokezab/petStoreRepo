@@ -15,6 +15,16 @@ import type {
 
 
 
+export const getUpdateWorkLogNoteMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
+  return http.put('*/v1/work-logs/note/:noteId', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+
+    return new HttpResponse(null,
+      { status: 204
+      })
+  }, options)
+}
+
 export const getCreateWorkLogNoteMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
   return http.post('*/v1/work-logs/note', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
   if (typeof overrideResponse === 'function') {await overrideResponse(info); }
@@ -25,5 +35,6 @@ export const getCreateWorkLogNoteMockHandler = (overrideResponse?: void | ((info
   }, options)
 }
 export const getWorkLogCommandControllerMock = () => [
+  getUpdateWorkLogNoteMockHandler(),
   getCreateWorkLogNoteMockHandler()
 ]

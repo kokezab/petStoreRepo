@@ -18,7 +18,7 @@ export const GetActivityPropertiesByIdParams = zod.object({
 export const GetActivityPropertiesByIdResponse = zod.object({
   "id": zod.int().optional(),
   "name": zod.string().optional(),
-  "activityType": zod.enum(['EVENT_RECORD_STATUS_IN_PROGRESS', 'EVENT_RECORD_STATUS_ARCHIVE', 'WORK_ANNOUNCEMENT_STATUS_IN_PROGRESS', 'WORK_ANNOUNCEMENT_STATUS_COMPLETED', 'PREVENTIVE_MAINTENANCE_GENERATE', 'PREVENTIVE_MAINTENANCE_ACTIVATION']).optional(),
+  "activityType": zod.enum(['EVENT_RECORD_STATUS_IN_PROGRESS', 'EVENT_RECORD_STATUS_ARCHIVE', 'WORK_ANNOUNCEMENT_STATUS_IN_PROGRESS', 'WORK_ANNOUNCEMENT_STATUS_COMPLETED', 'PREVENTIVE_MAINTENANCE_GENERATE', 'PREVENTIVE_MAINTENANCE_ACTIVATION', 'OCCURRENCE_REPORT_NOTIFICATION_RETRY']).optional(),
   "syncTaskId": zod.int().optional(),
   "enabled": zod.boolean().optional(),
   "customProperties": zod.record(zod.string(), zod.string()).optional(),
@@ -33,7 +33,7 @@ export const GetActivityPropertiesByIdResponse = zod.object({
 export const GetActivityPropertiesResponseItem = zod.object({
   "id": zod.int().optional(),
   "name": zod.string().optional(),
-  "activityType": zod.enum(['EVENT_RECORD_STATUS_IN_PROGRESS', 'EVENT_RECORD_STATUS_ARCHIVE', 'WORK_ANNOUNCEMENT_STATUS_IN_PROGRESS', 'WORK_ANNOUNCEMENT_STATUS_COMPLETED', 'PREVENTIVE_MAINTENANCE_GENERATE', 'PREVENTIVE_MAINTENANCE_ACTIVATION']).optional(),
+  "activityType": zod.enum(['EVENT_RECORD_STATUS_IN_PROGRESS', 'EVENT_RECORD_STATUS_ARCHIVE', 'WORK_ANNOUNCEMENT_STATUS_IN_PROGRESS', 'WORK_ANNOUNCEMENT_STATUS_COMPLETED', 'PREVENTIVE_MAINTENANCE_GENERATE', 'PREVENTIVE_MAINTENANCE_ACTIVATION', 'OCCURRENCE_REPORT_NOTIFICATION_RETRY']).optional(),
   "syncTaskId": zod.int().optional(),
   "enabled": zod.boolean().optional(),
   "customProperties": zod.record(zod.string(), zod.string()).optional(),

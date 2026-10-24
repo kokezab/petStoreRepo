@@ -14,15 +14,31 @@ import type {
 } from 'msw';
 
 import type {
+  PeriodWorkLogsResponse,
+  WorkLogNoteResponse,
   WorkLogResponse
 } from '../models';
 
 import {
-  getGetWorkLogsResponseMock
+  getGetWorkLogNoteByIdResponseMock,
+  getGetWorkLogsResponseMock,
+  getGetWorkLogsSinceSignOffResponseMock
 } from './work-log-query-controller.faker';
 
-export { getGetWorkLogsResponseMock } from './work-log-query-controller.faker';
+export { getGetWorkLogNoteByIdResponseMock, getGetWorkLogsResponseMock, getGetWorkLogsSinceSignOffResponseMock } from './work-log-query-controller.faker';
 
+
+export const getGetWorkLogNoteByIdMockHandler = (overrideResponse?: WorkLogNoteResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<WorkLogNoteResponse> | WorkLogNoteResponse), options?: RequestHandlerOptions) => {
+  return http.get('*/v1/work-logs/note/:noteId', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetWorkLogNoteByIdResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
 
 export const getGetWorkLogsMockHandler = (overrideResponse?: WorkLogResponse[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<WorkLogResponse[]> | WorkLogResponse[]), options?: RequestHandlerOptions) => {
   return http.get('*/v1/work-logs/work-log-segments/:workLogSegmentId', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
@@ -35,6 +51,20 @@ export const getGetWorkLogsMockHandler = (overrideResponse?: WorkLogResponse[] |
       })
   }, options)
 }
+
+export const getGetWorkLogsSinceSignOffMockHandler = (overrideResponse?: PeriodWorkLogsResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PeriodWorkLogsResponse> | PeriodWorkLogsResponse), options?: RequestHandlerOptions) => {
+  return http.get('*/v1/work-logs/work-log-segments/:workLogSegmentId/since-sign-off', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetWorkLogsSinceSignOffResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
 export const getWorkLogQueryControllerMock = () => [
-  getGetWorkLogsMockHandler()
+  getGetWorkLogNoteByIdMockHandler(),
+  getGetWorkLogsMockHandler(),
+  getGetWorkLogsSinceSignOffMockHandler()
 ]

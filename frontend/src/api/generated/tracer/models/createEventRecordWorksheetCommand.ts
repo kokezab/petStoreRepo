@@ -5,6 +5,7 @@
  * API for Tracer service - version 0.0.1 (local)
  * OpenAPI spec version: 0.0.1
  */
+import type { WorksheetEquipmentReplacementCommand } from './worksheetEquipmentReplacementCommand';
 
 export interface CreateEventRecordWorksheetCommand {
   workStartDateTime?: string;
@@ -16,4 +17,5 @@ export interface CreateEventRecordWorksheetCommand {
   /** @minItems 1 */
   userIds: string[];
   companyIds?: number[];
+  replacements?: WorksheetEquipmentReplacementCommand[];
 }

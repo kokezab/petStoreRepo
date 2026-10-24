@@ -33,6 +33,9 @@ export const GetWorkLogSegmentDutyInfoParams = zod.object({
 
 export const GetWorkLogSegmentDutyInfoResponse = zod.object({
   "hasActiveDuty": zod.boolean().optional(),
+  "dutyId": zod.int().optional(),
+  "dutyMasterUserId": zod.uuid().optional(),
+  "dutyOtherUserIds": zod.array(zod.uuid()).optional(),
   "children": zod.array(zod.object({
   "id": zod.int().optional(),
   "name": zod.string().optional(),

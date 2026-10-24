@@ -2,6 +2,7 @@ package eu.planetsoft.zerocode.web.dto;
 
 import eu.planetsoft.zerocode.domain.FieldDefinition;
 import eu.planetsoft.zerocode.domain.FieldType;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
@@ -13,6 +14,7 @@ public final class FieldDefinitionDtos {
     private FieldDefinitionDtos() {
     }
 
+    @Schema(name = "FieldDefinitionCreateRequest")
     public record CreateRequest(
             @NotBlank String label,
             @NotNull FieldType type,
@@ -20,6 +22,7 @@ public final class FieldDefinitionDtos {
             Map<String, Object> constraints) {
     }
 
+    @Schema(name = "FieldDefinitionUpdateRequest")
     public record UpdateRequest(
             @NotBlank String label,
             FieldType type,
@@ -28,6 +31,7 @@ public final class FieldDefinitionDtos {
             Integer displayOrder) {
     }
 
+    @Schema(name = "FieldDefinitionResponse")
     public record Response(
             UUID id,
             String fieldKey,

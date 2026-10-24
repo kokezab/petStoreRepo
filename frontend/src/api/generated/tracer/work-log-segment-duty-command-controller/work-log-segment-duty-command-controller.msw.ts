@@ -35,6 +35,16 @@ export const getCreateWorkLogSegmentDutyMockHandler = (overrideResponse?: void |
   }, options)
 }
 
+export const getForceSignOffWorkLogSegmentDutyMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
+  return http.patch('*/v1/work-log-segment-duties/work-log-segments/:workLogSegmentId/force-sign-off', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+
+    return new HttpResponse(null,
+      { status: 204
+      })
+  }, options)
+}
+
 export const getSignOffWorkLogSegmentDutyMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
   return http.patch('*/v1/work-log-segment-duties/sign-off', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
   if (typeof overrideResponse === 'function') {await overrideResponse(info); }
@@ -47,5 +57,6 @@ export const getSignOffWorkLogSegmentDutyMockHandler = (overrideResponse?: void 
 export const getWorkLogSegmentDutyCommandControllerMock = () => [
   getUpdateWorkLogSegmentDutyMockHandler(),
   getCreateWorkLogSegmentDutyMockHandler(),
+  getForceSignOffWorkLogSegmentDutyMockHandler(),
   getSignOffWorkLogSegmentDutyMockHandler()
 ]

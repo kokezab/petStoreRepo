@@ -11,6 +11,7 @@ import type { WorkAnnouncementTableResponseStatus } from './workAnnouncementTabl
 export interface WorkAnnouncementTableResponse {
   id?: string;
   code?: string;
+  announcerUserId?: string;
   announcerName?: string;
   plannedStart?: string;
   plannedEnd?: string;

@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { EventRecordWorksheetResponseStatus } from './eventRecordWorksheetResponseStatus';
+import type { WorksheetEquipmentReplacementResponse } from './worksheetEquipmentReplacementResponse';
 
 export interface EventRecordWorksheetResponse {
   id?: string;
@@ -16,4 +17,5 @@ export interface EventRecordWorksheetResponse {
   status?: EventRecordWorksheetResponseStatus;
   userIds?: string[];
   companyIds?: number[];
+  replacements?: WorksheetEquipmentReplacementResponse[];
 }

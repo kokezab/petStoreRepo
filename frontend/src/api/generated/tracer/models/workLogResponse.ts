@@ -17,6 +17,8 @@ export interface WorkLogResponse {
   eventStart?: string;
   eventEnd?: string;
   createdDate?: string;
+  createdBy?: string;
   description?: string;
   completed?: boolean;
+  pinned?: boolean;
 }

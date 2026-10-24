@@ -9,6 +9,25 @@ import * as zod from 'zod';
 
 
 /**
+ * @summary Update a note in the work log
+ */
+export const UpdateWorkLogNoteParams = zod.object({
+  "noteId": zod.uuid()
+})
+
+export const updateWorkLogNoteBodyNoteMin = 0;
+export const updateWorkLogNoteBodyNoteMax = 1000;
+
+
+
+export const UpdateWorkLogNoteBody = zod.object({
+  "relatedWorkLogSegmentIds": zod.array(zod.int()).optional(),
+  "note": zod.string().min(updateWorkLogNoteBodyNoteMin).max(updateWorkLogNoteBodyNoteMax)
+})
+
+export const UpdateWorkLogNoteResponse = zod.void()
+
+/**
  * @summary Create a note in the work log
  */
 export const createWorkLogNoteBodyNoteMin = 0;
@@ -18,6 +37,7 @@ export const createWorkLogNoteBodyNoteMax = 1000;
 
 export const CreateWorkLogNoteBody = zod.object({
   "workLogSegmentId": zod.int(),
+  "relatedWorkLogSegmentIds": zod.array(zod.int()).optional(),
   "note": zod.string().min(createWorkLogNoteBodyNoteMin).max(createWorkLogNoteBodyNoteMax)
 })
 

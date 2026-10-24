@@ -9,24 +9,6 @@ import * as zod from 'zod';
 
 
 /**
- * @summary uploads an image
- */
-export const UploadFileParams = zod.object({
-  "petId": zod.int().describe('ID of pet to update')
-})
-
-export const UploadFileBody = zod.object({
-  "additionalMetadata": zod.string().optional().describe('Additional data to pass to server'),
-  "file": zod.instanceof(File).optional()
-})
-
-export const UploadFileResponse = zod.object({
-  "code": zod.int().optional(),
-  "type": zod.string().optional(),
-  "message": zod.string().optional()
-})
-
-/**
  * @summary Add a new pet to the store
  */
 export const AddPetBody = zod.object({
@@ -166,4 +148,22 @@ export const DeletePetHeader = zod.object({
 })
 
 export const DeletePetResponse = zod.void()
+
+/**
+ * @summary uploads an image
+ */
+export const UploadFileParams = zod.object({
+  "petId": zod.int().describe('ID of pet to update')
+})
+
+export const UploadFileBody = zod.object({
+  "additionalMetadata": zod.string().optional().describe('Additional data to pass to server'),
+  "file": zod.instanceof(File).optional()
+})
+
+export const UploadFileResponse = zod.object({
+  "code": zod.int().optional(),
+  "type": zod.string().optional(),
+  "message": zod.string().optional()
+})
 

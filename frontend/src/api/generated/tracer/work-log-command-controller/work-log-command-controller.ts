@@ -17,7 +17,8 @@ import type {
 
 import type {
   ApiErrorResponse,
-  CreateNoteCommand
+  CreateNoteCommand,
+  UpdateNoteCommand
 } from '../models';
 
 import { customInstance } from '../../../axios-instance';
@@ -28,6 +29,71 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 /**
+ * @summary Update a note in the work log
+ */
+export const updateWorkLogNote = (
+    noteId: string,
+    updateNoteCommand: UpdateNoteCommand,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<void>(
+      {url: `/v1/work-logs/note/${noteId}`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: updateNoteCommand, signal
+    },
+      options);
+    }
+
+
+
+
+export const getUpdateWorkLogNoteMutationOptions = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWorkLogNote>>, TError,{noteId: string;data: UpdateNoteCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateWorkLogNote>>, TError,{noteId: string;data: UpdateNoteCommand}, TContext> => {
+
+const mutationKey = ['updateWorkLogNote'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateWorkLogNote>>, {noteId: string;data: UpdateNoteCommand}> = (props) => {
+          const {noteId,data} = props ?? {};
+
+          return  updateWorkLogNote(noteId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UpdateWorkLogNoteMutationResult = NonNullable<Awaited<ReturnType<typeof updateWorkLogNote>>>
+    export type UpdateWorkLogNoteMutationBody = UpdateNoteCommand
+    export type UpdateWorkLogNoteMutationError = ApiErrorResponse | void
+
+    /**
+ * @summary Update a note in the work log
+ */
+export const useUpdateWorkLogNote = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateWorkLogNote>>, TError,{noteId: string;data: UpdateNoteCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof updateWorkLogNote>>,
+        TError,
+        {noteId: string;data: UpdateNoteCommand},
+        TContext
+      > => {
+      return useMutation(getUpdateWorkLogNoteMutationOptions(options), queryClient);
+    }
+    /**
  * @summary Create a note in the work log
  */
 export const createWorkLogNote = (

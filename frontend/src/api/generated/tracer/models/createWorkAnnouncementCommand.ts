@@ -46,4 +46,5 @@ export interface CreateWorkAnnouncementCommand {
   workAnnouncementGroups: CreateWorkAnnouncementGroupLinkCommand[];
   eventRecordIds?: string[];
   templateId?: number;
+  preventiveMaintenanceId?: string;
 }

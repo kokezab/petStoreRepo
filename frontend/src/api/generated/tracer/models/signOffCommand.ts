@@ -8,4 +8,9 @@
 
 export interface SignOffCommand {
   workLogSegmentId: number;
+  /**
+     * @minLength 0
+     * @maxLength 1000
+     */
+  reason?: string;
 }

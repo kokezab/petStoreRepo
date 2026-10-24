@@ -15,4 +15,5 @@ export interface EventRecordElementResponse {
   eventType?: EventRecordElementResponseEventType;
   startDateTime?: string;
   endDateTime?: string;
+  malfunctionReportCreated?: boolean;
 }

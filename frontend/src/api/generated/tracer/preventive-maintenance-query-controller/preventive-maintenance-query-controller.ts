@@ -22,9 +22,11 @@ import type {
 
 import type {
   ApiErrorResponse,
+  GetPreventiveMaintenancesByWorkLogSegmentIdParams,
   GetPreventiveMaintenancesParams,
   PageableResponseReducedPreventiveMaintenanceResponse,
-  PreventiveMaintenanceResponse
+  PreventiveMaintenanceResponse,
+  WorkLogPreventiveMaintenanceResponse
 } from '../models';
 
 import { customInstance } from '../../../axios-instance';
@@ -223,6 +225,107 @@ export function useGetPreventiveMaintenances<TData = Awaited<ReturnType<typeof g
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetPreventiveMaintenancesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+/**
+ * Returns records from today onwards in status IN_PROGRESS, COMPLETED or CANCELLED, plus earlier records still in status IN_PROGRESS. PLANNED records are never returned.
+ * @summary Get preventive maintenance records of a work log segment for the work log screen
+ */
+export const getPreventiveMaintenancesByWorkLogSegmentId = (
+    workLogSegmentId: number,
+    params?: GetPreventiveMaintenancesByWorkLogSegmentIdParams,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<WorkLogPreventiveMaintenanceResponse[]>(
+      {url: `/v1/preventive-maintenance/work-log-segments/${workLogSegmentId}`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+
+
+
+
+export const getGetPreventiveMaintenancesByWorkLogSegmentIdQueryKey = (workLogSegmentId: number,
+    params?: GetPreventiveMaintenancesByWorkLogSegmentIdParams,) => {
+    return [
+    `/v1/preventive-maintenance/work-log-segments/${workLogSegmentId}`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetPreventiveMaintenancesByWorkLogSegmentIdQueryOptions = <TData = Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>, TError = ApiErrorResponse | void>(workLogSegmentId: number,
+    params?: GetPreventiveMaintenancesByWorkLogSegmentIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPreventiveMaintenancesByWorkLogSegmentIdQueryKey(workLogSegmentId,params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>> = ({ signal }) => getPreventiveMaintenancesByWorkLogSegmentId(workLogSegmentId,params, requestOptions, signal);
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: workLogSegmentId !== null && workLogSegmentId !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetPreventiveMaintenancesByWorkLogSegmentIdQueryResult = NonNullable<Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>>
+export type GetPreventiveMaintenancesByWorkLogSegmentIdQueryError = ApiErrorResponse | void
+
+
+export function useGetPreventiveMaintenancesByWorkLogSegmentId<TData = Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>, TError = ApiErrorResponse | void>(
+ workLogSegmentId: number,
+    params: undefined |  GetPreventiveMaintenancesByWorkLogSegmentIdParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>,
+          TError,
+          Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetPreventiveMaintenancesByWorkLogSegmentId<TData = Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>, TError = ApiErrorResponse | void>(
+ workLogSegmentId: number,
+    params?: GetPreventiveMaintenancesByWorkLogSegmentIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>,
+          TError,
+          Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetPreventiveMaintenancesByWorkLogSegmentId<TData = Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>, TError = ApiErrorResponse | void>(
+ workLogSegmentId: number,
+    params?: GetPreventiveMaintenancesByWorkLogSegmentIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get preventive maintenance records of a work log segment for the work log screen
+ */
+
+export function useGetPreventiveMaintenancesByWorkLogSegmentId<TData = Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>, TError = ApiErrorResponse | void>(
+ workLogSegmentId: number,
+    params?: GetPreventiveMaintenancesByWorkLogSegmentIdParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreventiveMaintenancesByWorkLogSegmentId>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetPreventiveMaintenancesByWorkLogSegmentIdQueryOptions(workLogSegmentId,params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

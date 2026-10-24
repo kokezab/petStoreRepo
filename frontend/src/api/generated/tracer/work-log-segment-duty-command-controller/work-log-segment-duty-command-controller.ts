@@ -18,6 +18,7 @@ import type {
 import type {
   ApiErrorResponse,
   CreateWorkLogSegmentDutyCommand,
+  ForceSignOffCommand,
   SignOffCommand,
   UpdateWorkLogSegmentDutyCommand
 } from '../models';
@@ -159,7 +160,72 @@ export const useCreateWorkLogSegmentDuty = <TError = ApiErrorResponse | void,
       return useMutation(getCreateWorkLogSegmentDutyMutationOptions(options), queryClient);
     }
     /**
- * @summary Sign off from the current active duty of a work log segment
+ * @summary Force sign off duty from a child work log segment
+ */
+export const forceSignOffWorkLogSegmentDuty = (
+    workLogSegmentId: number,
+    forceSignOffCommand: ForceSignOffCommand,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<void>(
+      {url: `/v1/work-log-segment-duties/work-log-segments/${workLogSegmentId}/force-sign-off`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: forceSignOffCommand, signal
+    },
+      options);
+    }
+
+
+
+
+export const getForceSignOffWorkLogSegmentDutyMutationOptions = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof forceSignOffWorkLogSegmentDuty>>, TError,{workLogSegmentId: number;data: ForceSignOffCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof forceSignOffWorkLogSegmentDuty>>, TError,{workLogSegmentId: number;data: ForceSignOffCommand}, TContext> => {
+
+const mutationKey = ['forceSignOffWorkLogSegmentDuty'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof forceSignOffWorkLogSegmentDuty>>, {workLogSegmentId: number;data: ForceSignOffCommand}> = (props) => {
+          const {workLogSegmentId,data} = props ?? {};
+
+          return  forceSignOffWorkLogSegmentDuty(workLogSegmentId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ForceSignOffWorkLogSegmentDutyMutationResult = NonNullable<Awaited<ReturnType<typeof forceSignOffWorkLogSegmentDuty>>>
+    export type ForceSignOffWorkLogSegmentDutyMutationBody = ForceSignOffCommand
+    export type ForceSignOffWorkLogSegmentDutyMutationError = ApiErrorResponse | void
+
+    /**
+ * @summary Force sign off duty from a child work log segment
+ */
+export const useForceSignOffWorkLogSegmentDuty = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof forceSignOffWorkLogSegmentDuty>>, TError,{workLogSegmentId: number;data: ForceSignOffCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof forceSignOffWorkLogSegmentDuty>>,
+        TError,
+        {workLogSegmentId: number;data: ForceSignOffCommand},
+        TContext
+      > => {
+      return useMutation(getForceSignOffWorkLogSegmentDutyMutationOptions(options), queryClient);
+    }
+    /**
+ * @summary Sign off from the current active duty of a work log segment, optionally stating a reason
  */
 export const signOffWorkLogSegmentDuty = (
     signOffCommand: SignOffCommand,
@@ -210,7 +276,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type SignOffWorkLogSegmentDutyMutationError = ApiErrorResponse | void
 
     /**
- * @summary Sign off from the current active duty of a work log segment
+ * @summary Sign off from the current active duty of a work log segment, optionally stating a reason
  */
 export const useSignOffWorkLogSegmentDuty = <TError = ApiErrorResponse | void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof signOffWorkLogSegmentDuty>>, TError,{data: SignOffCommand}, TContext>, request?: SecondParameter<typeof customInstance>}

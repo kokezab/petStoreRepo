@@ -2,7 +2,7 @@ spring:
   application:
     name: zerocode-backend
   datasource:
-    url: jdbc:postgresql://localhost:5433/zerocode
+    url: jdbc:postgresql://localhost:5434/zerocode
     username: zerocode
     password: zerocode
   jpa:
@@ -19,7 +19,7 @@ springdoc:
     path: /swagger-ui.html
 
 server:
-  port: 8080
+  port: 8090
 
 ---
 # Demo profile: also loads db/seed so Swagger has sample data.

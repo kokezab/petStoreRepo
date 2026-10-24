@@ -56,78 +56,6 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
 };
 
 /**
- * @summary uploads an image
- */
-export const uploadFile = (
-    petId: number,
-    uploadFileBody?: UploadFileBody,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-
-      const formData = new FormData();
-if(uploadFileBody?.additionalMetadata !== undefined) {
- formData.append(`additionalMetadata`, uploadFileBody.additionalMetadata);
- }
-if(uploadFileBody?.file !== undefined) {
- formData.append(`file`, uploadFileBody.file);
- }
-
-      return customInstance<ApiResponse>(
-      {url: `/pet/${petId}/uploadImage`, method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData, signal
-    },
-      options);
-    }
-
-
-
-
-export const getUploadFileMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadFile>>, TError,{petId: number;data?: UploadFileBody}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof uploadFile>>, TError,{petId: number;data?: UploadFileBody}, TContext> => {
-
-const mutationKey = ['uploadFile'];
-const {mutation: mutationOptions, request: requestOptions} = options ?
-      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
-      options
-      : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: { mutationKey, }, request: undefined};
-
-
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadFile>>, {petId: number;data?: UploadFileBody}> = (props) => {
-          const {petId,data} = props ?? {};
-
-          return  uploadFile(petId,data,requestOptions)
-        }
-
-
-
-
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type UploadFileMutationResult = NonNullable<Awaited<ReturnType<typeof uploadFile>>>
-    export type UploadFileMutationBody = UploadFileBody | undefined
-    export type UploadFileMutationError = unknown
-
-    /**
- * @summary uploads an image
- */
-export const useUploadFile = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadFile>>, TError,{petId: number;data?: UploadFileBody}, TContext>, request?: SecondParameter<typeof customInstance>}
- , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof uploadFile>>,
-        TError,
-        {petId: number;data?: UploadFileBody},
-        TContext
-      > => {
-      return useMutation(getUploadFileMutationOptions(options), queryClient);
-    }
-    /**
  * @summary Add a new pet to the store
  */
 export const addPet = (
@@ -671,4 +599,76 @@ export const useDeletePet = <TError = void,
         TContext
       > => {
       return useMutation(getDeletePetMutationOptions(options), queryClient);
+    }
+    /**
+ * @summary uploads an image
+ */
+export const uploadFile = (
+    petId: number,
+    uploadFileBody?: UploadFileBody,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+      const formData = new FormData();
+if(uploadFileBody?.additionalMetadata !== undefined) {
+ formData.append(`additionalMetadata`, uploadFileBody.additionalMetadata);
+ }
+if(uploadFileBody?.file !== undefined) {
+ formData.append(`file`, uploadFileBody.file);
+ }
+
+      return customInstance<ApiResponse>(
+      {url: `/pet/${petId}/uploadImage`, method: 'POST',
+      headers: {'Content-Type': 'multipart/form-data', },
+       data: formData, signal
+    },
+      options);
+    }
+
+
+
+
+export const getUploadFileMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadFile>>, TError,{petId: number;data?: UploadFileBody}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof uploadFile>>, TError,{petId: number;data?: UploadFileBody}, TContext> => {
+
+const mutationKey = ['uploadFile'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof uploadFile>>, {petId: number;data?: UploadFileBody}> = (props) => {
+          const {petId,data} = props ?? {};
+
+          return  uploadFile(petId,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type UploadFileMutationResult = NonNullable<Awaited<ReturnType<typeof uploadFile>>>
+    export type UploadFileMutationBody = UploadFileBody | undefined
+    export type UploadFileMutationError = unknown
+
+    /**
+ * @summary uploads an image
+ */
+export const useUploadFile = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof uploadFile>>, TError,{petId: number;data?: UploadFileBody}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof uploadFile>>,
+        TError,
+        {petId: number;data?: UploadFileBody},
+        TContext
+      > => {
+      return useMutation(getUploadFileMutationOptions(options), queryClient);
     }

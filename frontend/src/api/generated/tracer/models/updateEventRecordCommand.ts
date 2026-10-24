@@ -25,4 +25,8 @@ export interface UpdateEventRecordCommand {
   notamDescription?: string;
   /** @minItems 1 */
   elements: UpdateEventRecordElementCommand[];
+  workAnnouncementIds?: string[];
+  preventiveMaintenanceIds?: string[];
+  malfunctionReportIds?: number[];
+  occurrenceReportIds?: number[];
 }

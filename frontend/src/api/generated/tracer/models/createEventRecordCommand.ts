@@ -26,4 +26,6 @@ export interface CreateEventRecordCommand {
   /** @minItems 1 */
   elements: CreateEventRecordElementCommand[];
   originWorkLogSegmentId: number;
+  workAnnouncementId?: string;
+  preventiveMaintenanceId?: string;
 }

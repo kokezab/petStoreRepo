@@ -39,7 +39,7 @@ services:
       POSTGRES_PASSWORD: zerocode
       POSTGRES_DB: zerocode
     ports:
-      - "5433:5432"
+      - "5434:5432"
     volumes:
       - app_db_data:/var/lib/postgresql/data
     healthcheck:

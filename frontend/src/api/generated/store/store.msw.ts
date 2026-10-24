@@ -24,7 +24,7 @@ import {
   getPlaceOrderResponseMock
 } from './store.faker';
 
-export { getGetInventoryResponseMock, getPlaceOrderResponseMock, getGetOrderByIdResponseMock } from './store.faker';
+export { getGetInventoryResponseMock, getGetOrderByIdResponseMock, getPlaceOrderResponseMock } from './store.faker';
 
 
 export const getGetInventoryMockHandler = (overrideResponse?: GetInventory200 | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<GetInventory200> | GetInventory200), options?: RequestHandlerOptions) => {
@@ -34,18 +34,6 @@ export const getGetInventoryMockHandler = (overrideResponse?: GetInventory200 | 
     return HttpResponse.json(overrideResponse !== undefined
     ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
     : getGetInventoryResponseMock(),
-      { status: 200
-      })
-  }, options)
-}
-
-export const getPlaceOrderMockHandler = (overrideResponse?: Order | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Order> | Order), options?: RequestHandlerOptions) => {
-  return http.post('*/store/order', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
-
-
-    return HttpResponse.json(overrideResponse !== undefined
-    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
-    : getPlaceOrderResponseMock(),
       { status: 200
       })
   }, options)
@@ -72,9 +60,21 @@ export const getDeleteOrderMockHandler = (overrideResponse?: unknown | ((info: P
       })
   }, options)
 }
+
+export const getPlaceOrderMockHandler = (overrideResponse?: Order | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<Order> | Order), options?: RequestHandlerOptions) => {
+  return http.post('*/store/order', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getPlaceOrderResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
 export const getStoreMock = () => [
   getGetInventoryMockHandler(),
-  getPlaceOrderMockHandler(),
   getGetOrderByIdMockHandler(),
-  getDeleteOrderMockHandler()
+  getDeleteOrderMockHandler(),
+  getPlaceOrderMockHandler()
 ]
