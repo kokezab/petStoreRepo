@@ -1,4 +1,4 @@
-import { defineConfig } from 'orval';
+import { defineConfig, type OpenApiOperationObject } from 'orval';
 
 // Single source of truth for the Tracer backend spec. Points at the running
 // backend's OpenAPI document. Generated output is committed, so CI never needs
@@ -20,6 +20,30 @@ const tracerInput = {
 const zerocodeInput = {
   target: 'http://localhost:8090/v3/api-docs',
 };
+
+// The backend declares generic operationIds (get/list/create/update/delete),
+// and springdoc suffixes the field controller's duplicates with `_1`. Left
+// as-is, Orval emits vague, collision-prone hook names (`useList`, `useList1`).
+// Map each operationId to an explicit, intention-revealing name. Scoped to the
+// zerocode output only (these operationIds don't exist in the other specs).
+// The canonical fix is explicit `@Operation(operationId = ...)` on the backend
+// controllers — do that when the backend is in reach and this map can go away.
+const zerocodeOperationNames: Record<string, string> = {
+  list: 'getItems',
+  get: 'getItem',
+  create: 'createItem',
+  update: 'updateItem',
+  delete: 'deleteItem',
+  list_1: 'getFields',
+  create_1: 'createField',
+  update_1: 'updateField',
+  delete_1: 'deleteField',
+};
+
+const zerocodeOperationName = (operation: OpenApiOperationObject): string =>
+  (operation.operationId && zerocodeOperationNames[operation.operationId]) ||
+  operation.operationId ||
+  '';
 
 export default defineConfig({
   petstore: {
@@ -106,6 +130,7 @@ export default defineConfig({
       mock: false,
       mode: 'tags-split',
       override: {
+        operationName: zerocodeOperationName,
         mutator: {
           path: './src/api/axios-instance.ts',
           name: 'customInstance',
@@ -123,6 +148,9 @@ export default defineConfig({
       client: 'zod',
       mode: 'tags-split',
       fileExtension: '.zod.ts',
+      override: {
+        operationName: zerocodeOperationName,
+      },
     },
   },
 });

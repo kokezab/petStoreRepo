@@ -8,37 +8,37 @@
 import * as zod from 'zod';
 
 
-export const List1Response = zod.unknown()
+export const GetFieldsResponse = zod.unknown()
 
 
 
 
-export const Create1Body = zod.object({
+export const CreateFieldBody = zod.object({
   "name": zod.string().min(1),
   "description": zod.string().optional(),
   "customValues": zod.record(zod.string(), zod.unknown()).optional()
 })
 
-export const Create1Response = zod.void()
+export const CreateFieldResponse = zod.void()
 
-export const Delete1Params = zod.object({
+export const DeleteFieldParams = zod.object({
   "id": zod.uuid()
 })
 
-export const Delete1Response = zod.unknown()
+export const DeleteFieldResponse = zod.unknown()
 
-export const Update1Params = zod.object({
+export const UpdateFieldParams = zod.object({
   "id": zod.uuid()
 })
 
 
 
 
-export const Update1Body = zod.object({
+export const UpdateFieldBody = zod.object({
   "name": zod.string().min(1),
   "description": zod.string().optional(),
   "customValues": zod.record(zod.string(), zod.unknown()).optional()
 })
 
-export const Update1Response = zod.unknown()
+export const UpdateFieldResponse = zod.unknown()
 

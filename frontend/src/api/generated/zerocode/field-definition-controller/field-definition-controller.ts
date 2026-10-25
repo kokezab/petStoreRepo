@@ -52,7 +52,7 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export const list1 = (
+export const getFields = (
 
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
@@ -67,66 +67,66 @@ export const list1 = (
 
 
 
-export const getList1QueryKey = () => {
+export const getGetFieldsQueryKey = () => {
     return [
     `/api/fields`
     ] as const;
     }
 
 
-export const getList1QueryOptions = <TData = Awaited<ReturnType<typeof list1>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof list1>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetFieldsQueryOptions = <TData = Awaited<ReturnType<typeof getFields>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFields>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getList1QueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetFieldsQueryKey();
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof list1>>> = ({ signal }) => list1(requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFields>>> = ({ signal }) => getFields(requestOptions, signal);
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof list1>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFields>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type List1QueryResult = NonNullable<Awaited<ReturnType<typeof list1>>>
-export type List1QueryError = unknown
+export type GetFieldsQueryResult = NonNullable<Awaited<ReturnType<typeof getFields>>>
+export type GetFieldsQueryError = unknown
 
 
-export function useList1<TData = Awaited<ReturnType<typeof list1>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof list1>>, TError, TData>> & Pick<
+export function useGetFields<TData = Awaited<ReturnType<typeof getFields>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFields>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof list1>>,
+          Awaited<ReturnType<typeof getFields>>,
           TError,
-          Awaited<ReturnType<typeof list1>>
+          Awaited<ReturnType<typeof getFields>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useList1<TData = Awaited<ReturnType<typeof list1>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof list1>>, TError, TData>> & Pick<
+export function useGetFields<TData = Awaited<ReturnType<typeof getFields>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFields>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof list1>>,
+          Awaited<ReturnType<typeof getFields>>,
           TError,
-          Awaited<ReturnType<typeof list1>>
+          Awaited<ReturnType<typeof getFields>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useList1<TData = Awaited<ReturnType<typeof list1>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof list1>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetFields<TData = Awaited<ReturnType<typeof getFields>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFields>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useList1<TData = Awaited<ReturnType<typeof list1>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof list1>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetFields<TData = Awaited<ReturnType<typeof getFields>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFields>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getList1QueryOptions(options)
+  const queryOptions = getGetFieldsQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -138,7 +138,7 @@ export function useList1<TData = Awaited<ReturnType<typeof list1>>, TError = unk
 
 
 
-export const create1 = (
+export const createField = (
     createRequest: CreateRequest,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
@@ -155,11 +155,11 @@ export const create1 = (
 
 
 
-export const getCreate1MutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof create1>>, TError,{data: CreateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof create1>>, TError,{data: CreateRequest}, TContext> => {
+export const getCreateFieldMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createField>>, TError,{data: CreateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof createField>>, TError,{data: CreateRequest}, TContext> => {
 
-const mutationKey = ['create1'];
+const mutationKey = ['createField'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -169,10 +169,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof create1>>, {data: CreateRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createField>>, {data: CreateRequest}> = (props) => {
           const {data} = props ?? {};
 
-          return  create1(data,requestOptions)
+          return  createField(data,requestOptions)
         }
 
 
@@ -182,21 +182,21 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type Create1MutationResult = NonNullable<Awaited<ReturnType<typeof create1>>>
-    export type Create1MutationBody = CreateRequest
-    export type Create1MutationError = unknown
+    export type CreateFieldMutationResult = NonNullable<Awaited<ReturnType<typeof createField>>>
+    export type CreateFieldMutationBody = CreateRequest
+    export type CreateFieldMutationError = unknown
 
-    export const useCreate1 = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof create1>>, TError,{data: CreateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+    export const useCreateField = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createField>>, TError,{data: CreateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof create1>>,
+        Awaited<ReturnType<typeof createField>>,
         TError,
         {data: CreateRequest},
         TContext
       > => {
-      return useMutation(getCreate1MutationOptions(options), queryClient);
+      return useMutation(getCreateFieldMutationOptions(options), queryClient);
     }
-    export const delete1 = (
+    export const deleteField = (
     id: string,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
@@ -211,11 +211,11 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-export const getDelete1MutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof delete1>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof delete1>>, TError,{id: string}, TContext> => {
+export const getDeleteFieldMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteField>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof deleteField>>, TError,{id: string}, TContext> => {
 
-const mutationKey = ['delete1'];
+const mutationKey = ['deleteField'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -225,10 +225,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof delete1>>, {id: string}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deleteField>>, {id: string}> = (props) => {
           const {id} = props ?? {};
 
-          return  delete1(id,requestOptions)
+          return  deleteField(id,requestOptions)
         }
 
 
@@ -238,21 +238,21 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type Delete1MutationResult = NonNullable<Awaited<ReturnType<typeof delete1>>>
+    export type DeleteFieldMutationResult = NonNullable<Awaited<ReturnType<typeof deleteField>>>
 
-    export type Delete1MutationError = unknown
+    export type DeleteFieldMutationError = unknown
 
-    export const useDelete1 = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof delete1>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customInstance>}
+    export const useDeleteField = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteField>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof delete1>>,
+        Awaited<ReturnType<typeof deleteField>>,
         TError,
         {id: string},
         TContext
       > => {
-      return useMutation(getDelete1MutationOptions(options), queryClient);
+      return useMutation(getDeleteFieldMutationOptions(options), queryClient);
     }
-    export const update1 = (
+    export const updateField = (
     id: string,
     updateRequest: UpdateRequest,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
@@ -270,11 +270,11 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-export const getUpdate1MutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof update1>>, TError,{id: string;data: UpdateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof update1>>, TError,{id: string;data: UpdateRequest}, TContext> => {
+export const getUpdateFieldMutationOptions = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateField>>, TError,{id: string;data: UpdateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateField>>, TError,{id: string;data: UpdateRequest}, TContext> => {
 
-const mutationKey = ['update1'];
+const mutationKey = ['updateField'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
       options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
       options
@@ -284,10 +284,10 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof update1>>, {id: string;data: UpdateRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateField>>, {id: string;data: UpdateRequest}> = (props) => {
           const {id,data} = props ?? {};
 
-          return  update1(id,data,requestOptions)
+          return  updateField(id,data,requestOptions)
         }
 
 
@@ -297,17 +297,17 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type Update1MutationResult = NonNullable<Awaited<ReturnType<typeof update1>>>
-    export type Update1MutationBody = UpdateRequest
-    export type Update1MutationError = unknown
+    export type UpdateFieldMutationResult = NonNullable<Awaited<ReturnType<typeof updateField>>>
+    export type UpdateFieldMutationBody = UpdateRequest
+    export type UpdateFieldMutationError = unknown
 
-    export const useUpdate1 = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof update1>>, TError,{id: string;data: UpdateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+    export const useUpdateField = <TError = unknown,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateField>>, TError,{id: string;data: UpdateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
-        Awaited<ReturnType<typeof update1>>,
+        Awaited<ReturnType<typeof updateField>>,
         TError,
         {id: string;data: UpdateRequest},
         TContext
       > => {
-      return useMutation(getUpdate1MutationOptions(options), queryClient);
+      return useMutation(getUpdateFieldMutationOptions(options), queryClient);
     }

@@ -1,5 +1,7 @@
 import type { Page, Route } from '@playwright/test';
 
+import type { FieldDefinitionResponse } from '@/api/generated/zerocode/models/fieldDefinitionResponse';
+
 import { inventoryCounts, type Order, type Pet, pets } from '../fixtures/pets';
 
 const PET_BY_ID_PATTERN = /\/pet\/\d+(\?.*)?$/;
@@ -190,5 +192,153 @@ export async function mockInventoryDelayed(page: Page, delayMs: number): Promise
   await page.route('**/store/inventory', async (route: Route) => {
     await new Promise((resolve) => setTimeout(resolve, delayMs));
     await route.fulfill({ json: inventoryCounts });
+  });
+}
+
+// Zero-Code field definitions. The handlers mirror the real backend's contract
+// (see backend/.../FieldDefinitionService + GlobalExceptionHandler) closely
+// enough that a page violating it fails here rather than only against the
+// real API: `required` must always be sent (Jackson 3 rejects a missing
+// primitive with a 400), the type is immutable (409), keys are never reused,
+// and delete is a soft delete answered with 204.
+const FIELDS_PATTERN = '**/api/fields';
+const FIELD_BY_ID_PATTERN = '**/api/fields/*';
+
+type MockField = FieldDefinitionResponse & { deleted: boolean };
+
+const fieldsByPage = new WeakMap<Page, { fields: MockField[]; created: MockField[] }>();
+
+function problem(status: number, title: string, detail: string) {
+  return { status, json: { status, title, detail } };
+}
+
+function slugify(label: string): string {
+  return label
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_+|_+$/g, '');
+}
+
+function toResponse({ deleted: _deleted, ...field }: MockField): FieldDefinitionResponse {
+  return field;
+}
+
+export async function mockFieldApi(page: Page, seed: FieldDefinitionResponse[]): Promise<void> {
+  const fields: MockField[] = seed.map((field) => ({ ...field, deleted: false }));
+  const created: MockField[] = [];
+  fieldsByPage.set(page, { fields, created });
+
+  const active = () =>
+    fields
+      .filter((field) => !field.deleted)
+      .sort((a, b) => (a.displayOrder ?? 0) - (b.displayOrder ?? 0));
+
+  await page.route(FIELDS_PATTERN, async (route: Route) => {
+    const method = route.request().method();
+    if (method === 'GET') {
+      await route.fulfill({ json: active().map(toResponse) });
+      return;
+    }
+    if (method !== 'POST') {
+      await route.fallback();
+      return;
+    }
+    const body = route.request().postDataJSON() as Partial<FieldDefinitionResponse>;
+    if (!body.label?.trim() || !body.type || typeof body.required !== 'boolean') {
+      await route.fulfill({ status: 400, json: { status: 400, error: 'Bad Request' } });
+      return;
+    }
+    const base = slugify(body.label);
+    if (!base) {
+      await route.fulfill({ status: 500, json: { status: 500, error: 'Internal Server Error' } });
+      return;
+    }
+    let fieldKey = base;
+    for (let suffix = 2; fields.some((field) => field.fieldKey === fieldKey); suffix++) {
+      fieldKey = `${base}_${suffix}`;
+    }
+    const field: MockField = {
+      id: `00000000-0000-0000-0000-${String(fields.length + 1).padStart(12, '0')}`,
+      fieldKey,
+      label: body.label,
+      type: body.type,
+      required: body.required,
+      constraints: body.constraints ?? {},
+      displayOrder: active().length,
+      createdAt: new Date().toISOString(),
+      deleted: false,
+    };
+    fields.push(field);
+    created.push(field);
+    await route.fulfill({ status: 201, json: toResponse(field) });
+  });
+
+  await page.route(FIELD_BY_ID_PATTERN, async (route: Route) => {
+    const method = route.request().method();
+    const id = new URL(route.request().url()).pathname.split('/').pop();
+    const field = fields.find((f) => f.id === id && !f.deleted);
+    if (method !== 'PATCH' && method !== 'DELETE') {
+      await route.fallback();
+      return;
+    }
+    if (!field) {
+      await route.fulfill(problem(404, 'Not found', 'Field definition not found'));
+      return;
+    }
+    if (method === 'DELETE') {
+      field.deleted = true;
+      await route.fulfill({ status: 204 });
+      return;
+    }
+    const body = route.request().postDataJSON() as Partial<FieldDefinitionResponse>;
+    if (!body.label?.trim() || typeof body.required !== 'boolean') {
+      await route.fulfill({ status: 400, json: { status: 400, error: 'Bad Request' } });
+      return;
+    }
+    if (body.type && body.type !== field.type) {
+      await route.fulfill(
+        problem(409, 'Field type is immutable', 'Field type is immutable once created'),
+      );
+      return;
+    }
+    field.label = body.label;
+    field.required = body.required;
+    if (body.constraints) field.constraints = body.constraints;
+    if (body.displayOrder !== undefined) field.displayOrder = body.displayOrder;
+    await route.fulfill({ json: toResponse(field) });
+  });
+}
+
+export function getCreatedFields(page: Page): FieldDefinitionResponse[] {
+  return (fieldsByPage.get(page)?.created ?? []).map(toResponse);
+}
+
+export async function mockCreateFieldError(page: Page): Promise<void> {
+  await page.route(FIELDS_PATTERN, async (route: Route) => {
+    if (route.request().method() !== 'POST') {
+      await route.fallback();
+      return;
+    }
+    await route.fulfill({ status: 500, json: { status: 500, error: 'Internal Server Error' } });
+  });
+}
+
+export async function mockUpdateFieldNotFound(page: Page): Promise<void> {
+  await page.route(FIELD_BY_ID_PATTERN, async (route: Route) => {
+    if (route.request().method() !== 'PATCH') {
+      await route.fallback();
+      return;
+    }
+    await route.fulfill(problem(404, 'Not found', 'Field definition not found'));
+  });
+}
+
+export async function mockDeleteFieldError(page: Page): Promise<void> {
+  await page.route(FIELD_BY_ID_PATTERN, async (route: Route) => {
+    if (route.request().method() !== 'DELETE') {
+      await route.fallback();
+      return;
+    }
+    await route.fulfill({ status: 500, json: { status: 500, error: 'Internal Server Error' } });
   });
 }

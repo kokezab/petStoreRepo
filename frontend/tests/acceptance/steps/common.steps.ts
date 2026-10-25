@@ -128,21 +128,44 @@ When('I clear the {string} dropdown', async ({ page }, name: string) => {
   await clearAntdDropdown(page, name);
 });
 
+When('I clear the {string} input', async ({ page }, label: string) => {
+  await page.getByLabel(label, { exact: true }).clear();
+});
+
+Then(
+  'the {string} input should contain {string}',
+  async ({ page }, label: string, value: string) => {
+    await expect(page.getByLabel(label, { exact: true })).toHaveValue(value);
+  },
+);
+
+Then('the {string} checkbox should be checked', async ({ page }, name: string) => {
+  await expect(page.getByRole('checkbox', { name })).toBeChecked();
+});
+
 // Generic field fill: given a locator scoping to a single form (whether that's
 // a plain `role="form"` or a modal `role="dialog"`), drive each field from a
 // Field/Value table. Antd Selects can't be `.fill()`-ed — they portal their
 // options to <body> — so a row opts into select handling via the optional
-// Control column (default "text"). Sharing this lets both the form-scoped and
-// dialog-scoped steps below reuse the same entry logic instead of a bespoke
-// per-form step.
+// Control column (default "text"); checkboxes take "yes"/"no". Sharing this
+// lets both the form-scoped and dialog-scoped steps below reuse the same entry
+// logic instead of a bespoke per-form step.
+//
+// Scenario Outline examples can leave a row blank: an empty Field skips the
+// row, and an empty select Value leaves the select untouched (there is no
+// option to pick), so one table template can cover optional inputs.
 async function fillFields(scope: Locator, page: Page, dataTable: DataTable) {
   for (const row of dataTable.hashes()) {
+    if (!row.Field) continue;
     const label = toLabel(row.Field);
-    const control = (row.Control ?? 'text').toLowerCase();
+    const control = (row.Control || 'text').toLowerCase();
 
     switch (control) {
       case 'select':
-        await selectAntDesignOption(scope, page, label, row.Value);
+        if (row.Value) await selectAntDesignOption(scope, page, label, row.Value);
+        break;
+      case 'checkbox':
+        await scope.getByLabel(label).setChecked(row.Value.toLowerCase() === 'yes');
         break;
       case 'text':
       case 'date':
@@ -150,7 +173,7 @@ async function fillFields(scope: Locator, page: Page, dataTable: DataTable) {
         break;
       default:
         throw new Error(
-          `Unknown control "${row.Control}" for field "${row.Field}" — use text, select, or date.`,
+          `Unknown control "${row.Control}" for field "${row.Field}" — use text, select, date, or checkbox.`,
         );
     }
   }
@@ -177,6 +200,10 @@ When('I submit the {string} form', async ({ page }, name: string) => {
 
 When('I submit the {string} form without filling it in', async ({ page }, name: string) => {
   await page.getByRole('form', { name }).getByRole('button', { name: 'Save' }).click();
+});
+
+When('I cancel the {string} form', async ({ page }, name: string) => {
+  await page.getByRole('form', { name }).getByRole('button', { name: 'Cancel' }).click();
 });
 
 When('I submit the {string} dialog', async ({ page }, name: string) => {
