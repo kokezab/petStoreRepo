@@ -1,7 +1,8 @@
+import { Table } from 'antd';
+
 import { useGetFields } from '@/api/generated/zerocode/field-definition-controller/field-definition-controller';
 import type { ItemResponse } from '@/api/generated/zerocode/models/itemResponse';
 import { zerocodeRequest } from '@/shared/api';
-import { Table } from 'antd';
 
 export default function ZerocodePage() {
   // Generated react-query hook. `request: zerocodeRequest` overrides the shared
