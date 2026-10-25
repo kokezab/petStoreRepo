@@ -117,5 +117,41 @@
   },
   "languageSelector": {
     "label": "Select language"
+  },
+  "fieldManagement": {
+    "title": "Polja",
+    "listLabel": "Polja",
+    "addButton": "Dodaj polje",
+    "addForm": {
+      "label": "Dodaj polje"
+    },
+    "editForm": {
+      "label": "Izmeni polje"
+    },
+    "columns": {
+      "label": "Naziv",
+      "type": "Tip",
+      "required": "Obavezno",
+      "actions": "Akcije"
+    },
+    "form": {
+      "labelLabel": "Naziv",
+      "labelRequired": "Naziv je obavezan",
+      "typeLabel": "Tip",
+      "typeRequired": "Tip je obavezan",
+      "requiredLabel": "Obavezno"
+    },
+    "deleteDialog": {
+      "title": "Obriši polje",
+      "body": "Obrisati polje \"{{label}}\"? Stavke više neće prikazivati njegove vrednosti."
+    },
+    "yes": "Da",
+    "no": "Ne",
+    "edit": "Izmeni",
+    "delete": "Obriši",
+    "cancel": "Otkaži",
+    "save": "Sačuvaj",
+    "saveError": "Greška pri čuvanju polja",
+    "deleteError": "Greška pri brisanju polja"
   }
 }

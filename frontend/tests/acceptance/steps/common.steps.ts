@@ -132,17 +132,28 @@ When('I clear the {string} dropdown', async ({ page }, name: string) => {
 // a plain `role="form"` or a modal `role="dialog"`), drive each field from a
 // Field/Value table. Antd Selects can't be `.fill()`-ed — they portal their
 // options to <body> — so a row opts into select handling via the optional
-// Control column (default "text"). Sharing this lets both the form-scoped and
-// dialog-scoped steps below reuse the same entry logic instead of a bespoke
-// per-form step.
+// Control column; without one, the control is inferred from the field's role
+// (combobox -> select, checkbox -> checkbox, otherwise text). Sharing this lets
+// both the form-scoped and dialog-scoped steps below reuse the same entry logic
+// instead of a bespoke per-form step.
+async function detectControl(scope: Locator, label: string): Promise<string> {
+  if ((await scope.getByRole('combobox', { name: label }).count()) > 0) return 'select';
+  if ((await scope.getByRole('checkbox', { name: label }).count()) > 0) return 'checkbox';
+  return 'text';
+}
+
 async function fillFields(scope: Locator, page: Page, dataTable: DataTable) {
+  await expect(scope).toBeVisible();
   for (const row of dataTable.hashes()) {
     const label = toLabel(row.Field);
-    const control = (row.Control ?? 'text').toLowerCase();
+    const control = (row.Control ?? (await detectControl(scope, label))).toLowerCase();
 
     switch (control) {
       case 'select':
         await selectAntDesignOption(scope, page, label, row.Value);
+        break;
+      case 'checkbox':
+        await scope.getByRole('checkbox', { name: label }).setChecked(row.Value === 'yes');
         break;
       case 'text':
       case 'date':
@@ -150,7 +161,7 @@ async function fillFields(scope: Locator, page: Page, dataTable: DataTable) {
         break;
       default:
         throw new Error(
-          `Unknown control "${row.Control}" for field "${row.Field}" — use text, select, or date.`,
+          `Unknown control "${row.Control}" for field "${row.Field}" — use text, select, checkbox, or date.`,
         );
     }
   }

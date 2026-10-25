@@ -117,5 +117,41 @@
   },
   "languageSelector": {
     "label": "Select language"
+  },
+  "fieldManagement": {
+    "title": "Fields",
+    "listLabel": "Fields",
+    "addButton": "Add field",
+    "addForm": {
+      "label": "Add field"
+    },
+    "editForm": {
+      "label": "Edit field"
+    },
+    "columns": {
+      "label": "Label",
+      "type": "Type",
+      "required": "Required",
+      "actions": "Actions"
+    },
+    "form": {
+      "labelLabel": "Label",
+      "labelRequired": "Label is required",
+      "typeLabel": "Type",
+      "typeRequired": "Type is required",
+      "requiredLabel": "Required"
+    },
+    "deleteDialog": {
+      "title": "Delete field",
+      "body": "Delete the field \"{{label}}\"? Items will no longer show its values."
+    },
+    "yes": "Yes",
+    "no": "No",
+    "edit": "Edit",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saveError": "Error saving field",
+    "deleteError": "Error deleting field"
   }
 }

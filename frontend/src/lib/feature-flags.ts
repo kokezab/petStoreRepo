@@ -5,6 +5,7 @@ export const FEATURE_FLAGS = {
   orderCreation: 'order-creation',
   petCategoryFilter: 'pet-category-filter',
   organizationalUnitCreation: 'organizational-unit-creation',
+  fieldManagement: 'field-management',
 } as const;
 
 export type FeatureFlag = (typeof FEATURE_FLAGS)[keyof typeof FEATURE_FLAGS];

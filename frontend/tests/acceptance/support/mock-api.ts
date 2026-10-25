@@ -192,3 +192,91 @@ export async function mockInventoryDelayed(page: Page, delayMs: number): Promise
     await route.fulfill({ json: inventoryCounts });
   });
 }
+
+export interface MockField {
+  id: string;
+  fieldKey: string;
+  label: string;
+  type: 'TEXT' | 'NUMBER' | 'BOOLEAN' | 'DATE' | 'TIME' | 'DATETIME';
+  required: boolean;
+  displayOrder: number;
+  createdAt: string;
+}
+
+const FIELDS_PATTERN = /\/api\/fields(\/[^/?]+)?(\?.*)?$/;
+
+function toFieldKey(label: string): string {
+  return label
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '_')
+    .replace(/^_|_$/g, '');
+}
+
+// In-memory Zero-Code field-definition backend: list (ordered by displayOrder),
+// create, partial update and delete, so a scenario sees its own writes.
+export async function mockFieldApi(
+  page: Page,
+  seed: Pick<MockField, 'label' | 'type' | 'required'>[],
+): Promise<void> {
+  let nextId = 1;
+  const createField = (input: Pick<MockField, 'label' | 'type' | 'required'>): MockField => {
+    const id = String(nextId++);
+    return {
+      ...input,
+      id,
+      fieldKey: toFieldKey(input.label),
+      displayOrder: Number(id),
+      createdAt: new Date().toISOString(),
+    };
+  };
+  let fieldsInMemory: MockField[] = seed.map(createField);
+
+  await page.route(FIELDS_PATTERN, async (route: Route) => {
+    const request = route.request();
+    const id = new URL(request.url()).pathname.match(/\/api\/fields\/([^/]+)$/)?.[1];
+
+    if (!id && request.method() === 'GET') {
+      const ordered = [...fieldsInMemory].sort((a, b) => a.displayOrder - b.displayOrder);
+      await route.fulfill({ json: ordered });
+      return;
+    }
+    if (!id && request.method() === 'POST') {
+      const body = request.postDataJSON() as Pick<MockField, 'label' | 'type' | 'required'>;
+      const field = createField({ ...body, required: body.required ?? false });
+      fieldsInMemory.push(field);
+      await route.fulfill({ status: 201, json: field });
+      return;
+    }
+
+    const existing = fieldsInMemory.find((field) => field.id === id);
+    if (!existing) {
+      await route.fulfill({ status: 404, json: { message: 'Field not found' } });
+      return;
+    }
+    if (request.method() === 'PATCH') {
+      const body = request.postDataJSON() as Partial<MockField>;
+      Object.assign(existing, body);
+      await route.fulfill({ json: existing });
+      return;
+    }
+    if (request.method() === 'DELETE') {
+      fieldsInMemory = fieldsInMemory.filter((field) => field.id !== id);
+      await route.fulfill({ status: 204 });
+      return;
+    }
+    await route.fallback();
+  });
+}
+
+export async function mockFieldApiError(page: Page, method: 'POST' | 'DELETE'): Promise<void> {
+  await page.route(FIELDS_PATTERN, async (route: Route) => {
+    if (route.request().method() !== method) {
+      await route.fallback();
+      return;
+    }
+    await route.fulfill({
+      status: 500,
+      json: { code: 500, type: 'error', message: 'Internal server error' },
+    });
+  });
+}
