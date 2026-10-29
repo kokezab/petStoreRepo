@@ -3,12 +3,12 @@ import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router';
 import { vi } from 'vitest';
 
-import type { Pet } from '@/api/generated/models';
-import { useGetPetById } from '@/api/generated/pet/pet';
+import type { Pet } from '@/shared/api/generated/models';
+import { useGetPetById } from '@/shared/api/generated/pet/pet';
 
 import { PetDetailsPage } from './PetDetailsPage';
 
-vi.mock('@/api/generated/pet/pet', () => ({
+vi.mock('@/shared/api/generated/pet/pet', () => ({
   useGetPetById: vi.fn(),
   useAddPet: vi.fn(),
   useFindPetsByStatus: vi.fn(),

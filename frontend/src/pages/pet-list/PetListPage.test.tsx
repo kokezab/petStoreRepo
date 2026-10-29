@@ -4,19 +4,19 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, useLocation } from 'react-router';
 import { vi } from 'vitest';
 
-import type { Pet } from '@/api/generated/models';
-import { useAddPet, useFindPetsByStatus } from '@/api/generated/pet/pet';
+import type { Pet } from '@/shared/api/generated/models';
+import { useAddPet, useFindPetsByStatus } from '@/shared/api/generated/pet/pet';
 
 import { PetListPage } from './PetListPage';
 
-vi.mock('@/api/generated/pet/pet', () => ({
+vi.mock('@/shared/api/generated/pet/pet', () => ({
   useFindPetsByStatus: vi.fn(),
   useAddPet: vi.fn(),
   getFindPetsByStatusQueryKey: vi.fn(),
 }));
 
-vi.mock('@/lib/feature-flags', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('@/lib/feature-flags')>()),
+vi.mock('@/shared/lib/feature-flags', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/shared/lib/feature-flags')>()),
   useFeatureFlag: vi.fn().mockReturnValue(true),
 }));
 

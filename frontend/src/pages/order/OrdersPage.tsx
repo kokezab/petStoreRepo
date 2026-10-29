@@ -1,5 +1,5 @@
-import { showSuccessMessage } from '@/lib/antd-message-bridge';
-import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
+import { showSuccessMessage } from '@/shared/lib/antd-message-bridge';
+import { FEATURE_FLAGS, useFeatureFlag } from '@/shared/lib/feature-flags';
 
 import { useCreateOrder } from './model/useCreateOrder';
 import { CreateOrderForm, type CreateOrderFormValues } from './ui/CreateOrderForm/CreateOrderForm';

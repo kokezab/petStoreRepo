@@ -1,6 +1,6 @@
 import type { AxiosRequestConfig } from 'axios';
 
-import { apiClient as api } from '@/shared/api';
+import api from './client';
 
 export const customInstance = <T>(
   config: AxiosRequestConfig,

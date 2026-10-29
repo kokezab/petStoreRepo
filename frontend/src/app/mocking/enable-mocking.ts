@@ -2,7 +2,7 @@ export async function enableMocking() {
   if (!import.meta.env.DEV) return;
   if (import.meta.env.VITE_API_MOCKING === 'false') return;
 
-  const { worker } = await import('@/mocks/browser');
+  const { worker } = await import('./browser');
   // Playwright's acceptance suite blocks service workers (so its own page.route()
   // mocks are the only interceptor) — worker.start() then rejects or hangs. Swallow
   // that so the app still renders; real dev-mode registration resolves normally.

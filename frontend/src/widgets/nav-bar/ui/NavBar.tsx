@@ -2,7 +2,7 @@ import { Button, Layout, Menu, Space, Typography } from 'antd';
 import { useAuth } from 'react-oidc-context';
 import { NavLink, useLocation } from 'react-router';
 
-import { useFeatureFlag } from '@/lib/feature-flags';
+import { useFeatureFlag } from '@/shared/lib/feature-flags';
 
 const { Header } = Layout;
 const { Text } = Typography;

@@ -1,4 +1,4 @@
-import type { Pet as PetDto, PetStatus } from '@/api/generated/models';
+import type { Pet as PetDto, PetStatus } from '@/shared/api/generated/models';
 
 export type { PetStatus };
 

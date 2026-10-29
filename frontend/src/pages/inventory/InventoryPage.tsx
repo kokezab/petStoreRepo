@@ -1,6 +1,6 @@
 import { Flex, Typography } from 'antd';
 
-import { QueryState } from '@/components/QueryState/QueryState';
+import { QueryState } from '@/shared/ui/query-state';
 
 import { useGetInventory } from './api/inventoryQueries';
 import { InventorySummary } from './ui/InventorySummary/InventorySummary';

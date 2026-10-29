@@ -1,6 +1,6 @@
 import { UserManager, WebStorageStateStore } from 'oidc-client-ts';
 
-import { config } from '@/config';
+import { config } from '@/shared/config';
 
 /**
  * OIDC client for the Tracer Keycloak realm. PKCE authorization-code flow with

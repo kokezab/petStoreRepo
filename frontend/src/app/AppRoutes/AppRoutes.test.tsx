@@ -20,8 +20,8 @@ vi.mock('@/pages/login', () => ({ LoginPage: () => <div>Login Page</div> }));
 vi.mock('@/pages/order', () => ({ OrdersPage: () => <div>Orders Page</div> }));
 
 const { useFeatureFlagMock } = vi.hoisted(() => ({ useFeatureFlagMock: vi.fn() }));
-vi.mock('@/lib/feature-flags', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('@/lib/feature-flags')>()),
+vi.mock('@/shared/lib/feature-flags', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@/shared/lib/feature-flags')>()),
   useFeatureFlag: useFeatureFlagMock,
 }));
 

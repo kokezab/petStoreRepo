@@ -1,8 +1,8 @@
 import * as Sentry from '@sentry/react';
 import { MutationCache, QueryCache, QueryClient } from '@tanstack/react-query';
 
-import { showErrorMessage } from '@/lib/antd-message-bridge';
-import { getApiErrorMessage, isBoundaryWorthyError } from '@/lib/api-error';
+import { showErrorMessage } from '@/shared/lib/antd-message-bridge';
+import { getApiErrorMessage, isBoundaryWorthyError } from '@/shared/lib/api-error';
 
 // Queries/mutations opt out with `meta: { skipGlobalErrorToast: true }` when
 // they already render their own inline error state (see useApiError).

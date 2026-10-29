@@ -1,6 +1,6 @@
 import { type AxiosError, AxiosHeaders, type AxiosInstance } from 'axios';
 
-import { config } from '@/config';
+import { config } from '@/shared/config';
 
 import { userManager } from './userManager';
 

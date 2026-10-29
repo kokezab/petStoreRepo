@@ -1,4 +1,4 @@
-import type { CompanyResponse } from '@/api/generated/tracer/models';
+import type { CompanyResponse } from '@/shared/api/generated/tracer/models';
 
 /** Raw generated DTO — all fields optional. Only used inside this slice's api segment. */
 export type CompanyDto = CompanyResponse;

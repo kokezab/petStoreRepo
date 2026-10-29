@@ -1,17 +1,20 @@
 import { useMutation, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 
+import { tracerRequest } from '@/shared/api';
 import {
   createEquipment,
   deleteEquipment,
   moveEquipment,
   updateEquipment,
-} from '@/api/generated/tracer/equipment-command-controller/equipment-command-controller';
+} from '@/shared/api/generated/tracer/equipment-command-controller/equipment-command-controller';
 import {
   getGetEquipmentQueryKey,
   useGetEquipment,
-} from '@/api/generated/tracer/equipment-query-controller/equipment-query-controller';
-import type { CreateEquipmentCommand, UpdateEquipmentCommand } from '@/api/generated/tracer/models';
-import { tracerRequest } from '@/shared/api';
+} from '@/shared/api/generated/tracer/equipment-query-controller/equipment-query-controller';
+import type {
+  CreateEquipmentCommand,
+  UpdateEquipmentCommand,
+} from '@/shared/api/generated/tracer/models';
 import type { CodebookHooksClient } from '@/shared/ui/codebook-page';
 
 import type { Equipment } from '../model/types';

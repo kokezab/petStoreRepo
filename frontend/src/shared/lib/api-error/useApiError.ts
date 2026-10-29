@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { getApiErrorMessage, getApiErrorStatus } from '@/lib/api-error';
+import { getApiErrorMessage, getApiErrorStatus } from './api-error';
 
 export function useApiError(error: unknown, fallback?: string) {
   return useMemo(

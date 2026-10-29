@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import { Button } from 'antd';
 
-import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
 import { useOrganizationalUnits } from '@/pages/organizational-unit-creation/model/useOrganizationalUnits';
 import { CreateOrganizationalUnitForm } from '@/pages/organizational-unit-creation/ui/CreateOrganizationalUnitForm';
 import { OrganizationalUnitList } from '@/pages/organizational-unit-creation/ui/OrganizationalUnitList';
+import { FEATURE_FLAGS, useFeatureFlag } from '@/shared/lib/feature-flags';
 import { useLocalization } from '@/shared/lib/i18n';
 
 export function CreateOrganizationalUnitPage() {

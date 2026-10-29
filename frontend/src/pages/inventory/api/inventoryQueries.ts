@@ -1,1 +1,1 @@
-export { useGetInventory } from '@/api/generated/store/store';
+export { useGetInventory } from '@/shared/api/generated/store/store';

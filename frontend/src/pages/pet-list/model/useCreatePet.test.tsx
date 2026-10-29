@@ -3,11 +3,11 @@ import { act, renderHook } from '@testing-library/react';
 import type { ReactNode } from 'react';
 import { vi } from 'vitest';
 
-import { getFindPetsByStatusQueryKey, useAddPet } from '@/api/generated/pet/pet';
+import { getFindPetsByStatusQueryKey, useAddPet } from '@/shared/api/generated/pet/pet';
 
 import { useCreatePet } from './useCreatePet';
 
-vi.mock('@/api/generated/pet/pet', () => ({
+vi.mock('@/shared/api/generated/pet/pet', () => ({
   useAddPet: vi.fn(),
   getFindPetsByStatusQueryKey: vi.fn(() => ['/pet/findByStatus']),
 }));

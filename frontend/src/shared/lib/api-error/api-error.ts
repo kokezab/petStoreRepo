@@ -1,10 +1,19 @@
 import { isAxiosError } from 'axios';
 
-import type { ApiResponse } from '@/api/generated/models';
+import type { ApiResponse } from '@/shared/api/generated/models';
+
+// The petstore backend returns ApiResponse ({ message }); the Zero-Code backend
+// returns Spring ProblemDetail ({ detail }, plus { errors } on validation failures).
+interface ApiErrorBody extends ApiResponse {
+  detail?: string;
+  errors?: unknown;
+}
 
 export function getApiErrorMessage(error: unknown, fallback = 'Something went wrong'): string {
-  if (isAxiosError<ApiResponse>(error)) {
-    return error.response?.data?.message ?? fallback;
+  if (isAxiosError<ApiErrorBody>(error)) {
+    const data = error.response?.data;
+    if (data?.errors) return JSON.stringify(data.errors);
+    return data?.detail ?? data?.message ?? fallback;
   }
 
   if (error instanceof Error) {

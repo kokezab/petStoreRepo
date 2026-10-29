@@ -21,9 +21,12 @@ const listData: Equipment[] = [
   { id: 1, name: 'Router', code: 100, active: true },
   { id: 2, name: 'Switch', code: 200, active: true },
 ];
-vi.mock('@/api/generated/tracer/equipment-query-controller/equipment-query-controller', () => ({
-  useGetEquipment: () => ({ data: listData, isFetching: false }),
-}));
+vi.mock(
+  '@/shared/api/generated/tracer/equipment-query-controller/equipment-query-controller',
+  () => ({
+    useGetEquipment: () => ({ data: listData, isFetching: false }),
+  }),
+);
 
 function renderModal(record: Equipment | null, onClose = vi.fn()) {
   const qc = new QueryClient({ defaultOptions: { queries: { retry: false } } });

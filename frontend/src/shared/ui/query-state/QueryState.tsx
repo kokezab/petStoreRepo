@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 
-import { getApiErrorMessage } from '@/lib/api-error';
+import { getApiErrorMessage } from '@/shared/lib/api-error';
 
 interface QueryStateProps<T> {
   isLoading: boolean;
@@ -23,7 +23,7 @@ interface QueryStateProps<T> {
  *
  * Only locally-renderable errors reach here: 5xx/network failures are thrown to
  * the nearest RouteErrorBoundary via the query client's `throwOnError` (see
- * lib/query-client.ts). The message prefers the server's, falling back to
+ * app/query-client/query-client.ts). The message prefers the server's, falling back to
  * `errorFallback`.
  */
 export function QueryState<T>({

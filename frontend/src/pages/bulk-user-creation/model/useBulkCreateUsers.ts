@@ -1,6 +1,6 @@
-import type { User } from '@/api/generated/models';
-import { useCreateUsersWithArrayInput } from '@/api/generated/user/user';
-import { useApiError } from '@/hooks/useApiError';
+import type { User } from '@/shared/api/generated/models';
+import { useCreateUsersWithArrayInput } from '@/shared/api/generated/user/user';
+import { useApiError } from '@/shared/lib/api-error';
 
 export function useBulkCreateUsers() {
   const {

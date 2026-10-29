@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react';
 
-import { config } from '@/config';
+import { config } from '@/shared/config';
 
 const PII_KEY_PATTERN = /password|token|email|phone|ssn|credit|secret/i;
 

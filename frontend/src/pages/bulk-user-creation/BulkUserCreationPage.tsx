@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import type { User } from '@/api/generated/models';
-import { showSuccessMessage } from '@/lib/antd-message-bridge';
+import type { User } from '@/shared/api/generated/models';
+import { showSuccessMessage } from '@/shared/lib/antd-message-bridge';
 import { useLocalization } from '@/shared/lib/i18n';
 
 import { useBulkCreateUsers } from './model/useBulkCreateUsers';

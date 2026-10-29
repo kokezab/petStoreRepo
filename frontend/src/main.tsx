@@ -5,8 +5,8 @@ import { createRoot } from 'react-dom/client';
 
 import App from '@/app/App.tsx';
 import { AppProviders } from '@/app/AppProviders/AppProviders';
+import { enableMocking } from '@/app/mocking/enable-mocking';
 import { initSentry } from '@/app/observability/sentry';
-import { enableMocking } from '@/lib/enable-mocking';
 import { applySystemThemePreferenceIfUnset } from '@/shared/lib/theme';
 
 initSentry();

@@ -15,7 +15,7 @@ import pluginQuery from '@tanstack/eslint-plugin-query'
 import local from './eslint-rules/index.js'
 
 export default defineConfig([
-  globalIgnores(['dist', 'src/api/generated', 'tests/acceptance/.features-gen', 'public']),
+  globalIgnores(['dist', 'src/shared/api/generated', 'tests/acceptance/.features-gen', 'public']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -68,7 +68,7 @@ export default defineConfig([
   },
   ...pluginQuery.configs['flat/recommended'],
   {
-    files: ['src/api/generated/**/*.{ts,tsx}'],
+    files: ['src/shared/api/generated/**/*.{ts,tsx}'],
     rules: {
       '@typescript-eslint/no-empty-object-type': 'off',
     },

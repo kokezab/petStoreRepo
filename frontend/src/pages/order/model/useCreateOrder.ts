@@ -1,4 +1,4 @@
-import { useApiError } from '@/hooks/useApiError';
+import { useApiError } from '@/shared/lib/api-error';
 
 import { usePlaceOrder } from '../api/orderQueries';
 import type { CreateOrderFormValues } from '../ui/CreateOrderForm/CreateOrderForm';

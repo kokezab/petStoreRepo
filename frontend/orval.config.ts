@@ -51,15 +51,15 @@ export default defineConfig({
       target: 'https://petstore.swagger.io/v2/swagger.json',
     },
     output: {
-      target: './src/api/generated/endpoints.ts',
-      schemas: './src/api/generated/models',
+      target: './src/shared/api/generated/endpoints.ts',
+      schemas: './src/shared/api/generated/models',
       client: 'react-query',
       httpClient: 'axios',
       mock: true,
       mode: 'tags-split',
       override: {
         mutator: {
-          path: './src/api/axios-instance.ts',
+          path: './src/shared/api/axios-instance.ts',
           name: 'customInstance',
         },
       },
@@ -76,7 +76,7 @@ export default defineConfig({
       target: 'https://petstore.swagger.io/v2/swagger.json',
     },
     output: {
-      target: './src/api/generated/zod',
+      target: './src/shared/api/generated/zod',
       client: 'zod',
       mode: 'tags-split',
       fileExtension: '.zod.ts',
@@ -90,15 +90,15 @@ export default defineConfig({
   tracer: {
     input: tracerInput,
     output: {
-      target: './src/api/generated/tracer/endpoints.ts',
-      schemas: './src/api/generated/tracer/models',
+      target: './src/shared/api/generated/tracer/endpoints.ts',
+      schemas: './src/shared/api/generated/tracer/models',
       client: 'react-query',
       httpClient: 'axios',
       mock: true,
       mode: 'tags-split',
       override: {
         mutator: {
-          path: './src/api/axios-instance.ts',
+          path: './src/shared/api/axios-instance.ts',
           name: 'customInstance',
         },
       },
@@ -110,7 +110,7 @@ export default defineConfig({
   tracerZod: {
     input: tracerInput,
     output: {
-      target: './src/api/generated/tracer/zod',
+      target: './src/shared/api/generated/tracer/zod',
       client: 'zod',
       mode: 'tags-split',
       fileExtension: '.zod.ts',
@@ -123,8 +123,8 @@ export default defineConfig({
   zerocode: {
     input: zerocodeInput,
     output: {
-      target: './src/api/generated/zerocode/endpoints.ts',
-      schemas: './src/api/generated/zerocode/models',
+      target: './src/shared/api/generated/zerocode/endpoints.ts',
+      schemas: './src/shared/api/generated/zerocode/models',
       client: 'react-query',
       httpClient: 'axios',
       mock: false,
@@ -132,7 +132,7 @@ export default defineConfig({
       override: {
         operationName: zerocodeOperationName,
         mutator: {
-          path: './src/api/axios-instance.ts',
+          path: './src/shared/api/axios-instance.ts',
           name: 'customInstance',
         },
       },
@@ -144,7 +144,7 @@ export default defineConfig({
   zerocodeZod: {
     input: zerocodeInput,
     output: {
-      target: './src/api/generated/zerocode/zod',
+      target: './src/shared/api/generated/zerocode/zod',
       client: 'zod',
       mode: 'tags-split',
       fileExtension: '.zod.ts',

@@ -1,20 +1,20 @@
 import { useMutation, useQueryClient, type UseQueryResult } from '@tanstack/react-query';
 
+import { tracerRequest } from '@/shared/api';
 import {
   createCompany,
   deleteCompany,
   updateCompany,
-} from '@/api/generated/tracer/company-command-controller/company-command-controller';
+} from '@/shared/api/generated/tracer/company-command-controller/company-command-controller';
 import {
   getGetCompaniesQueryKey,
   useGetCompanies,
-} from '@/api/generated/tracer/company-query-controller/company-query-controller';
+} from '@/shared/api/generated/tracer/company-query-controller/company-query-controller';
 import type {
   CompanyInsertCommand,
   CompanyUpdateCommand,
   GetCompaniesParams,
-} from '@/api/generated/tracer/models';
-import { tracerRequest } from '@/shared/api';
+} from '@/shared/api/generated/tracer/models';
 import type { CodebookHooksServer, ListParams, Paginated } from '@/shared/ui/codebook-page';
 
 import type { Company } from '../model/types';

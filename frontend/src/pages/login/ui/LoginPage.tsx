@@ -2,7 +2,7 @@ import { Button, Space, Typography } from 'antd';
 import { useAuth } from 'react-oidc-context';
 import { useNavigate } from 'react-router';
 
-import { showErrorMessage } from '@/lib/antd-message-bridge';
+import { showErrorMessage } from '@/shared/lib/antd-message-bridge';
 import { useLocalization } from '@/shared/lib/i18n';
 
 /**

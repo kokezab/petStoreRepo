@@ -1,9 +1,9 @@
 import { Card, List, Typography } from 'antd';
 import { Link } from 'react-router';
 
-import { ImageWithFallback } from '@/components/ImageWithFallback/ImageWithFallback';
 import type { Pet } from '@/entities/pet';
 import { PetStatusTag } from '@/entities/pet';
+import { ImageWithFallback } from '@/shared/ui/image-with-fallback';
 
 const { Title } = Typography;
 

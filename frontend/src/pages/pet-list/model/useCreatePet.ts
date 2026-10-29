@@ -1,7 +1,7 @@
 import { useQueryClient } from '@tanstack/react-query';
 
 import { getFindPetsByStatusQueryKey, useAddPet } from '@/entities/pet';
-import { useApiError } from '@/hooks/useApiError';
+import { useApiError } from '@/shared/lib/api-error';
 
 import type { AddPetFormValues } from '../ui/AddPetForm/AddPetForm';
 
@@ -12,7 +12,7 @@ import type { AddPetFormValues } from '../ui/AddPetForm/AddPetForm';
  * points) just invoke `createPet` and render `error`/`isPending`.
  *
  * Errors stay local: `skipGlobalErrorToast` opts this mutation out of the app's
- * global error toast (see handleGlobalError in lib/query-client.ts) because the caller
+ * global error toast (see handleGlobalError in app/query-client/query-client.ts) because the caller
  * shows `error` inline. `createPet` rejects on failure so a caller can `await`
  * it to decide whether to close the surrounding UI.
  */

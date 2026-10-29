@@ -1,8 +1,8 @@
 import { Button } from 'antd';
 import { useParams } from 'react-router';
 
-import { QueryState } from '@/components/QueryState/QueryState';
 import { useGetPetById } from '@/entities/pet';
+import { QueryState } from '@/shared/ui/query-state';
 
 export function PetDetailsPage() {
   const { id } = useParams<{ id: string }>();

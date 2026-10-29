@@ -5,4 +5,4 @@
 // domain-facing aliases rather than a normalization boundary. If a screen ever
 // starts rendering fetched order data, introduce a `normalizeOrder` in the
 // slice's `api/` segment (mirroring `entities/pet/api/normalizePet`) first.
-export type { Order, OrderStatus } from '@/api/generated/models';
+export type { Order, OrderStatus } from '@/shared/api/generated/models';

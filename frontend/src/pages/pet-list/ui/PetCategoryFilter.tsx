@@ -1,6 +1,6 @@
 import { Select, Space } from 'antd';
 
-import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
+import { FEATURE_FLAGS, useFeatureFlag } from '@/shared/lib/feature-flags';
 import { useLocalization } from '@/shared/lib/i18n';
 
 import { type PetCategory, usePetsFilter } from '../model/usePetsFilter';

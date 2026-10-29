@@ -1,6 +1,6 @@
 import { Space } from 'antd';
 
-import { QueryState } from '@/components/QueryState/QueryState';
+import { QueryState } from '@/shared/ui/query-state';
 
 import { useVisiblePets } from './model/useVisiblePets';
 import { AddPetButton, AddPetModal, PetCategoryFilter, PetList, PetsStatusFilter } from './ui';

@@ -1,7 +1,7 @@
 import axios, { type AxiosRequestConfig } from 'axios';
 import qs from 'qs';
 
-import { config } from '@/config';
+import { config } from '@/shared/config';
 import { attachTracerAuth, handleTracerAuthErrors } from '@/shared/lib/auth';
 
 const api = axios.create({

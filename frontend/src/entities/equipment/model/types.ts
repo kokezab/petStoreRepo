@@ -1,4 +1,4 @@
-import type { EquipmentWithLocationResponse } from '@/api/generated/tracer/models';
+import type { EquipmentWithLocationResponse } from '@/shared/api/generated/tracer/models';
 
 /** Raw generated DTO — all fields optional. Only used inside this slice's api segment. */
 export type EquipmentDto = EquipmentWithLocationResponse;

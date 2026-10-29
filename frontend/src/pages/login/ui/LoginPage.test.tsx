@@ -13,7 +13,7 @@ vi.mock('@/shared/lib/i18n', () => ({
 }));
 
 const showErrorMessage = vi.fn();
-vi.mock('@/lib/antd-message-bridge', () => ({
+vi.mock('@/shared/lib/antd-message-bridge', () => ({
   showErrorMessage: (content: string) => showErrorMessage(content),
 }));
 

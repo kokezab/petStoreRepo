@@ -5,9 +5,9 @@ import { RouteErrorBoundary } from '@/app/RouteErrorBoundary/RouteErrorBoundary'
 import { CompaniesPage } from '@/entities/company';
 import { CountriesPage } from '@/entities/country';
 import { EquipmentPage } from '@/entities/equipment';
-import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
 import { AuthCallbackPage } from '@/pages/auth-callback';
 import { BulkUserCreationPage } from '@/pages/bulk-user-creation';
+import { FieldsManagementPage } from '@/pages/fields-management';
 import { InventoryPage } from '@/pages/inventory';
 import { LoginPage } from '@/pages/login';
 import { OrdersPage } from '@/pages/order';
@@ -16,8 +16,7 @@ import { PetDetailsPage } from '@/pages/pet-details';
 import { PetListPage } from '@/pages/pet-list';
 import { SettingsPage } from '@/pages/settings';
 import { SignupPage } from '@/pages/signup';
-import ZerocodePage from '@/pages/ZerocodePage';
-import FieldsManagementPage from '@/pages/FieldsManagementPage';
+import { FEATURE_FLAGS, useFeatureFlag } from '@/shared/lib/feature-flags';
 
 function withRouteErrorBoundary(element: ReactNode) {
   return <RouteErrorBoundary>{element}</RouteErrorBoundary>;
@@ -43,7 +42,6 @@ export function AppRoutes() {
       <Route path='/countries' element={withRouteErrorBoundary(<CountriesPage />)} />
       <Route path='/equipment' element={withRouteErrorBoundary(<EquipmentPage />)} />
       <Route path='/companies' element={withRouteErrorBoundary(<CompaniesPage />)} />
-      <Route path='/zerocode' element={withRouteErrorBoundary(<ZerocodePage />)} />
       <Route path='/zerocode/fields' element={withRouteErrorBoundary(<FieldsManagementPage />)} />
       {isOrderCreationFlagEnabled && (
         <Route path='/orders' element={withRouteErrorBoundary(<OrdersPage />)} />

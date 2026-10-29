@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { ApartmentOutlined } from '@ant-design/icons';
 import { App, Button, Modal, Select, Space, Tooltip } from 'antd';
 
-import { useGetEquipment } from '@/api/generated/tracer/equipment-query-controller/equipment-query-controller';
 import { tracerRequest } from '@/shared/api';
+import { useGetEquipment } from '@/shared/api/generated/tracer/equipment-query-controller/equipment-query-controller';
 import { useLocalization } from '@/shared/lib/i18n';
 import type { PermissionResult } from '@/shared/ui/codebook-page';
 

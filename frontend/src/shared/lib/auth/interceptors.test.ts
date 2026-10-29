@@ -2,7 +2,7 @@ import axios, { type InternalAxiosRequestConfig } from 'axios';
 import { AxiosHeaders } from 'axios';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { config } from '@/config';
+import { config } from '@/shared/config';
 
 const getUser = vi.fn();
 vi.mock('./userManager', () => ({

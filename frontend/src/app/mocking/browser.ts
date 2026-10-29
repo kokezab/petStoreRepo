@@ -4,7 +4,7 @@ import { setupWorker } from 'msw/browser';
 import {
   getFindPetsByStatusMockHandler,
   getGetPetByIdResponseMock,
-} from '@/api/generated/pet/pet.msw';
+} from '@/shared/api/generated/pet/pet.msw';
 
 export const worker = setupWorker(
   getFindPetsByStatusMockHandler(),

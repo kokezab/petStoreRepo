@@ -1,6 +1,6 @@
 import { Alert, Button, Form, Input, Space } from 'antd';
 
-import type { User } from '@/api/generated/models';
+import type { User } from '@/shared/api/generated/models';
 import { useLocalization } from '@/shared/lib/i18n';
 
 export interface BulkUserFormValues {

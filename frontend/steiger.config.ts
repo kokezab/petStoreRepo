@@ -4,6 +4,13 @@ import { defineConfig } from 'steiger';
 export default defineConfig([
   ...fsd.configs.recommended,
   {
+    // Orval output (see orval.config.ts) is not hand-written and is imported by
+    // deep path (e.g. `@/shared/api/generated/pet/pet`) — one barrel would
+    // collide across the petstore/tracer/zerocode SDKs. Same exemption as in
+    // eslint.config.js and .prettierignore.
+    ignores: ['**/shared/api/generated/**'],
+  },
+  {
     // `equipment` is an uncountable noun. Steiger's inconsistent-naming rule
     // uses the `pluralize` library, which reports isPlural('equipment') ===
     // true while singular('equipment') === 'equipment'. That makes the rule

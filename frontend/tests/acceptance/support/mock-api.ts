@@ -1,6 +1,6 @@
 import type { Page, Route } from '@playwright/test';
 
-import type { FieldDefinitionResponse } from '@/api/generated/zerocode/models/fieldDefinitionResponse';
+import type { FieldDefinitionResponse } from '@/shared/api/generated/zerocode/models/fieldDefinitionResponse';
 
 import { inventoryCounts, type Order, type Pet, pets } from '../fixtures/pets';
 

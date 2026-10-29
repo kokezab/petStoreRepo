@@ -1,1 +1,1 @@
-export { usePlaceOrder } from '@/api/generated/store/store';
+export { usePlaceOrder } from '@/shared/api/generated/store/store';

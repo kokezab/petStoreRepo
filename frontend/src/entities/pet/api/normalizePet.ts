@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/react';
 
-import type { Pet as PetDto } from '@/api/generated/models';
+import type { Pet as PetDto } from '@/shared/api/generated/models';
 
 import type { Pet } from '../model/types';
 

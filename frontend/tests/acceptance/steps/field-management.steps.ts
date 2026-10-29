@@ -1,8 +1,8 @@
 import { expect, type Locator, type Page } from '@playwright/test';
 import { createBdd, DataTable } from 'playwright-bdd';
 
-import type { FieldDefinitionResponse } from '@/api/generated/zerocode/models/fieldDefinitionResponse';
-import type { FieldDefinitionResponseType } from '@/api/generated/zerocode/models/fieldDefinitionResponseType';
+import type { FieldDefinitionResponse } from '@/shared/api/generated/zerocode/models/fieldDefinitionResponse';
+import type { FieldDefinitionResponseType } from '@/shared/api/generated/zerocode/models/fieldDefinitionResponseType';
 
 import {
   getCreatedFields,

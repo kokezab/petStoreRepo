@@ -10,9 +10,9 @@ import { BrowserRouter } from 'react-router';
 
 import { AntdMessageBridge } from '@/app/AntdMessageBridge/AntdMessageBridge';
 import { AppThemeProvider } from '@/app/AppThemeProvider/AppThemeProvider';
+import { queryClient } from '@/app/query-client/query-client';
 import { useSeedAbilities } from '@/app/useSeedAbilities/useSeedAbilities';
-import { config } from '@/config';
-import { queryClient } from '@/lib/query-client';
+import { config } from '@/shared/config';
 import { onSigninCallback, userManager } from '@/shared/lib/auth';
 
 const unleashConfig = {

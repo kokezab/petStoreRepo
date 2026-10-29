@@ -1,5 +1,5 @@
 import { useFindPetsByStatus } from '@/entities/pet';
-import { FEATURE_FLAGS, useFeatureFlag } from '@/lib/feature-flags';
+import { FEATURE_FLAGS, useFeatureFlag } from '@/shared/lib/feature-flags';
 
 import { usePetsFilter } from './usePetsFilter';
 
