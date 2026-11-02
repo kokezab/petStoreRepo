@@ -65,4 +65,47 @@ Never paste real Unleash tokens into this repo, PRs, or chat — treat the Verce
 dashboard as the only place they're entered, and rotate a token immediately if it's
 ever exposed elsewhere.
 
+## Backend (Zero-Code API)
+
+The Spring Boot backend lives in `backend/` (Spring Boot 4, Java 25) and listens on
+http://localhost:8090. The frontend's Vite dev server proxies `/zerocode-api/*` to it.
+
+### Prerequisites
+
+- JDK 25
+- Maven 3.9+ (the repo has no Maven wrapper, so `mvn` must be on your `PATH` —
+  or call it by full path, e.g. `C:\tools\apache-maven-3.9.16\bin\mvn`)
+- Docker, for the Postgres database
+
+### Start the database
+
+The backend uses the `app-db` Postgres service from the root `docker-compose.yml`
+(host port `5434`, user/password/database all `zerocode`):
+
+```bash
+docker compose up -d app-db
+```
+
+### Run the backend
+
+From `backend/`:
+
+```bash
+mvn spring-boot:run "-Dspring-boot.run.profiles=demo"
+```
+
+Or, if Maven isn't on your `PATH`, with the full path (PowerShell):
+
+```powershell
+& "C:\tools\apache-maven-3.9.16\bin\mvn" spring-boot:run "-Dspring-boot.run.profiles=demo"
+```
+
+- Keep the quotes around `-D...`: without them PowerShell splits the argument at the
+  `.` and Maven fails with an unknown lifecycle phase error.
+- The `demo` profile also loads seed data (sample items for Swagger/UI). Omit
+  `"-Dspring-boot.run.profiles=demo"` to start with an empty database.
+- It's ready when the log shows `Started ZeroCodeApplication`.
+- Smoke test: `curl http://localhost:8090/api/items`
+- Swagger UI: http://localhost:8090/swagger-ui.html
+
 See `frontend/README.md` for frontend app setup.

@@ -9,6 +9,7 @@ import { AuthCallbackPage } from '@/pages/auth-callback';
 import { BulkUserCreationPage } from '@/pages/bulk-user-creation';
 import { FieldsManagementPage } from '@/pages/fields-management';
 import { InventoryPage } from '@/pages/inventory';
+import { ItemsManagementPage } from '@/pages/items-management';
 import { LoginPage } from '@/pages/login';
 import { OrdersPage } from '@/pages/order';
 import { CreateOrganizationalUnitPage } from '@/pages/organizational-unit-creation';
@@ -43,6 +44,7 @@ export function AppRoutes() {
       <Route path='/equipment' element={withRouteErrorBoundary(<EquipmentPage />)} />
       <Route path='/companies' element={withRouteErrorBoundary(<CompaniesPage />)} />
       <Route path='/zerocode/fields' element={withRouteErrorBoundary(<FieldsManagementPage />)} />
+      <Route path='/zerocode/items' element={withRouteErrorBoundary(<ItemsManagementPage />)} />
       {isOrderCreationFlagEnabled && (
         <Route path='/orders' element={withRouteErrorBoundary(<OrdersPage />)} />
       )}

@@ -1,4 +1,4 @@
-import { expect, type Locator, type Page } from '@playwright/test';
+import { expect } from '@playwright/test';
 import { createBdd, DataTable } from 'playwright-bdd';
 
 import type { FieldDefinitionResponse } from '@/shared/api/generated/zerocode/models/fieldDefinitionResponse';
@@ -11,6 +11,7 @@ import {
   mockFieldApi,
   mockUpdateFieldNotFound,
 } from '../support/mock-api';
+import { expectTableRows, readTableRows, rowWithCell } from '../support/table';
 
 const { Given, When, Then } = createBdd();
 
@@ -32,43 +33,6 @@ function parseConstraints(text: string): Record<string, number> {
 
 function normalize(value: string | undefined): string {
   return (value ?? '').trim().toLowerCase();
-}
-
-// Reads the Antd table into one record per data row, keyed by column header,
-// so assertions can name columns the way the feature tables do.
-async function readFieldRows(page: Page): Promise<Record<string, string>[]> {
-  const table = page.getByRole('table');
-  const headers = (await table.getByRole('columnheader').allInnerTexts()).map((h) => h.trim());
-  const rows = await table
-    .getByRole('row')
-    .filter({ has: page.getByRole('cell') })
-    .all();
-  const records: Record<string, string>[] = [];
-  for (const row of rows) {
-    const cells = await row.getByRole('cell').allInnerTexts();
-    records.push(Object.fromEntries(headers.map((header, i) => [header, cells[i] ?? ''])));
-  }
-  return records;
-}
-
-// Projects actual rows onto the expected table's columns, so a scenario only
-// asserts the columns it lists (e.g. AT-45 skips Constraints).
-async function expectRows(page: Page, expected: Record<string, string>[], pick: 'all' | 'last') {
-  const columns = Object.keys(expected[0] ?? {});
-  const project = (rows: Record<string, string>[]) =>
-    rows.map((row) => Object.fromEntries(columns.map((c) => [c, normalize(row[c])])));
-
-  await expect(async () => {
-    const actual = await readFieldRows(page);
-    const subject = pick === 'last' ? actual.slice(-1) : actual;
-    expect(project(subject)).toEqual(project(expected));
-  }).toPass();
-}
-
-function fieldRow(page: Page, label: string): Locator {
-  return page
-    .getByRole('row')
-    .filter({ has: page.getByRole('cell', { name: label, exact: true }) });
 }
 
 Given('the mocked API has the following fields:', async ({ page }, dataTable: DataTable) => {
@@ -101,18 +65,18 @@ Given('the mocked API returns an error for deleting a field', async ({ page }) =
 });
 
 Then('I should see the following fields in order:', async ({ page }, dataTable: DataTable) => {
-  await expectRows(page, dataTable.hashes(), 'all');
+  await expectTableRows(page, dataTable.hashes(), 'all');
 });
 
 Then('the last field in the list should be:', async ({ page }, dataTable: DataTable) => {
-  await expectRows(page, dataTable.hashes(), 'last');
+  await expectTableRows(page, dataTable.hashes(), 'last');
 });
 
 Then(
   'the field {string} should have constraints {string}',
   async ({ page }, label: string, constraints: string) => {
     await expect(async () => {
-      const row = (await readFieldRows(page)).find((r) => r.Label?.trim() === label);
+      const row = (await readTableRows(page)).find((r) => r.Label?.trim() === label);
       expect(row, `no field labelled "${label}" in the list`).toBeDefined();
       expect(parseConstraints(row?.Constraints ?? '')).toEqual(parseConstraints(constraints));
     }).toPass();
@@ -120,13 +84,13 @@ Then(
 );
 
 Then('the field list should include a field labelled {string}', async ({ page }, label: string) => {
-  await expect(fieldRow(page, label)).toBeVisible();
+  await expect(rowWithCell(page, label)).toBeVisible();
 });
 
 Then(
   'I should not see {string} or {string} actions for the field {string}',
   async ({ page }, first: string, second: string, label: string) => {
-    const row = fieldRow(page, label);
+    const row = rowWithCell(page, label);
     await expect(row).toBeVisible();
     await expect(row.getByRole('button', { name: first })).toHaveCount(0);
     await expect(row.getByRole('button', { name: second })).toHaveCount(0);
@@ -154,7 +118,7 @@ Then('no field should have been created', async ({ page }) => {
 });
 
 When('I click {string} for the field {string}', async ({ page }, action: string, label: string) => {
-  await fieldRow(page, label).getByRole('button', { name: action }).click();
+  await rowWithCell(page, label).getByRole('button', { name: action }).click();
 });
 
 Then(
