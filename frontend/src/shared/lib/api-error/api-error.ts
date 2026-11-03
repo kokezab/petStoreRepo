@@ -23,6 +23,18 @@ export function getApiErrorMessage(error: unknown, fallback = 'Something went wr
   return fallback;
 }
 
+// Per-field messages from a ProblemDetail `errors` map ({ fieldKey: message }),
+// or undefined when the error carries none.
+export function getApiFieldErrors(error: unknown): Record<string, string> | undefined {
+  if (!isAxiosError<ApiErrorBody>(error)) return undefined;
+  const errors = error.response?.data?.errors;
+  if (!errors || typeof errors !== 'object' || Array.isArray(errors)) return undefined;
+  const entries = Object.entries(errors).filter(
+    (entry): entry is [string, string] => typeof entry[1] === 'string',
+  );
+  return entries.length ? Object.fromEntries(entries) : undefined;
+}
+
 export function getApiErrorStatus(error: unknown): number | undefined {
   return isAxiosError(error) ? error.response?.status : undefined;
 }

@@ -15,7 +15,7 @@ import pluginQuery from '@tanstack/eslint-plugin-query'
 import local from './eslint-rules/index.js'
 
 export default defineConfig([
-  globalIgnores(['dist', 'src/shared/api/generated', 'tests/acceptance/.features-gen', 'public']),
+  globalIgnores(['dist', 'src/shared/api/generated', 'tests/acceptance/.features-gen', 'public', 'test-results', 'playwright-report']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
