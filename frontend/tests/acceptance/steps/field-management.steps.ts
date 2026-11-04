@@ -16,7 +16,15 @@ const { Given, When, Then } = createBdd();
 
 // Every constraint input the form can render, by label. AT-44 asserts that
 // exactly the ones for the selected type are present and the rest are absent.
-const CONSTRAINT_INPUTS = ['Max length', 'Minimum', 'Maximum'];
+const CONSTRAINT_INPUTS = [
+  'Max length',
+  'Minimum',
+  'Maximum',
+  'Earliest date',
+  'Latest date',
+  'Earliest date and time',
+  'Latest date and time',
+];
 
 // Feature tables write constraints as "maxLength=40, min=0" — the same text
 // the list's Constraints column is expected to render.

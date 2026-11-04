@@ -59,6 +59,46 @@ class FieldTypeTest {
     }
 
     @Test
+    void dateEnforcesMinMax() {
+        Map<String, Object> range = Map.of("min", "2026-01-01", "max", "2026-12-31");
+        assertThat(FieldType.DATE.normalize("2026-06-15", range)).isEqualTo("2026-06-15");
+        assertThatThrownBy(() -> FieldType.DATE.normalize("2025-12-31", range))
+                .isInstanceOf(FieldValidationException.class)
+                .hasMessageContaining("min");
+        assertThatThrownBy(() -> FieldType.DATE.normalize("2027-01-01", range))
+                .isInstanceOf(FieldValidationException.class)
+                .hasMessageContaining("max");
+    }
+
+    @Test
+    void dateTimeEnforcesMinMaxAcrossOffsets() {
+        Map<String, Object> range = Map.of(
+                "min", "2026-10-23T10:00:00Z", "max", "2026-10-23T18:00:00Z");
+        // 12:30+02:00 is 10:30Z, inside the range.
+        assertThat(FieldType.DATETIME.normalize("2026-10-23T12:30:00+02:00", range))
+                .isEqualTo("2026-10-23T12:30:00+02:00");
+        assertThatThrownBy(() -> FieldType.DATETIME.normalize("2026-10-23T11:00:00+02:00", range))
+                .isInstanceOf(FieldValidationException.class)
+                .hasMessageContaining("min");
+        assertThatThrownBy(() -> FieldType.DATETIME.normalize("2026-10-23T19:00:00Z", range))
+                .isInstanceOf(FieldValidationException.class)
+                .hasMessageContaining("max");
+    }
+
+    @Test
+    void dateConstraintsMustBeValidAndOrdered() {
+        FieldType.DATE.validateConstraints(Map.of("min", "2026-01-01"));
+        assertThatThrownBy(() -> FieldType.DATE.validateConstraints(Map.of("min", 5)))
+                .isInstanceOf(FieldValidationException.class);
+        assertThatThrownBy(() -> FieldType.DATE.validateConstraints(
+                Map.of("min", "2026-12-31", "max", "2026-01-01")))
+                .isInstanceOf(FieldValidationException.class);
+        assertThatThrownBy(() -> FieldType.DATETIME.validateConstraints(
+                Map.of("max", "2026-10-23")))
+                .isInstanceOf(FieldValidationException.class);
+    }
+
+    @Test
     void timeParsesIsoAndRejectsBadFormat() {
         assertThat(FieldType.TIME.normalize("14:30:00", Map.of())).isEqualTo("14:30:00");
         assertThatThrownBy(() -> FieldType.TIME.normalize("2pm", Map.of()))
