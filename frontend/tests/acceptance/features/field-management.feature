@@ -39,13 +39,13 @@ Feature: Field management
     Then I should see the constraint inputs "<inputs>"
 
     Examples:
-      | type     | inputs           |
-      | TEXT     | Max length       |
-      | NUMBER   | Minimum, Maximum |
-      | BOOLEAN  |                  |
-      | DATE     |                  |
-      | TIME     |                  |
-      | DATETIME |                  |
+      | type     | inputs                                       |
+      | TEXT     | Max length                                   |
+      | NUMBER   | Minimum, Maximum                             |
+      | BOOLEAN  |                                              |
+      | DATE     | Earliest date, Latest date                   |
+      | TIME     |                                              |
+      | DATETIME | Earliest date and time, Latest date and time |
 
   Scenario Outline: AT-45 Submitting a valid form adds the field to the end of the list
     Given the "field-management" feature flag is enabled
