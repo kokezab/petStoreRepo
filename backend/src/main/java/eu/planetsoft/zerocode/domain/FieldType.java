@@ -59,10 +59,19 @@ public enum FieldType {
         @Override
         public Object normalize(Object raw, Map<String, Object> constraints) {
             String s = asString(raw);
+            LocalDate value;
             try {
-                LocalDate.parse(s);
+                value = LocalDate.parse(s);
             } catch (DateTimeParseException e) {
                 throw new FieldValidationException("expected a date (yyyy-MM-dd)");
+            }
+            LocalDate min = asDate(constraints.get("min"));
+            LocalDate max = asDate(constraints.get("max"));
+            if (min != null && value.isBefore(min)) {
+                throw new FieldValidationException("before min of " + min);
+            }
+            if (max != null && value.isAfter(max)) {
+                throw new FieldValidationException("after max of " + max);
             }
             return s;
         }
@@ -84,11 +93,20 @@ public enum FieldType {
         @Override
         public Object normalize(Object raw, Map<String, Object> constraints) {
             String s = asString(raw);
+            OffsetDateTime value;
             try {
-                OffsetDateTime.parse(s);
+                value = OffsetDateTime.parse(s);
             } catch (DateTimeParseException e) {
                 throw new FieldValidationException(
                         "expected an ISO-8601 offset date-time");
+            }
+            OffsetDateTime min = asDateTime(constraints.get("min"));
+            OffsetDateTime max = asDateTime(constraints.get("max"));
+            if (min != null && value.isBefore(min)) {
+                throw new FieldValidationException("before min of " + min);
+            }
+            if (max != null && value.isAfter(max)) {
+                throw new FieldValidationException("after max of " + max);
             }
             return s;
         }
@@ -128,6 +146,35 @@ public enum FieldType {
         throw new FieldValidationException("constraint must be numeric");
     }
 
+    static LocalDate asDate(Object value) {
+        if (value == null) {
+            return null;
+        }
+        if (value instanceof String s) {
+            try {
+                return LocalDate.parse(s);
+            } catch (DateTimeParseException e) {
+                // fall through to the shared error below
+            }
+        }
+        throw new FieldValidationException("constraint must be a date (yyyy-MM-dd)");
+    }
+
+    static OffsetDateTime asDateTime(Object value) {
+        if (value == null) {
+            return null;
+        }
+        if (value instanceof String s) {
+            try {
+                return OffsetDateTime.parse(s);
+            } catch (DateTimeParseException e) {
+                // fall through to the shared error below
+            }
+        }
+        throw new FieldValidationException(
+                "constraint must be an ISO-8601 offset date-time");
+    }
+
     /**
      * Validate that this type's supported constraint keys, if present, hold
      * values of the right JSON type. Throws {@link FieldValidationException}
@@ -150,6 +197,20 @@ public enum FieldType {
                 }
                 if (constraints.containsKey("max")) {
                     asDecimal(constraints.get("max"));
+                }
+            }
+            case DATE -> {
+                LocalDate min = asDate(constraints.get("min"));
+                LocalDate max = asDate(constraints.get("max"));
+                if (min != null && max != null && max.isBefore(min)) {
+                    throw new FieldValidationException("max must not be before min");
+                }
+            }
+            case DATETIME -> {
+                OffsetDateTime min = asDateTime(constraints.get("min"));
+                OffsetDateTime max = asDateTime(constraints.get("max"));
+                if (min != null && max != null && max.isBefore(min)) {
+                    throw new FieldValidationException("max must not be before min");
                 }
             }
             default -> {

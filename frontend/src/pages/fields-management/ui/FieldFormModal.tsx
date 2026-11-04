@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Checkbox, Form, Input, InputNumber, message, Modal, Select } from 'antd';
+import { Checkbox, DatePicker, Form, Input, InputNumber, message, Modal, Select } from 'antd';
 
 import { getApiErrorMessage } from '@/shared/lib/api-error';
 
@@ -17,9 +17,18 @@ interface FieldFormModalProps {
 
 const TYPE_OPTIONS = FIELD_TYPES.map((type) => ({ value: type, label: type }));
 
+/** Picker settings for the DATE / DATETIME min-max constraint inputs. */
+const DATE_PICKERS = {
+  DATE: { noun: 'date', format: 'YYYY-MM-DD', showTime: false },
+  DATETIME: { noun: 'date and time', format: 'YYYY-MM-DD HH:mm', showTime: { format: 'HH:mm' } },
+} as const;
+
 export function FieldFormModal({ open, editing, onClose }: FieldFormModalProps) {
   const [form] = Form.useForm<FieldFormValues>();
   const selectedType = Form.useWatch('type', form);
+  const minDate = Form.useWatch('minDate', form);
+  const datePicker =
+    selectedType === 'DATE' || selectedType === 'DATETIME' ? DATE_PICKERS[selectedType] : null;
 
   const createMutation = useCreateFieldDefinition();
   const updateMutation = useUpdateFieldDefinition();
@@ -114,6 +123,40 @@ export function FieldFormModal({ open, editing, onClose }: FieldFormModalProps) 
               ]}
             >
               <InputNumber style={{ width: '100%' }} />
+            </Form.Item>
+          </>
+        )}
+        {datePicker && (
+          <>
+            <Form.Item name='minDate' label={`Earliest ${datePicker.noun}`}>
+              <DatePicker
+                showTime={datePicker.showTime}
+                format={datePicker.format}
+                style={{ width: '100%' }}
+              />
+            </Form.Item>
+            <Form.Item
+              name='maxDate'
+              label={`Latest ${datePicker.noun}`}
+              dependencies={['minDate']}
+              rules={[
+                ({ getFieldValue }) => ({
+                  validator(_, value) {
+                    const earliest = getFieldValue('minDate');
+                    if (!value || !earliest || !value.isBefore(earliest)) return Promise.resolve();
+                    return Promise.reject(
+                      new Error(`Latest ${datePicker.noun} must not be before the earliest`),
+                    );
+                  },
+                }),
+              ]}
+            >
+              <DatePicker
+                showTime={datePicker.showTime}
+                format={datePicker.format}
+                disabledDate={(current) => !!minDate && current.isBefore(minDate, 'day')}
+                style={{ width: '100%' }}
+              />
             </Form.Item>
           </>
         )}
