@@ -33,9 +33,9 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5173,
+    port: 5202,
     // Dev-only reverse proxy for the Zero-Code backend. The browser talks to
-    // same-origin `localhost:5173`, Vite forwards server-side to :8090, so
+    // same-origin `localhost:5202`, Vite forwards server-side to :8090, so
     // there is no cross-origin request and no CORS to negotiate. The `/zerocode-api`
     // prefix is stripped before forwarding: `/zerocode-api/api/items` -> `/api/items`.
     // In prod, set VITE_ZEROCODE_API_BASE_URL to the real backend origin instead.

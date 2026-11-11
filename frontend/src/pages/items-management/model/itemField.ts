@@ -43,12 +43,10 @@ export function buildCustomFieldRules(field: ItemField): Rule[] {
       message: `${label} must be at most ${constraints.maxLength} characters`,
     });
   }
-  // Date and time types use plain text inputs, so check their format here.
+  // DATE and DATETIME use plain text inputs, so check their format here.
+  // TIME uses a TimePicker, which can't produce a malformed value.
   if (field.type === 'DATE') {
     rules.push({ pattern: /^\d{4}-\d{2}-\d{2}$/, message: `${label} must be yyyy-MM-dd` });
-  }
-  if (field.type === 'TIME') {
-    rules.push({ pattern: /^\d{2}:\d{2}(:\d{2})?$/, message: `${label} must be HH:mm:ss` });
   }
   if (field.type === 'DATETIME') {
     rules.push({

@@ -7,7 +7,7 @@ export default {
     {
       engine: web(),
       app: {
-        url: process.env.APP_URL ?? 'http://localhost:5173',
+        url: process.env.APP_URL ?? 'http://localhost:5202',
         // Or let the runner start the dev server:
         // command: { executable: 'npm', args: ['run', 'dev'] },
       },

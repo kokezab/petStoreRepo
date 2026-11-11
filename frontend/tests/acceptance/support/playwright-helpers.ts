@@ -32,3 +32,19 @@ export async function clearAntdDropdown(page: Page, name: string) {
 export function toLabel(field: string): string {
   return field.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, (c) => c.toUpperCase());
 }
+
+/**
+ * Types a time into an Antd TimePicker and confirms it with the dropdown's OK
+ * button. Enter would also confirm, but it submits the surrounding form too.
+ */
+export async function pickAntdTime(scope: Locator, page: Page, label: string, time: string) {
+  const input = scope.getByLabel(label, { exact: true });
+  await input.click();
+  await input.fill(time);
+  const dropdown = page.locator('.ant-picker-dropdown:visible');
+  await dropdown.getByRole('button', { name: 'OK' }).click();
+  await expect(input).toHaveValue(time);
+  // Wait out the close animation, or the next picker opened finds two
+  // visible dropdowns.
+  await expect(dropdown).toHaveCount(0);
+}

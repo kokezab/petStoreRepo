@@ -2,7 +2,12 @@ import { expect, type Locator, type Page } from '@playwright/test';
 import { createBdd, DataTable } from 'playwright-bdd';
 
 import { mockFeatureFlag, mockPetApi } from '../support/mock-api';
-import { clearAntdDropdown, selectAntDesignOption, toLabel } from '../support/playwright-helpers';
+import {
+  clearAntdDropdown,
+  pickAntdTime,
+  selectAntDesignOption,
+  toLabel,
+} from '../support/playwright-helpers';
 
 export const { Given, When, Then } = createBdd();
 
@@ -171,9 +176,12 @@ async function fillFields(scope: Locator, page: Page, dataTable: DataTable) {
       case 'date':
         await scope.getByLabel(label).fill(row.Value);
         break;
+      case 'time':
+        await pickAntdTime(scope, page, label, row.Value);
+        break;
       default:
         throw new Error(
-          `Unknown control "${row.Control}" for field "${row.Field}" — use text, select, date, or checkbox.`,
+          `Unknown control "${row.Control}" for field "${row.Field}" — use text, select, date, time, or checkbox.`,
         );
     }
   }

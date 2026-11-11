@@ -76,7 +76,7 @@ Feature: Items management
       | type     | label        | control  | value               | shown            |
       | BOOLEAN  | In stock     | checkbox | yes                 | Yes              |
       | DATE     | Delivered on | date     | 2026-11-02          | 2026-11-02       |
-      | TIME     | Opens at     | date     | 09:30:00            | 09:30:00         |
+      | TIME     | Opens at     | time     | 09:30:00            | 09:30:00         |
       | DATETIME | Shipped at   | date     | 2026-11-02 09:30:00 | 2026-11-02 09:30 |
 
   Scenario Outline: AT-63 Invalid input shows a validation error and keeps the form open

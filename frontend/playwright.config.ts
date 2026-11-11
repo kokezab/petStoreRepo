@@ -16,12 +16,12 @@ export default defineConfig({
     : {
         webServer: {
           command: 'npm run dev',
-          url: 'http://localhost:5173',
+          url: 'http://localhost:5202',
           reuseExistingServer: !process.env.CI,
         },
       }),
   use: {
-    baseURL: deployedBaseURL ?? 'http://localhost:5173',
+    baseURL: deployedBaseURL ?? 'http://localhost:5202',
     serviceWorkers: 'block',
   },
   expect: {

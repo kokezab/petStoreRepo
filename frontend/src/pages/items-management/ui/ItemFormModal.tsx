@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { Checkbox, Form, Input, InputNumber, message, Modal } from 'antd';
+import { Checkbox, Form, Input, InputNumber, message, Modal, TimePicker } from 'antd';
 
 import { getApiErrorMessage, getApiFieldErrors } from '@/shared/lib/api-error';
 import { useLocalization } from '@/shared/lib/i18n';
@@ -8,6 +8,7 @@ import { useLocalization } from '@/shared/lib/i18n';
 import { useCreateItemDefinition, useUpdateItemDefinition } from '../api/itemDefinitionQueries';
 import { buildCustomFieldRules, type ItemField } from '../model/itemField';
 import { type ItemFormValues, toFormValues, toRequestBody } from '../model/itemForm';
+import { fromTimePickerValue, TIME_FORMAT, toTimePickerValue } from '../model/time';
 import type { ItemDefinition } from '../model/types';
 
 interface ItemFormModalProps {
@@ -99,6 +100,11 @@ export function ItemFormModal({ open, editing, fields, onClose }: ItemFormModalP
           label={field.label}
           valuePropName={field.type === 'BOOLEAN' ? 'checked' : 'value'}
           rules={buildCustomFieldRules(field)}
+          // The form holds TIME as "HH:mm:ss" text; the picker works with Dayjs.
+          {...(field.type === 'TIME' && {
+            getValueProps: (value: unknown) => ({ value: toTimePickerValue(value) }),
+            normalize: fromTimePickerValue,
+          })}
         >
           {renderCustomInput(field)}
         </Form.Item>
@@ -107,14 +113,16 @@ export function ItemFormModal({ open, editing, fields, onClose }: ItemFormModalP
   );
 }
 
-// The input for one custom field's type. Date and time types use a plain
-// text input for now.
+// The input for one custom field's type. DATE and DATETIME use a plain text
+// input for now. Only optional TIME fields can be cleared.
 function renderCustomInput(field: ItemField) {
   switch (field.type) {
     case 'NUMBER':
       return <InputNumber className='w-full' />;
     case 'BOOLEAN':
       return <Checkbox />;
+    case 'TIME':
+      return <TimePicker format={TIME_FORMAT} allowClear={!field.required} className='w-full' />;
     default:
       return <Input />;
   }
