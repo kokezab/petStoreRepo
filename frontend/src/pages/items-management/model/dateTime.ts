@@ -1,3 +1,5 @@
+import dayjs, { type Dayjs } from 'dayjs';
+
 // DATETIME values are typed as local "yyyy-MM-dd HH:mm[:ss]" text and stored
 // by the backend as ISO-8601 offset date-times.
 export const LOCAL_DATETIME_PATTERN = /^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2})(?::(\d{2}))?$/;
@@ -43,4 +45,26 @@ export function isoToLocalDateTimeInput(iso: unknown): unknown {
 export function isoToLocalDateTimeDisplay(iso: unknown): unknown {
   const date = parseIso(iso);
   return date ? formatLocal(date, false) : iso;
+}
+
+// The form holds DATETIME as "yyyy-MM-dd HH:mm:ss" text; only the DatePicker
+// (with showTime) works with Dayjs, so convert at its edges.
+export const DATETIME_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+
+// Local "yyyy-MM-dd HH:mm[:ss]" text to the picker's value. Anything else,
+// including impossible dates such as "2026-02-30 10:00", shows as empty.
+export function toDateTimePickerValue(value: unknown): Dayjs | undefined {
+  if (typeof value !== 'string') return undefined;
+  const match = LOCAL_DATETIME_PATTERN.exec(value.trim());
+  if (!match) return undefined;
+  const [, y, mo, d, h, mi, s = '00'] = match;
+  const date = dayjs(
+    new Date(Number(y), Number(mo) - 1, Number(d), Number(h), Number(mi), Number(s)),
+  );
+  return date.format(DATETIME_FORMAT) === `${y}-${mo}-${d} ${h}:${mi}:${s}` ? date : undefined;
+}
+
+// The picker's value to "yyyy-MM-dd HH:mm:ss" text. Cleared becomes undefined.
+export function fromDateTimePickerValue(value: Dayjs | null | undefined): string | undefined {
+  return value ? value.format(DATETIME_FORMAT) : undefined;
 }

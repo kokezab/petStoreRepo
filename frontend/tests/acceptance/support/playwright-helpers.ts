@@ -48,3 +48,26 @@ export async function pickAntdTime(scope: Locator, page: Page, label: string, ti
   // visible dropdowns.
   await expect(dropdown).toHaveCount(0);
 }
+
+/**
+ * Types a date (or date-time) into an Antd DatePicker and confirms it. Typed
+ * text is not committed until confirmed: a DatePicker with showTime has an OK
+ * button; a plain one commits by clicking the day cell, whose title is the
+ * formatted date. Enter would also confirm, but it submits the form too.
+ */
+export async function pickAntdDate(scope: Locator, page: Page, label: string, value: string) {
+  const input = scope.getByLabel(label, { exact: true });
+  await input.click();
+  await input.fill(value);
+  const dropdown = page.locator('.ant-picker-dropdown:visible');
+  await expect(dropdown).toBeVisible();
+  const ok = dropdown.getByRole('button', { name: 'OK' });
+  if ((await ok.count()) > 0) {
+    await ok.click();
+  } else {
+    await dropdown.locator(`td[title="${value}"]`).click();
+  }
+  await expect(input).toHaveValue(value);
+  // Wait out the close animation, as in pickAntdTime.
+  await expect(dropdown).toHaveCount(0);
+}

@@ -1,11 +1,9 @@
-import { List } from 'antd';
+import { Listy } from 'antd';
 
 interface OrganizationalUnitListProps {
   units: string[];
 }
 
 export function OrganizationalUnitList({ units }: OrganizationalUnitListProps) {
-  return (
-    <List dataSource={units} renderItem={(unit) => <List.Item key={unit}>{unit}</List.Item>} />
-  );
+  return <Listy<string> items={units} itemRender={(unit) => unit} rowKey={(unit) => unit} />;
 }

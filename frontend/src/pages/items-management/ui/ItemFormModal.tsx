@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 
-import { Checkbox, Form, Input, InputNumber, message, Modal, TimePicker } from 'antd';
+import { Checkbox, DatePicker, Form, Input, InputNumber, message, Modal, TimePicker } from 'antd';
 
 import { getApiErrorMessage, getApiFieldErrors } from '@/shared/lib/api-error';
 import { useLocalization } from '@/shared/lib/i18n';
 
 import { useCreateItemDefinition, useUpdateItemDefinition } from '../api/itemDefinitionQueries';
+import { DATE_FORMAT, fromDatePickerValue, toDatePickerValue } from '../model/date';
+import { DATETIME_FORMAT, fromDateTimePickerValue, toDateTimePickerValue } from '../model/dateTime';
 import { buildCustomFieldRules, type ItemField } from '../model/itemField';
 import { type ItemFormValues, toFormValues, toRequestBody } from '../model/itemForm';
 import { fromTimePickerValue, TIME_FORMAT, toTimePickerValue } from '../model/time';
@@ -100,7 +102,15 @@ export function ItemFormModal({ open, editing, fields, onClose }: ItemFormModalP
           label={field.label}
           valuePropName={field.type === 'BOOLEAN' ? 'checked' : 'value'}
           rules={buildCustomFieldRules(field)}
-          // The form holds TIME as "HH:mm:ss" text; the picker works with Dayjs.
+          // The form holds DATE, DATETIME and TIME as text; the pickers work with Dayjs.
+          {...(field.type === 'DATE' && {
+            getValueProps: (value: unknown) => ({ value: toDatePickerValue(value) }),
+            normalize: fromDatePickerValue,
+          })}
+          {...(field.type === 'DATETIME' && {
+            getValueProps: (value: unknown) => ({ value: toDateTimePickerValue(value) }),
+            normalize: fromDateTimePickerValue,
+          })}
           {...(field.type === 'TIME' && {
             getValueProps: (value: unknown) => ({ value: toTimePickerValue(value) }),
             normalize: fromTimePickerValue,
@@ -113,14 +123,25 @@ export function ItemFormModal({ open, editing, fields, onClose }: ItemFormModalP
   );
 }
 
-// The input for one custom field's type. DATE and DATETIME use a plain text
-// input for now. Only optional TIME fields can be cleared.
+// The input for one custom field's type. Only optional DATE, DATETIME and TIME
+// fields can be cleared.
 function renderCustomInput(field: ItemField) {
   switch (field.type) {
     case 'NUMBER':
       return <InputNumber className='w-full' />;
     case 'BOOLEAN':
       return <Checkbox />;
+    case 'DATE':
+      return <DatePicker format={DATE_FORMAT} allowClear={!field.required} className='w-full' />;
+    case 'DATETIME':
+      return (
+        <DatePicker
+          showTime
+          format={DATETIME_FORMAT}
+          allowClear={!field.required}
+          className='w-full'
+        />
+      );
     case 'TIME':
       return <TimePicker format={TIME_FORMAT} allowClear={!field.required} className='w-full' />;
     default:

@@ -4,6 +4,7 @@ import { createBdd, DataTable } from 'playwright-bdd';
 import { mockFeatureFlag, mockPetApi } from '../support/mock-api';
 import {
   clearAntdDropdown,
+  pickAntdDate,
   pickAntdTime,
   selectAntDesignOption,
   toLabel,
@@ -173,8 +174,10 @@ async function fillFields(scope: Locator, page: Page, dataTable: DataTable) {
         await scope.getByLabel(label).setChecked(row.Value.toLowerCase() === 'yes');
         break;
       case 'text':
-      case 'date':
         await scope.getByLabel(label).fill(row.Value);
+        break;
+      case 'date':
+        await pickAntdDate(scope, page, label, row.Value);
         break;
       case 'time':
         await pickAntdTime(scope, page, label, row.Value);

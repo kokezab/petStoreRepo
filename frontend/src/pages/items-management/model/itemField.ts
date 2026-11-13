@@ -1,6 +1,5 @@
 import type { Rule } from 'antd/es/form';
 
-import { LOCAL_DATETIME_PATTERN } from './dateTime';
 import type { CustomFieldColumn } from './itemColumns';
 
 export interface ItemFieldConstraints {
@@ -43,16 +42,6 @@ export function buildCustomFieldRules(field: ItemField): Rule[] {
       message: `${label} must be at most ${constraints.maxLength} characters`,
     });
   }
-  // DATE and DATETIME use plain text inputs, so check their format here.
-  // TIME uses a TimePicker, which can't produce a malformed value.
-  if (field.type === 'DATE') {
-    rules.push({ pattern: /^\d{4}-\d{2}-\d{2}$/, message: `${label} must be yyyy-MM-dd` });
-  }
-  if (field.type === 'DATETIME') {
-    rules.push({
-      pattern: LOCAL_DATETIME_PATTERN,
-      message: `${label} must be yyyy-MM-dd HH:mm:ss`,
-    });
-  }
+  // DATE, DATETIME and TIME use pickers, which can't produce a malformed value.
   return rules;
 }
