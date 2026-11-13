@@ -30,6 +30,7 @@ export const GetPreventiveMaintenanceByIdResponse = zod.object({
   "note": zod.string().optional(),
   "status": zod.enum(['PLANNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED']).optional(),
   "completedDate": zod.iso.datetime({"offset":true}).optional(),
+  "higherLevelPreventiveMaintenanceId": zod.uuid().optional(),
   "userIds": zod.array(zod.uuid()).optional(),
   "eventRecordIds": zod.array(zod.uuid()).optional(),
   "workAnnouncementIds": zod.array(zod.uuid()).optional(),
@@ -83,6 +84,25 @@ export const GetPreventiveMaintenancesResponse = zod.object({
   "totalElements": zod.int().optional(),
   "totalPages": zod.int().optional()
 })
+
+/**
+ * Returns records of the same equipment on a higher maintenance level (MONTHLY -> QUARTERLY, SEMIANNUAL, ANNUAL; QUARTERLY and SEMIANNUAL -> ANNUAL). For each higher periodicity the closest record on or before and the closest record after the given record's start date are returned. CANCELLED records are excluded. The currently linked higher level record is always included. Returns an empty list for other periodicities, records without equipment and records that are already a higher level of other records.
+ * @summary Get higher level preventive maintenance records the given record can be linked to
+ */
+export const GetPreventiveMaintenanceHigherLevelCandidatesParams = zod.object({
+  "id": zod.uuid()
+})
+
+export const GetPreventiveMaintenanceHigherLevelCandidatesResponseItem = zod.object({
+  "id": zod.uuid().optional(),
+  "code": zod.string().optional(),
+  "name": zod.string().optional(),
+  "periodicity": zod.enum(['DAILY', 'WEEKLY', 'BIWEEKLY', 'MONTHLY', 'BIMONTHLY', 'QUARTERLY', 'SEMIANNUAL', 'ANNUAL', 'BIENNIAL', 'TRIENNIAL']).optional(),
+  "startDate": zod.iso.date().optional(),
+  "status": zod.enum(['PLANNED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED']).optional(),
+  "completedDate": zod.iso.datetime({"offset":true}).optional()
+})
+export const GetPreventiveMaintenanceHigherLevelCandidatesResponse = zod.array(GetPreventiveMaintenanceHigherLevelCandidatesResponseItem)
 
 /**
  * Returns records from today onwards in status IN_PROGRESS, COMPLETED or CANCELLED, plus earlier records still in status IN_PROGRESS. PLANNED records are never returned.

@@ -8,6 +8,7 @@
 import type { OccurrenceReportNotificationResponse } from './occurrenceReportNotificationResponse';
 import type { OccurrenceReportResponseSource } from './occurrenceReportResponseSource';
 import type { OccurrenceReportResponseStatus } from './occurrenceReportResponseStatus';
+import type { OccurrenceReportUserResponse } from './occurrenceReportUserResponse';
 
 export interface OccurrenceReportResponse {
   id?: number;
@@ -23,13 +24,21 @@ export interface OccurrenceReportResponse {
   reportingOrganizationalUnitId?: number;
   description?: string;
   serviceProvidedId?: number;
+  serviceProvidedName?: string;
   operationalFunctionId?: number;
+  operationalFunctionName?: string;
   typeOfFailureId?: number;
+  typeOfFailureName?: string;
   operationalImpactId?: number;
+  operationalImpactName?: string;
   serviceAffectedId?: number;
+  serviceAffectedName?: string;
   reportStatusId?: number;
+  reportStatusName?: string;
   leadInvestigatorUserId?: string;
+  leadInvestigatorUserName?: string;
   otherInvestigatorUserIds?: string[];
+  otherInvestigators?: OccurrenceReportUserResponse[];
   investigationSummary?: string;
   remedialActions?: string;
   conclusions?: string;

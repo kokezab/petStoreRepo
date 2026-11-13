@@ -14,6 +14,7 @@ import type {
 } from 'msw';
 
 import type {
+  HigherLevelPreventiveMaintenanceResponse,
   PageableResponseReducedPreventiveMaintenanceResponse,
   PreventiveMaintenanceResponse,
   WorkLogPreventiveMaintenanceResponse
@@ -21,11 +22,12 @@ import type {
 
 import {
   getGetPreventiveMaintenanceByIdResponseMock,
+  getGetPreventiveMaintenanceHigherLevelCandidatesResponseMock,
   getGetPreventiveMaintenancesByWorkLogSegmentIdResponseMock,
   getGetPreventiveMaintenancesResponseMock
 } from './preventive-maintenance-query-controller.faker';
 
-export { getGetPreventiveMaintenanceByIdResponseMock, getGetPreventiveMaintenancesResponseMock, getGetPreventiveMaintenancesByWorkLogSegmentIdResponseMock } from './preventive-maintenance-query-controller.faker';
+export { getGetPreventiveMaintenanceByIdResponseMock, getGetPreventiveMaintenancesResponseMock, getGetPreventiveMaintenanceHigherLevelCandidatesResponseMock, getGetPreventiveMaintenancesByWorkLogSegmentIdResponseMock } from './preventive-maintenance-query-controller.faker';
 
 
 export const getGetPreventiveMaintenanceByIdMockHandler = (overrideResponse?: PreventiveMaintenanceResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<PreventiveMaintenanceResponse> | PreventiveMaintenanceResponse), options?: RequestHandlerOptions) => {
@@ -52,6 +54,18 @@ export const getGetPreventiveMaintenancesMockHandler = (overrideResponse?: Pagea
   }, options)
 }
 
+export const getGetPreventiveMaintenanceHigherLevelCandidatesMockHandler = (overrideResponse?: HigherLevelPreventiveMaintenanceResponse[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<HigherLevelPreventiveMaintenanceResponse[]> | HigherLevelPreventiveMaintenanceResponse[]), options?: RequestHandlerOptions) => {
+  return http.get('*/v1/preventive-maintenance/:id/higher-level-candidates', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetPreventiveMaintenanceHigherLevelCandidatesResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
+
 export const getGetPreventiveMaintenancesByWorkLogSegmentIdMockHandler = (overrideResponse?: WorkLogPreventiveMaintenanceResponse[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<WorkLogPreventiveMaintenanceResponse[]> | WorkLogPreventiveMaintenanceResponse[]), options?: RequestHandlerOptions) => {
   return http.get('*/v1/preventive-maintenance/work-log-segments/:workLogSegmentId', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
 
@@ -66,5 +80,6 @@ export const getGetPreventiveMaintenancesByWorkLogSegmentIdMockHandler = (overri
 export const getPreventiveMaintenanceQueryControllerMock = () => [
   getGetPreventiveMaintenanceByIdMockHandler(),
   getGetPreventiveMaintenancesMockHandler(),
+  getGetPreventiveMaintenanceHigherLevelCandidatesMockHandler(),
   getGetPreventiveMaintenancesByWorkLogSegmentIdMockHandler()
 ]

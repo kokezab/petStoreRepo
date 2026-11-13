@@ -5,6 +5,7 @@
  * API for Tracer service - version 0.0.1 (local)
  * OpenAPI spec version: 0.0.1
  */
+import type { OccurrenceReportTableResponseSource } from './occurrenceReportTableResponseSource';
 import type { OccurrenceReportTableResponseStatus } from './occurrenceReportTableResponseStatus';
 
 export interface OccurrenceReportTableResponse {
@@ -14,7 +15,9 @@ export interface OccurrenceReportTableResponse {
   startDate?: string;
   startTime?: string;
   organizationalUnitId?: number;
+  source?: OccurrenceReportTableResponseSource;
   location?: string;
   serviceProvidedId?: number;
+  serviceProvidedName?: string;
   status?: OccurrenceReportTableResponseStatus;
 }

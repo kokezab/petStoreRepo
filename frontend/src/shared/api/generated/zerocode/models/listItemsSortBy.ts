@@ -6,4 +6,10 @@
  * OpenAPI spec version: v1
  */
 
-export type ResponseCustomValues = {[key: string]: unknown};
+export type ListItemsSortBy = typeof ListItemsSortBy[keyof typeof ListItemsSortBy];
+
+
+export const ListItemsSortBy = {
+  createdAt: 'createdAt',
+  name: 'name',
+} as const;

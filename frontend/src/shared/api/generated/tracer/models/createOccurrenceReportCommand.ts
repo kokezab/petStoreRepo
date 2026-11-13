@@ -15,7 +15,7 @@ export interface CreateOccurrenceReportCommand {
   endTime?: string;
   /** @minLength 1 */
   location: string;
-  reportingOrganizationalUnitId: number;
+  reportingOrganizationalUnitId?: number;
   /** @minLength 1 */
   description: string;
   serviceProvidedId?: number;

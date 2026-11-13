@@ -24,6 +24,7 @@ import type {
   ApiErrorResponse,
   GetPreventiveMaintenancesByWorkLogSegmentIdParams,
   GetPreventiveMaintenancesParams,
+  HigherLevelPreventiveMaintenanceResponse,
   PageableResponseReducedPreventiveMaintenanceResponse,
   PreventiveMaintenanceResponse,
   WorkLogPreventiveMaintenanceResponse
@@ -225,6 +226,99 @@ export function useGetPreventiveMaintenances<TData = Awaited<ReturnType<typeof g
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetPreventiveMaintenancesQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+/**
+ * Returns records of the same equipment on a higher maintenance level (MONTHLY -> QUARTERLY, SEMIANNUAL, ANNUAL; QUARTERLY and SEMIANNUAL -> ANNUAL). For each higher periodicity the closest record on or before and the closest record after the given record's start date are returned. CANCELLED records are excluded. The currently linked higher level record is always included. Returns an empty list for other periodicities, records without equipment and records that are already a higher level of other records.
+ * @summary Get higher level preventive maintenance records the given record can be linked to
+ */
+export const getPreventiveMaintenanceHigherLevelCandidates = (
+    id: string,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<HigherLevelPreventiveMaintenanceResponse[]>(
+      {url: `/v1/preventive-maintenance/${id}/higher-level-candidates`, method: 'GET', signal
+    },
+      options);
+    }
+
+
+
+
+export const getGetPreventiveMaintenanceHigherLevelCandidatesQueryKey = (id: string,) => {
+    return [
+    `/v1/preventive-maintenance/${id}/higher-level-candidates`
+    ] as const;
+    }
+
+
+export const getGetPreventiveMaintenanceHigherLevelCandidatesQueryOptions = <TData = Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>, TError = ApiErrorResponse | void>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPreventiveMaintenanceHigherLevelCandidatesQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>> = ({ signal }) => getPreventiveMaintenanceHigherLevelCandidates(id, requestOptions, signal);
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetPreventiveMaintenanceHigherLevelCandidatesQueryResult = NonNullable<Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>>
+export type GetPreventiveMaintenanceHigherLevelCandidatesQueryError = ApiErrorResponse | void
+
+
+export function useGetPreventiveMaintenanceHigherLevelCandidates<TData = Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>, TError = ApiErrorResponse | void>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>,
+          TError,
+          Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetPreventiveMaintenanceHigherLevelCandidates<TData = Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>, TError = ApiErrorResponse | void>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>,
+          TError,
+          Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetPreventiveMaintenanceHigherLevelCandidates<TData = Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>, TError = ApiErrorResponse | void>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get higher level preventive maintenance records the given record can be linked to
+ */
+
+export function useGetPreventiveMaintenanceHigherLevelCandidates<TData = Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>, TError = ApiErrorResponse | void>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPreventiveMaintenanceHigherLevelCandidates>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetPreventiveMaintenanceHigherLevelCandidatesQueryOptions(id,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

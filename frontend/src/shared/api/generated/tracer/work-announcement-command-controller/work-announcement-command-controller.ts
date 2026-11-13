@@ -224,6 +224,68 @@ export const useSendWorkAnnouncement = <TError = ApiErrorResponse | void,
       return useMutation(getSendWorkAnnouncementMutationOptions(options), queryClient);
     }
     /**
+ * @summary Send work announcement compliance reminder
+ */
+export const sendWorkAnnouncementReminder = (
+    id: string,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<void>(
+      {url: `/v1/work-announcements/${id}/reminder`, method: 'POST', signal
+    },
+      options);
+    }
+
+
+
+
+export const getSendWorkAnnouncementReminderMutationOptions = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendWorkAnnouncementReminder>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof sendWorkAnnouncementReminder>>, TError,{id: string}, TContext> => {
+
+const mutationKey = ['sendWorkAnnouncementReminder'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof sendWorkAnnouncementReminder>>, {id: string}> = (props) => {
+          const {id} = props ?? {};
+
+          return  sendWorkAnnouncementReminder(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SendWorkAnnouncementReminderMutationResult = NonNullable<Awaited<ReturnType<typeof sendWorkAnnouncementReminder>>>
+
+    export type SendWorkAnnouncementReminderMutationError = ApiErrorResponse | void
+
+    /**
+ * @summary Send work announcement compliance reminder
+ */
+export const useSendWorkAnnouncementReminder = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendWorkAnnouncementReminder>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof sendWorkAnnouncementReminder>>,
+        TError,
+        {id: string},
+        TContext
+      > => {
+      return useMutation(getSendWorkAnnouncementReminderMutationOptions(options), queryClient);
+    }
+    /**
  * @summary Approve or reject work announcement
  */
 export const approveWorkAnnouncement = (

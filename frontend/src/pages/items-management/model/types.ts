@@ -8,3 +8,9 @@ export interface ItemDefinition {
   createdAt?: string;
   updatedAt?: string;
 }
+
+// One server-side page of items; `total` counts items across all pages.
+export interface ItemDefinitionPage {
+  items: ItemDefinition[];
+  total: number;
+}

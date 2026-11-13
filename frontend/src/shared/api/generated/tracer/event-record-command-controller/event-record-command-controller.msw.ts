@@ -55,6 +55,26 @@ export const getCreateEventRecordMockHandler = (overrideResponse?: void | ((info
   }, options)
 }
 
+export const getReportEventRecordProblemMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
+  return http.post('*/v1/event-records/:id/problem-report', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+
+    return new HttpResponse(null,
+      { status: 204
+      })
+  }, options)
+}
+
+export const getSendEventRecordEmailMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
+  return http.post('*/v1/event-records/:id/email', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+
+    return new HttpResponse(null,
+      { status: 204
+      })
+  }, options)
+}
+
 export const getCreateWorksheetMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
   return http.post('*/v1/event-records/:eventRecordId/worksheets', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
   if (typeof overrideResponse === 'function') {await overrideResponse(info); }
@@ -99,6 +119,8 @@ export const getEventRecordCommandControllerMock = () => [
   getUpdateWorksheetMockHandler(),
   getDeleteWorksheetMockHandler(),
   getCreateEventRecordMockHandler(),
+  getReportEventRecordProblemMockHandler(),
+  getSendEventRecordEmailMockHandler(),
   getCreateWorksheetMockHandler(),
   getReactivateEventRecordMockHandler(),
   getCancelEventRecordMockHandler(),

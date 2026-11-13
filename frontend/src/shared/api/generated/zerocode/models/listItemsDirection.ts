@@ -6,4 +6,10 @@
  * OpenAPI spec version: v1
  */
 
-export type CreateRequestCustomValues = {[key: string]: unknown};
+export type ListItemsDirection = typeof ListItemsDirection[keyof typeof ListItemsDirection];
+
+
+export const ListItemsDirection = {
+  asc: 'asc',
+  desc: 'desc',
+} as const;

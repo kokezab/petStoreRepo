@@ -1,10 +1,14 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
-import { Button, message, Modal, Space, Table, type TableColumnsType } from 'antd';
+import { Button, message, Modal, Space, Table, type TableColumnsType, type TableProps } from 'antd';
 
 import { getApiErrorMessage } from '@/shared/lib/api-error';
 
-import { useDeleteItemDefinition, useItemDefinitions } from '../api/itemDefinitionQueries';
+import {
+  type ItemListParams,
+  useDeleteItemDefinition,
+  useItemDefinitions,
+} from '../api/itemDefinitionQueries';
 import { buildItemColumns } from '../model/itemColumns';
 import type { ItemField } from '../model/itemField';
 import type { ItemDefinition } from '../model/types';
@@ -15,9 +19,35 @@ interface ItemsTableProps {
   onEdit?: (item: ItemDefinition) => void;
 }
 
+type TablePagination = Parameters<NonNullable<TableProps<ItemDefinition>['onChange']>>[0];
+
+const PAGE_SIZE_OPTIONS = [10, 20, 50, 100]; // the backend caps a page at 100
+
+// Oldest first, so a newly added item lands at the end of the list.
+const DEFAULT_PARAMS: ItemListParams = { page: 0, size: 10, sortBy: 'createdAt', direction: 'asc' };
+
+// A page-size change goes back to the first page.
+function paramsFromPagination(
+  current: ItemListParams,
+  pagination: TablePagination,
+): ItemListParams {
+  const size = pagination.pageSize ?? current.size;
+  const page = size !== current.size ? 0 : (pagination.current ?? 1) - 1;
+  return { ...current, page, size };
+}
+
 export function ItemsTable({ fields, onEdit }: ItemsTableProps) {
-  const { data: items, isLoading } = useItemDefinitions();
+  const [params, setParams] = useState<ItemListParams>(DEFAULT_PARAMS);
+  const { data, isLoading, isPlaceholderData } = useItemDefinitions(params);
   const deleteMutation = useDeleteItemDefinition();
+
+  // Deleting the last item on the last page would leave an empty page: step
+  // back to the new last page instead.
+  const total = data?.total ?? 0;
+  const lastPage = Math.max(0, Math.ceil(total / params.size) - 1);
+  if (data && !isPlaceholderData && params.page > lastPage) {
+    setParams({ ...params, page: lastPage });
+  }
 
   const columns = useMemo<TableColumnsType<ItemDefinition>>(() => {
     const handleDelete = async (id: string) => {
@@ -67,5 +97,20 @@ export function ItemsTable({ fields, onEdit }: ItemsTableProps) {
     ];
   }, [fields, onEdit, deleteMutation]);
 
-  return <Table rowKey='id' loading={isLoading} dataSource={items ?? []} columns={columns} />;
+  return (
+    <Table
+      rowKey='id'
+      loading={isLoading || isPlaceholderData}
+      dataSource={data?.items ?? []}
+      columns={columns}
+      pagination={{
+        current: params.page + 1,
+        pageSize: params.size,
+        total,
+        showSizeChanger: true,
+        pageSizeOptions: PAGE_SIZE_OPTIONS,
+      }}
+      onChange={(pagination) => setParams(paramsFromPagination(params, pagination))}
+    />
+  );
 }

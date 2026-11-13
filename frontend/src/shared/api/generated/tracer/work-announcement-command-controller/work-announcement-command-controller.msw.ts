@@ -45,6 +45,16 @@ export const getSendWorkAnnouncementMockHandler = (overrideResponse?: void | ((i
   }, options)
 }
 
+export const getSendWorkAnnouncementReminderMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
+  return http.post('*/v1/work-announcements/:id/reminder', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+
+    return new HttpResponse(null,
+      { status: 204
+      })
+  }, options)
+}
+
 export const getApproveWorkAnnouncementMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
   return http.post('*/v1/work-announcements/:id/approvals', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
   if (typeof overrideResponse === 'function') {await overrideResponse(info); }
@@ -138,6 +148,7 @@ export const getWorkAnnouncementCommandControllerMock = () => [
   getUpdateWorkAnnouncementMockHandler(),
   getCreateWorkAnnouncementMockHandler(),
   getSendWorkAnnouncementMockHandler(),
+  getSendWorkAnnouncementReminderMockHandler(),
   getApproveWorkAnnouncementMockHandler(),
   getUpdateWorkAnnouncementWorkProgressMockHandler(),
   getRevertWorkAnnouncementStatusMockHandler(),

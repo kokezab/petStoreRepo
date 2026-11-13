@@ -10,6 +10,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +27,10 @@ public class ItemService {
         this.fields = fields;
     }
 
-    public List<Item> list() {
-        return items.findAll();
+    // The id tie-breaker keeps the order stable when the sort values are equal.
+    public Page<Item> list(int page, int size, String sortProperty, Sort.Direction direction) {
+        Sort sort = Sort.by(direction, sortProperty).and(Sort.by(direction, "id"));
+        return items.findAll(PageRequest.of(page, size, sort));
     }
 
     public Item get(UUID id) {

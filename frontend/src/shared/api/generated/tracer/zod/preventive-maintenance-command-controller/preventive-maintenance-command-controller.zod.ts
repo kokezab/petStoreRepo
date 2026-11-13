@@ -9,6 +9,7 @@ import * as zod from 'zod';
 
 
 /**
+ * higherLevelPreventiveMaintenanceId links the record to a higher level record (one of GET /{id}/higher-level-candidates); null removes the link. If the linked higher level record is already COMPLETED, this record is completed immediately with the same completed date.
  * @summary Update preventive maintenance
  */
 export const UpdatePreventiveMaintenanceParams = zod.object({
@@ -28,7 +29,8 @@ export const UpdatePreventiveMaintenanceBody = zod.object({
   "evaluationFormItems": zod.array(zod.object({
   "id": zod.uuid(),
   "itemValue": zod.string().min(updatePreventiveMaintenanceBodyEvaluationFormItemsItemItemValueMin).max(updatePreventiveMaintenanceBodyEvaluationFormItemsItemItemValueMax).optional()
-})).optional()
+})).optional(),
+  "higherLevelPreventiveMaintenanceId": zod.uuid().optional()
 })
 
 export const UpdatePreventiveMaintenanceResponse = zod.void()
@@ -47,6 +49,7 @@ export const UpdatePreventiveMaintenanceStartDateBody = zod.object({
 export const UpdatePreventiveMaintenanceStartDateResponse = zod.unknown()
 
 /**
+ * Linked lower level records in status IN_PROGRESS are completed as well, with the same completed date.
  * @summary Complete preventive maintenance record
  */
 export const CompletePreventiveMaintenanceParams = zod.object({
@@ -56,6 +59,7 @@ export const CompletePreventiveMaintenanceParams = zod.object({
 export const CompletePreventiveMaintenanceResponse = zod.unknown()
 
 /**
+ * Lower level records linked to the cancelled record are unlinked from it.
  * @summary Cancel preventive maintenance record
  */
 export const CancelPreventiveMaintenanceParams = zod.object({

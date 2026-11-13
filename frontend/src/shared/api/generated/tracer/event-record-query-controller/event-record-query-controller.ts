@@ -398,6 +398,98 @@ export const useExportEventRecords = <TError = ApiErrorResponse | void,
       return useMutation(getExportEventRecordsMutationOptions(options), queryClient);
     }
     /**
+ * @summary Get telecom capacity identifiers of event record
+ */
+export const getEventRecordTelecomCapacityIdentifiers = (
+    id: string,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<string[]>(
+      {url: `/v1/event-records/${id}/telecom-capacity-identifiers`, method: 'GET', signal
+    },
+      options);
+    }
+
+
+
+
+export const getGetEventRecordTelecomCapacityIdentifiersQueryKey = (id: string,) => {
+    return [
+    `/v1/event-records/${id}/telecom-capacity-identifiers`
+    ] as const;
+    }
+
+
+export const getGetEventRecordTelecomCapacityIdentifiersQueryOptions = <TData = Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>, TError = ApiErrorResponse | void>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetEventRecordTelecomCapacityIdentifiersQueryKey(id);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>> = ({ signal }) => getEventRecordTelecomCapacityIdentifiers(id, requestOptions, signal);
+
+
+
+
+
+   return  { queryKey, queryFn, enabled: id !== null && id !== undefined, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetEventRecordTelecomCapacityIdentifiersQueryResult = NonNullable<Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>>
+export type GetEventRecordTelecomCapacityIdentifiersQueryError = ApiErrorResponse | void
+
+
+export function useGetEventRecordTelecomCapacityIdentifiers<TData = Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>, TError = ApiErrorResponse | void>(
+ id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>,
+          TError,
+          Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventRecordTelecomCapacityIdentifiers<TData = Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>, TError = ApiErrorResponse | void>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>,
+          TError,
+          Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetEventRecordTelecomCapacityIdentifiers<TData = Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>, TError = ApiErrorResponse | void>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get telecom capacity identifiers of event record
+ */
+
+export function useGetEventRecordTelecomCapacityIdentifiers<TData = Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>, TError = ApiErrorResponse | void>(
+ id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getEventRecordTelecomCapacityIdentifiers>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetEventRecordTelecomCapacityIdentifiersQueryOptions(id,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+/**
  * @summary Get worksheet by id
  */
 export const getWorksheetById = (

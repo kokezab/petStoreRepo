@@ -22,12 +22,13 @@ import type {
 import {
   getExportEventRecordsResponseMock,
   getGetEventRecordByIdResponseMock,
+  getGetEventRecordTelecomCapacityIdentifiersResponseMock,
   getGetEventRecordsResponseMock,
   getGetWorksheetByIdResponseMock,
   getGetWorksheetsByEventRecordIdResponseMock
 } from './event-record-query-controller.faker';
 
-export { getGetEventRecordByIdResponseMock, getGetEventRecordsResponseMock, getGetWorksheetsByEventRecordIdResponseMock, getExportEventRecordsResponseMock, getGetWorksheetByIdResponseMock } from './event-record-query-controller.faker';
+export { getGetEventRecordByIdResponseMock, getGetEventRecordsResponseMock, getGetWorksheetsByEventRecordIdResponseMock, getExportEventRecordsResponseMock, getGetEventRecordTelecomCapacityIdentifiersResponseMock, getGetWorksheetByIdResponseMock } from './event-record-query-controller.faker';
 
 
 export const getGetEventRecordByIdMockHandler = (overrideResponse?: EventRecordResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<EventRecordResponse> | EventRecordResponse), options?: RequestHandlerOptions) => {
@@ -82,6 +83,18 @@ export const getExportEventRecordsMockHandler = (overrideResponse?: ArrayBuffer 
   }, options)
 }
 
+export const getGetEventRecordTelecomCapacityIdentifiersMockHandler = (overrideResponse?: string[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<string[]> | string[]), options?: RequestHandlerOptions) => {
+  return http.get('*/v1/event-records/:id/telecom-capacity-identifiers', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetEventRecordTelecomCapacityIdentifiersResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
+
 export const getGetWorksheetByIdMockHandler = (overrideResponse?: EventRecordWorksheetResponse | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<EventRecordWorksheetResponse> | EventRecordWorksheetResponse), options?: RequestHandlerOptions) => {
   return http.get('*/v1/event-records/worksheets/:worksheetId', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
 
@@ -98,5 +111,6 @@ export const getEventRecordQueryControllerMock = () => [
   getGetEventRecordsMockHandler(),
   getGetWorksheetsByEventRecordIdMockHandler(),
   getExportEventRecordsMockHandler(),
+  getGetEventRecordTelecomCapacityIdentifiersMockHandler(),
   getGetWorksheetByIdMockHandler()
 ]

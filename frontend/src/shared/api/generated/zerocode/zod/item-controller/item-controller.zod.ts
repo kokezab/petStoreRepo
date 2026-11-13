@@ -35,7 +35,22 @@ export const DeleteItemParams = zod.object({
 
 export const DeleteItemResponse = zod.unknown()
 
-export const GetItemsResponse = zod.unknown()
+export const listItemsQueryPageDefault = 0;
+export const listItemsQueryPageMin = 0;
+
+export const listItemsQuerySizeDefault = 20;
+
+export const listItemsQuerySortByDefault = `createdAt`;
+export const listItemsQueryDirectionDefault = `asc`;
+
+export const ListItemsQueryParams = zod.object({
+  "page": zod.int().min(listItemsQueryPageMin).default(listItemsQueryPageDefault),
+  "size": zod.int().min(1).default(listItemsQuerySizeDefault),
+  "sortBy": zod.enum(['createdAt', 'name']).default(listItemsQuerySortByDefault),
+  "direction": zod.enum(['asc', 'desc']).default(listItemsQueryDirectionDefault)
+})
+
+export const ListItemsResponse = zod.unknown()
 
 
 

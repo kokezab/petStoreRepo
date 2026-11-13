@@ -26,6 +26,8 @@ import type {
 
 import type {
   ApiErrorResponse,
+  GetActiveUsersByPermissionParams,
+  GetActiveUsersByRoleParams,
   GetUsersByStatusParams,
   GetUsersParams,
   PageableResponseUserResponse,
@@ -664,6 +666,192 @@ export function useGetAllActiveUsers<TData = Awaited<ReturnType<typeof getAllAct
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
   const queryOptions = getGetAllActiveUsersQueryOptions(options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+/**
+ * @summary Get all active users holding the given role
+ */
+export const getActiveUsersByRole = (
+    params: GetActiveUsersByRoleParams,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<UserReducedResponse[]>(
+      {url: `/v1/users/active/by-role`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+
+
+
+
+export const getGetActiveUsersByRoleQueryKey = (params?: GetActiveUsersByRoleParams,) => {
+    return [
+    `/v1/users/active/by-role`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetActiveUsersByRoleQueryOptions = <TData = Awaited<ReturnType<typeof getActiveUsersByRole>>, TError = ApiErrorResponse | void>(params: GetActiveUsersByRoleParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveUsersByRole>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetActiveUsersByRoleQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActiveUsersByRole>>> = ({ signal }) => getActiveUsersByRole(params, requestOptions, signal);
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getActiveUsersByRole>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetActiveUsersByRoleQueryResult = NonNullable<Awaited<ReturnType<typeof getActiveUsersByRole>>>
+export type GetActiveUsersByRoleQueryError = ApiErrorResponse | void
+
+
+export function useGetActiveUsersByRole<TData = Awaited<ReturnType<typeof getActiveUsersByRole>>, TError = ApiErrorResponse | void>(
+ params: GetActiveUsersByRoleParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveUsersByRole>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getActiveUsersByRole>>,
+          TError,
+          Awaited<ReturnType<typeof getActiveUsersByRole>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetActiveUsersByRole<TData = Awaited<ReturnType<typeof getActiveUsersByRole>>, TError = ApiErrorResponse | void>(
+ params: GetActiveUsersByRoleParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveUsersByRole>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getActiveUsersByRole>>,
+          TError,
+          Awaited<ReturnType<typeof getActiveUsersByRole>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetActiveUsersByRole<TData = Awaited<ReturnType<typeof getActiveUsersByRole>>, TError = ApiErrorResponse | void>(
+ params: GetActiveUsersByRoleParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveUsersByRole>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get all active users holding the given role
+ */
+
+export function useGetActiveUsersByRole<TData = Awaited<ReturnType<typeof getActiveUsersByRole>>, TError = ApiErrorResponse | void>(
+ params: GetActiveUsersByRoleParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveUsersByRole>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetActiveUsersByRoleQueryOptions(params,options)
+
+  const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  return withQueryKey(query, queryOptions.queryKey);
+}
+
+
+
+
+
+
+/**
+ * @summary Get all active users holding the given permission through a role
+ */
+export const getActiveUsersByPermission = (
+    params: GetActiveUsersByPermissionParams,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<UserReducedResponse[]>(
+      {url: `/v1/users/active/by-permission`, method: 'GET',
+        params, signal
+    },
+      options);
+    }
+
+
+
+
+export const getGetActiveUsersByPermissionQueryKey = (params?: GetActiveUsersByPermissionParams,) => {
+    return [
+    `/v1/users/active/by-permission`, ...(params ? [params] : [])
+    ] as const;
+    }
+
+
+export const getGetActiveUsersByPermissionQueryOptions = <TData = Awaited<ReturnType<typeof getActiveUsersByPermission>>, TError = ApiErrorResponse | void>(params: GetActiveUsersByPermissionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveUsersByPermission>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetActiveUsersByPermissionQueryKey(params);
+
+
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActiveUsersByPermission>>> = ({ signal }) => getActiveUsersByPermission(params, requestOptions, signal);
+
+
+
+
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getActiveUsersByPermission>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+}
+
+export type GetActiveUsersByPermissionQueryResult = NonNullable<Awaited<ReturnType<typeof getActiveUsersByPermission>>>
+export type GetActiveUsersByPermissionQueryError = ApiErrorResponse | void
+
+
+export function useGetActiveUsersByPermission<TData = Awaited<ReturnType<typeof getActiveUsersByPermission>>, TError = ApiErrorResponse | void>(
+ params: GetActiveUsersByPermissionParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveUsersByPermission>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getActiveUsersByPermission>>,
+          TError,
+          Awaited<ReturnType<typeof getActiveUsersByPermission>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetActiveUsersByPermission<TData = Awaited<ReturnType<typeof getActiveUsersByPermission>>, TError = ApiErrorResponse | void>(
+ params: GetActiveUsersByPermissionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveUsersByPermission>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getActiveUsersByPermission>>,
+          TError,
+          Awaited<ReturnType<typeof getActiveUsersByPermission>>
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+export function useGetActiveUsersByPermission<TData = Awaited<ReturnType<typeof getActiveUsersByPermission>>, TError = ApiErrorResponse | void>(
+ params: GetActiveUsersByPermissionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveUsersByPermission>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
+/**
+ * @summary Get all active users holding the given permission through a role
+ */
+
+export function useGetActiveUsersByPermission<TData = Awaited<ReturnType<typeof getActiveUsersByPermission>>, TError = ApiErrorResponse | void>(
+ params: GetActiveUsersByPermissionParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveUsersByPermission>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient
+ ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
+
+  const queryOptions = getGetActiveUsersByPermissionQueryOptions(params,options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 

@@ -24,6 +24,7 @@ export interface PreventiveMaintenanceResponse {
   note?: string;
   status?: PreventiveMaintenanceResponseStatus;
   completedDate?: string;
+  higherLevelPreventiveMaintenanceId?: string;
   userIds?: string[];
   eventRecordIds?: string[];
   workAnnouncementIds?: string[];

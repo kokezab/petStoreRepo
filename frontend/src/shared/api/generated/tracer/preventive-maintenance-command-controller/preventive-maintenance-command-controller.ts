@@ -30,6 +30,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 /**
+ * higherLevelPreventiveMaintenanceId links the record to a higher level record (one of GET /{id}/higher-level-candidates); null removes the link. If the linked higher level record is already COMPLETED, this record is completed immediately with the same completed date.
  * @summary Update preventive maintenance
  */
 export const updatePreventiveMaintenance = (
@@ -160,6 +161,7 @@ export const useUpdatePreventiveMaintenanceStartDate = <TError = ApiErrorRespons
       return useMutation(getUpdatePreventiveMaintenanceStartDateMutationOptions(options), queryClient);
     }
     /**
+ * Linked lower level records in status IN_PROGRESS are completed as well, with the same completed date.
  * @summary Complete preventive maintenance record
  */
 export const completePreventiveMaintenance = (
@@ -222,6 +224,7 @@ export const useCompletePreventiveMaintenance = <TError = ApiErrorResponse | voi
       return useMutation(getCompletePreventiveMaintenanceMutationOptions(options), queryClient);
     }
     /**
+ * Lower level records linked to the cancelled record are unlinked from it.
  * @summary Cancel preventive maintenance record
  */
 export const cancelPreventiveMaintenance = (

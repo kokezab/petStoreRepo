@@ -121,6 +121,52 @@ export const CreateEventRecordBody = zod.object({
 export const CreateEventRecordResponse = zod.void()
 
 /**
+ * @summary Report event record problem
+ */
+export const ReportEventRecordProblemParams = zod.object({
+  "id": zod.uuid()
+})
+
+
+export const reportEventRecordProblemBodyRecipientEmailsMin = 0;
+export const reportEventRecordProblemBodyRecipientEmailsMax = 50;
+
+export const reportEventRecordProblemBodyContentMin = 0;
+export const reportEventRecordProblemBodyContentMax = 20000;
+
+
+
+export const ReportEventRecordProblemBody = zod.object({
+  "recipientEmails": zod.array(zod.email().min(1)).min(reportEventRecordProblemBodyRecipientEmailsMin).max(reportEventRecordProblemBodyRecipientEmailsMax),
+  "content": zod.string().min(reportEventRecordProblemBodyContentMin).max(reportEventRecordProblemBodyContentMax)
+})
+
+export const ReportEventRecordProblemResponse = zod.void()
+
+/**
+ * @summary Send event record email
+ */
+export const SendEventRecordEmailParams = zod.object({
+  "id": zod.uuid()
+})
+
+
+export const sendEventRecordEmailBodyRecipientEmailsMin = 0;
+export const sendEventRecordEmailBodyRecipientEmailsMax = 50;
+
+export const sendEventRecordEmailBodyContentMin = 0;
+export const sendEventRecordEmailBodyContentMax = 20000;
+
+
+
+export const SendEventRecordEmailBody = zod.object({
+  "recipientEmails": zod.array(zod.email().min(1)).min(sendEventRecordEmailBodyRecipientEmailsMin).max(sendEventRecordEmailBodyRecipientEmailsMax),
+  "content": zod.string().min(sendEventRecordEmailBodyContentMin).max(sendEventRecordEmailBodyContentMax)
+})
+
+export const SendEventRecordEmailResponse = zod.void()
+
+/**
  * @summary Create worksheet
  */
 export const CreateWorksheetParams = zod.object({

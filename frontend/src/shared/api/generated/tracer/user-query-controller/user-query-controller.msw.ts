@@ -21,6 +21,8 @@ import type {
 } from '../models';
 
 import {
+  getGetActiveUsersByPermissionResponseMock,
+  getGetActiveUsersByRoleResponseMock,
   getGetAllActiveUsersResponseMock,
   getGetAllUsersResponseMock,
   getGetUserInfoResponseMock,
@@ -30,7 +32,7 @@ import {
   getGetUsersResponseMock
 } from './user-query-controller.faker';
 
-export { getGetUsersByIdsResponseMock, getGetUsersResponseMock, getGetUserWithDataResponseMock, getGetUserInfoResponseMock, getGetUsersByStatusResponseMock, getGetAllUsersResponseMock, getGetAllActiveUsersResponseMock } from './user-query-controller.faker';
+export { getGetUsersByIdsResponseMock, getGetUsersResponseMock, getGetUserWithDataResponseMock, getGetUserInfoResponseMock, getGetUsersByStatusResponseMock, getGetAllUsersResponseMock, getGetAllActiveUsersResponseMock, getGetActiveUsersByRoleResponseMock, getGetActiveUsersByPermissionResponseMock } from './user-query-controller.faker';
 
 
 export const getGetUsersByIdsMockHandler = (overrideResponse?: UserResponse[] | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<UserResponse[]> | UserResponse[]), options?: RequestHandlerOptions) => {
@@ -116,6 +118,30 @@ export const getGetAllActiveUsersMockHandler = (overrideResponse?: UserReducedRe
       })
   }, options)
 }
+
+export const getGetActiveUsersByRoleMockHandler = (overrideResponse?: UserReducedResponse[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<UserReducedResponse[]> | UserReducedResponse[]), options?: RequestHandlerOptions) => {
+  return http.get('*/v1/users/active/by-role', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetActiveUsersByRoleResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
+
+export const getGetActiveUsersByPermissionMockHandler = (overrideResponse?: UserReducedResponse[] | ((info: Parameters<Parameters<typeof http.get>[1]>[0]) => Promise<UserReducedResponse[]> | UserReducedResponse[]), options?: RequestHandlerOptions) => {
+  return http.get('*/v1/users/active/by-permission', async (info: Parameters<Parameters<typeof http.get>[1]>[0]) => {
+
+
+    return HttpResponse.json(overrideResponse !== undefined
+    ? (typeof overrideResponse === "function" ? await overrideResponse(info) : overrideResponse)
+    : getGetActiveUsersByPermissionResponseMock(),
+      { status: 200
+      })
+  }, options)
+}
 export const getUserQueryControllerMock = () => [
   getGetUsersByIdsMockHandler(),
   getGetUsersMockHandler(),
@@ -123,5 +149,7 @@ export const getUserQueryControllerMock = () => [
   getGetUserInfoMockHandler(),
   getGetUsersByStatusMockHandler(),
   getGetAllUsersMockHandler(),
-  getGetAllActiveUsersMockHandler()
+  getGetAllActiveUsersMockHandler(),
+  getGetActiveUsersByRoleMockHandler(),
+  getGetActiveUsersByPermissionMockHandler()
 ]

@@ -9,6 +9,7 @@ import * as zod from 'zod';
 
 
 /**
+ * Setting the report status to Preliminary creates the preliminary analysis and moves the occurrence report to the preliminary analysis created status. Setting it to Closed once the preliminary analysis is sent creates the technical analysis and moves the occurrence report to the technical analysis created status
  * @summary Update occurrence report
  */
 export const UpdateOccurrenceReportParams = zod.object({
@@ -25,7 +26,7 @@ export const UpdateOccurrenceReportBody = zod.object({
   "endDate": zod.iso.date().optional(),
   "endTime": zod.string().optional(),
   "location": zod.string().min(1),
-  "reportingOrganizationalUnitId": zod.int(),
+  "reportingOrganizationalUnitId": zod.int().optional(),
   "description": zod.string().min(1),
   "serviceProvidedId": zod.int().optional(),
   "operationalFunctionId": zod.int().optional(),
@@ -53,6 +54,19 @@ export const DeleteOccurrenceReportParams = zod.object({
 export const DeleteOccurrenceReportResponse = zod.void()
 
 /**
+ * @summary Assign occurrence report analysis to a responsible person
+ */
+export const AssignOccurrenceReportAnalysisParams = zod.object({
+  "id": zod.int()
+})
+
+export const AssignOccurrenceReportAnalysisBody = zod.object({
+  "userId": zod.uuid()
+})
+
+export const AssignOccurrenceReportAnalysisResponse = zod.unknown()
+
+/**
  * @summary Create occurrence report
  */
 
@@ -67,7 +81,7 @@ export const CreateOccurrenceReportBody = zod.object({
   "endDate": zod.iso.date().optional(),
   "endTime": zod.string().optional(),
   "location": zod.string().min(1),
-  "reportingOrganizationalUnitId": zod.int(),
+  "reportingOrganizationalUnitId": zod.int().optional(),
   "description": zod.string().min(1),
   "serviceProvidedId": zod.int().optional(),
   "operationalFunctionId": zod.int().optional(),
@@ -86,13 +100,23 @@ export const CreateOccurrenceReportBody = zod.object({
 export const CreateOccurrenceReportResponse = zod.void()
 
 /**
- * @summary Send occurrence report notification to the external system manually
+ * @summary Send the occurrence report initial notification to the external system manually, repeatable even after a successful delivery
  */
 export const SendOccurrenceReportNotificationParams = zod.object({
   "id": zod.int()
 })
 
 export const SendOccurrenceReportNotificationResponse = zod.unknown()
+
+/**
+ * Sends the analysis the occurrence report is currently at - the preliminary one while its report status is Preliminary, the technical one once it is Closed. Restricted to the responsible person the analysis is assigned to, so it needs no dedicated right
+ * @summary Send the occurrence report analysis to the external system, repeatable even after a successful delivery
+ */
+export const SendOccurrenceReportAnalysisParams = zod.object({
+  "id": zod.int()
+})
+
+export const SendOccurrenceReportAnalysisResponse = zod.unknown()
 
 /**
  * @summary Reject voluntary occurrence report

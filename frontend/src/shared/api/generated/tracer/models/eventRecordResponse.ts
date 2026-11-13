@@ -6,6 +6,7 @@
  * OpenAPI spec version: 0.0.1
  */
 import type { EventRecordElementResponse } from './eventRecordElementResponse';
+import type { EventRecordResponseProblemType } from './eventRecordResponseProblemType';
 import type { EventRecordResponseStatus } from './eventRecordResponseStatus';
 
 export interface EventRecordResponse {
@@ -22,4 +23,5 @@ export interface EventRecordResponse {
   preventiveMaintenanceIds?: string[];
   malfunctionReportIds?: number[];
   occurrenceReportIds?: number[];
+  problemType?: EventRecordResponseProblemType;
 }

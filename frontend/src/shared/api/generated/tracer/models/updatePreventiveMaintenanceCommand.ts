@@ -13,4 +13,5 @@ export interface UpdatePreventiveMaintenanceCommand {
   eventRecordIds?: string[];
   workAnnouncementIds?: string[];
   evaluationFormItems?: UpdateEvaluationFormItemCommand[];
+  higherLevelPreventiveMaintenanceId?: string;
 }

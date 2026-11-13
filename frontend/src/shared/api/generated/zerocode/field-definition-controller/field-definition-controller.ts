@@ -25,9 +25,9 @@ import type {
 } from '@tanstack/react-query';
 
 import type {
-  CreateRequest,
-  Response,
-  UpdateRequest
+  FieldDefinitionCreateRequest,
+  FieldDefinitionResponse,
+  FieldDefinitionUpdateRequest
 } from '../models';
 
 import { customInstance } from '../../../axios-instance';
@@ -52,13 +52,13 @@ const withQueryKey = <T extends object, K>(query: T, queryKey: K): T & { queryKe
   return result;
 };
 
-export const getFields = (
+export const listFields = (
 
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
 
 
-      return customInstance<Response[]>(
+      return customInstance<FieldDefinitionResponse[]>(
       {url: `/api/fields`, method: 'GET', signal
     },
       options);
@@ -67,66 +67,66 @@ export const getFields = (
 
 
 
-export const getGetFieldsQueryKey = () => {
+export const getListFieldsQueryKey = () => {
     return [
     `/api/fields`
     ] as const;
     }
 
 
-export const getGetFieldsQueryOptions = <TData = Awaited<ReturnType<typeof getFields>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFields>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getListFieldsQueryOptions = <TData = Awaited<ReturnType<typeof listFields>>, TError = unknown>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listFields>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetFieldsQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getListFieldsQueryKey();
 
 
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFields>>> = ({ signal }) => getFields(requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof listFields>>> = ({ signal }) => listFields(requestOptions, signal);
 
 
 
 
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFields>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof listFields>>, TError, TData> & { queryKey: DataTag<QueryKey, TData, TError> }
 }
 
-export type GetFieldsQueryResult = NonNullable<Awaited<ReturnType<typeof getFields>>>
-export type GetFieldsQueryError = unknown
+export type ListFieldsQueryResult = NonNullable<Awaited<ReturnType<typeof listFields>>>
+export type ListFieldsQueryError = unknown
 
 
-export function useGetFields<TData = Awaited<ReturnType<typeof getFields>>, TError = unknown>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFields>>, TError, TData>> & Pick<
+export function useListFields<TData = Awaited<ReturnType<typeof listFields>>, TError = unknown>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof listFields>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getFields>>,
+          Awaited<ReturnType<typeof listFields>>,
           TError,
-          Awaited<ReturnType<typeof getFields>>
+          Awaited<ReturnType<typeof listFields>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetFields<TData = Awaited<ReturnType<typeof getFields>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFields>>, TError, TData>> & Pick<
+export function useListFields<TData = Awaited<ReturnType<typeof listFields>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listFields>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getFields>>,
+          Awaited<ReturnType<typeof listFields>>,
           TError,
-          Awaited<ReturnType<typeof getFields>>
+          Awaited<ReturnType<typeof listFields>>
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
-export function useGetFields<TData = Awaited<ReturnType<typeof getFields>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFields>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useListFields<TData = Awaited<ReturnType<typeof listFields>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listFields>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> }
 
-export function useGetFields<TData = Awaited<ReturnType<typeof getFields>>, TError = unknown>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFields>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useListFields<TData = Awaited<ReturnType<typeof listFields>>, TError = unknown>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof listFields>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient
  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> } {
 
-  const queryOptions = getGetFieldsQueryOptions(options)
+  const queryOptions = getListFieldsQueryOptions(options)
 
   const query = useQuery(queryOptions, queryClient) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData, TError> };
 
@@ -139,15 +139,15 @@ export function useGetFields<TData = Awaited<ReturnType<typeof getFields>>, TErr
 
 
 export const createField = (
-    createRequest: CreateRequest,
+    fieldDefinitionCreateRequest: FieldDefinitionCreateRequest,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
 
 
-      return customInstance<Response>(
+      return customInstance<FieldDefinitionResponse>(
       {url: `/api/fields`, method: 'POST',
       headers: {'Content-Type': 'application/json', },
-      data: createRequest, signal
+      data: fieldDefinitionCreateRequest, signal
     },
       options);
     }
@@ -156,8 +156,8 @@ export const createField = (
 
 
 export const getCreateFieldMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createField>>, TError,{data: CreateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof createField>>, TError,{data: CreateRequest}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createField>>, TError,{data: FieldDefinitionCreateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof createField>>, TError,{data: FieldDefinitionCreateRequest}, TContext> => {
 
 const mutationKey = ['createField'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -169,7 +169,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createField>>, {data: CreateRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createField>>, {data: FieldDefinitionCreateRequest}> = (props) => {
           const {data} = props ?? {};
 
           return  createField(data,requestOptions)
@@ -183,15 +183,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type CreateFieldMutationResult = NonNullable<Awaited<ReturnType<typeof createField>>>
-    export type CreateFieldMutationBody = CreateRequest
+    export type CreateFieldMutationBody = FieldDefinitionCreateRequest
     export type CreateFieldMutationError = unknown
 
     export const useCreateField = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createField>>, TError,{data: CreateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createField>>, TError,{data: FieldDefinitionCreateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof createField>>,
         TError,
-        {data: CreateRequest},
+        {data: FieldDefinitionCreateRequest},
         TContext
       > => {
       return useMutation(getCreateFieldMutationOptions(options), queryClient);
@@ -254,15 +254,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     }
     export const updateField = (
     id: string,
-    updateRequest: UpdateRequest,
+    fieldDefinitionUpdateRequest: FieldDefinitionUpdateRequest,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
 
 
-      return customInstance<Response>(
+      return customInstance<FieldDefinitionResponse>(
       {url: `/api/fields/${id}`, method: 'PATCH',
       headers: {'Content-Type': 'application/json', },
-      data: updateRequest, signal
+      data: fieldDefinitionUpdateRequest, signal
     },
       options);
     }
@@ -271,8 +271,8 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 export const getUpdateFieldMutationOptions = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateField>>, TError,{id: string;data: UpdateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof updateField>>, TError,{id: string;data: UpdateRequest}, TContext> => {
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateField>>, TError,{id: string;data: FieldDefinitionUpdateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof updateField>>, TError,{id: string;data: FieldDefinitionUpdateRequest}, TContext> => {
 
 const mutationKey = ['updateField'];
 const {mutation: mutationOptions, request: requestOptions} = options ?
@@ -284,7 +284,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
 
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateField>>, {id: string;data: UpdateRequest}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof updateField>>, {id: string;data: FieldDefinitionUpdateRequest}> = (props) => {
           const {id,data} = props ?? {};
 
           return  updateField(id,data,requestOptions)
@@ -298,15 +298,15 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   return  { mutationFn, ...mutationOptions }}
 
     export type UpdateFieldMutationResult = NonNullable<Awaited<ReturnType<typeof updateField>>>
-    export type UpdateFieldMutationBody = UpdateRequest
+    export type UpdateFieldMutationBody = FieldDefinitionUpdateRequest
     export type UpdateFieldMutationError = unknown
 
     export const useUpdateField = <TError = unknown,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateField>>, TError,{id: string;data: UpdateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateField>>, TError,{id: string;data: FieldDefinitionUpdateRequest}, TContext>, request?: SecondParameter<typeof customInstance>}
  , queryClient?: QueryClient): UseMutationResult<
         Awaited<ReturnType<typeof updateField>>,
         TError,
-        {id: string;data: UpdateRequest},
+        {id: string;data: FieldDefinitionUpdateRequest},
         TContext
       > => {
       return useMutation(getUpdateFieldMutationOptions(options), queryClient);

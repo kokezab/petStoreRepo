@@ -4,21 +4,20 @@ import { zerocodeRequest } from '@/shared/api';
 import {
   createField,
   deleteField,
-  getGetFieldsQueryKey,
+  getListFieldsQueryKey,
   updateField,
-  useGetFields,
+  useListFields,
 } from '@/shared/api/generated/zerocode/field-definition-controller/field-definition-controller';
-import type { CreateRequest, UpdateRequest } from '@/shared/api/generated/zerocode/models';
 
 import type { FieldDefinitionCreateRequest, FieldDefinitionUpdateRequest } from '../model/types';
 import { normalizeFieldDefinition } from './normalizeFieldDefinition';
 
 export const fieldDefinitionKeys = {
-  all: getGetFieldsQueryKey,
+  all: getListFieldsQueryKey,
 };
 
 export function useFieldDefinitions() {
-  return useGetFields({
+  return useListFields({
     request: zerocodeRequest,
     query: {
       select: (dtos) => dtos.map(normalizeFieldDefinition),
@@ -34,8 +33,7 @@ function useInvalidateFieldDefinitions() {
 export function useCreateFieldDefinition() {
   const invalidate = useInvalidateFieldDefinitions();
   return useMutation({
-    mutationFn: (body: FieldDefinitionCreateRequest) =>
-      createField(body as unknown as CreateRequest, zerocodeRequest),
+    mutationFn: (body: FieldDefinitionCreateRequest) => createField(body, zerocodeRequest),
     onSuccess: invalidate,
   });
 }
@@ -44,7 +42,7 @@ export function useUpdateFieldDefinition() {
   const invalidate = useInvalidateFieldDefinitions();
   return useMutation({
     mutationFn: ({ id, body }: { id: string; body: FieldDefinitionUpdateRequest }) =>
-      updateField(id, body as unknown as UpdateRequest, zerocodeRequest),
+      updateField(id, body, zerocodeRequest),
     onSuccess: invalidate,
   });
 }

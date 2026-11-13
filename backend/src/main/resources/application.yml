@@ -20,6 +20,10 @@ springdoc:
 
 server:
   port: 8090
+  # Item lists are JSON-heavy; gzip shrinks them several-fold over the wire.
+  compression:
+    enabled: true
+    mime-types: application/json
 
 ---
 # Demo profile: also loads db/seed so Swagger has sample data.

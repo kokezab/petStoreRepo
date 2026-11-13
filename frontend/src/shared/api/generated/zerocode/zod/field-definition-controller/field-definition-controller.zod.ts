@@ -8,15 +8,16 @@
 import * as zod from 'zod';
 
 
-export const GetFieldsResponse = zod.unknown()
+export const ListFieldsResponse = zod.unknown()
 
 
 
 
 export const CreateFieldBody = zod.object({
-  "name": zod.string().min(1),
-  "description": zod.string().optional(),
-  "customValues": zod.record(zod.string(), zod.unknown()).optional()
+  "label": zod.string().min(1),
+  "type": zod.enum(['TEXT', 'NUMBER', 'BOOLEAN', 'DATE', 'TIME', 'DATETIME']),
+  "required": zod.boolean().optional(),
+  "constraints": zod.record(zod.string(), zod.unknown()).optional()
 })
 
 export const CreateFieldResponse = zod.void()
@@ -35,9 +36,11 @@ export const UpdateFieldParams = zod.object({
 
 
 export const UpdateFieldBody = zod.object({
-  "name": zod.string().min(1),
-  "description": zod.string().optional(),
-  "customValues": zod.record(zod.string(), zod.unknown()).optional()
+  "label": zod.string().min(1),
+  "type": zod.enum(['TEXT', 'NUMBER', 'BOOLEAN', 'DATE', 'TIME', 'DATETIME']).optional(),
+  "required": zod.boolean().optional(),
+  "constraints": zod.record(zod.string(), zod.unknown()).optional(),
+  "displayOrder": zod.int().optional()
 })
 
 export const UpdateFieldResponse = zod.unknown()

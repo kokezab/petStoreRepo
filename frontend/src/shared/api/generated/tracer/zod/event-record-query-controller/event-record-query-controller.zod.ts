@@ -36,7 +36,8 @@ export const GetEventRecordByIdResponse = zod.object({
   "workAnnouncementIds": zod.array(zod.uuid()).optional(),
   "preventiveMaintenanceIds": zod.array(zod.uuid()).optional(),
   "malfunctionReportIds": zod.array(zod.int()).optional(),
-  "occurrenceReportIds": zod.array(zod.int()).optional()
+  "occurrenceReportIds": zod.array(zod.int()).optional(),
+  "problemType": zod.enum(['EQUIPMENT', 'TELECOM']).optional()
 })
 
 /**
@@ -130,6 +131,16 @@ export const ExportEventRecordsBody = zod.object({
 })
 
 export const ExportEventRecordsResponse = zod.instanceof(File)
+
+/**
+ * @summary Get telecom capacity identifiers of event record
+ */
+export const GetEventRecordTelecomCapacityIdentifiersParams = zod.object({
+  "id": zod.uuid()
+})
+
+export const GetEventRecordTelecomCapacityIdentifiersResponseItem = zod.string()
+export const GetEventRecordTelecomCapacityIdentifiersResponse = zod.array(GetEventRecordTelecomCapacityIdentifiersResponseItem)
 
 /**
  * @summary Get worksheet by id

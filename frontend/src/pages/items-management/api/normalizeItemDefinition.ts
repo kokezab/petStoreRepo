@@ -1,6 +1,7 @@
+import type { ItemPageResponse } from '@/shared/api/generated/zerocode/models/itemPageResponse';
 import type { ItemResponse } from '@/shared/api/generated/zerocode/models/itemResponse';
 
-import type { ItemDefinition } from '../model/types';
+import type { ItemDefinition, ItemDefinitionPage } from '../model/types';
 
 export function normalizeItemDefinition(dto: ItemResponse): ItemDefinition {
   return {
@@ -11,4 +12,9 @@ export function normalizeItemDefinition(dto: ItemResponse): ItemDefinition {
     createdAt: dto.createdAt,
     updatedAt: dto.updatedAt,
   };
+}
+
+export function normalizeItemDefinitionPage(dto: ItemPageResponse): ItemDefinitionPage {
+  const items = (dto.items ?? []).map(normalizeItemDefinition);
+  return { items, total: dto.total ?? items.length };
 }

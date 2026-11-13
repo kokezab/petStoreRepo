@@ -119,6 +119,15 @@ export const SendWorkAnnouncementParams = zod.object({
 export const SendWorkAnnouncementResponse = zod.void()
 
 /**
+ * @summary Send work announcement compliance reminder
+ */
+export const SendWorkAnnouncementReminderParams = zod.object({
+  "id": zod.uuid()
+})
+
+export const SendWorkAnnouncementReminderResponse = zod.void()
+
+/**
  * @summary Approve or reject work announcement
  */
 export const ApproveWorkAnnouncementParams = zod.object({

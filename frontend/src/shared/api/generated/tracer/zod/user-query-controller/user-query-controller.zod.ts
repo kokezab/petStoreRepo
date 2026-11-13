@@ -162,3 +162,33 @@ export const GetAllActiveUsersResponseItem = zod.object({
 })
 export const GetAllActiveUsersResponse = zod.array(GetAllActiveUsersResponseItem)
 
+/**
+ * @summary Get all active users holding the given role
+ */
+export const GetActiveUsersByRoleQueryParams = zod.object({
+  "roleName": zod.string()
+})
+
+export const GetActiveUsersByRoleResponseItem = zod.object({
+  "id": zod.uuid().optional(),
+  "firstName": zod.string().optional(),
+  "lastName": zod.string().optional(),
+  "email": zod.string().optional()
+})
+export const GetActiveUsersByRoleResponse = zod.array(GetActiveUsersByRoleResponseItem)
+
+/**
+ * @summary Get all active users holding the given permission through a role
+ */
+export const GetActiveUsersByPermissionQueryParams = zod.object({
+  "permissionName": zod.string()
+})
+
+export const GetActiveUsersByPermissionResponseItem = zod.object({
+  "id": zod.uuid().optional(),
+  "firstName": zod.string().optional(),
+  "lastName": zod.string().optional(),
+  "email": zod.string().optional()
+})
+export const GetActiveUsersByPermissionResponse = zod.array(GetActiveUsersByPermissionResponseItem)
+

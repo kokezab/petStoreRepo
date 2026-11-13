@@ -5,6 +5,7 @@
  * API for Tracer service - version 0.0.1 (local)
  * OpenAPI spec version: 0.0.1
  */
+import type { GetPublicOccurrenceReportsSourcesItem } from './getPublicOccurrenceReportsSourcesItem';
 import type { GetPublicOccurrenceReportsStatusesItem } from './getPublicOccurrenceReportsStatusesItem';
 import type { Pageable } from './pageable';
 
@@ -13,6 +14,7 @@ search?: string;
 occurredFrom?: string;
 occurredTo?: string;
 organizationalUnitIds?: number[];
+sources?: GetPublicOccurrenceReportsSourcesItem[];
 serviceProvidedIds?: number[];
 statuses?: GetPublicOccurrenceReportsStatusesItem[];
 pageable: Pageable;

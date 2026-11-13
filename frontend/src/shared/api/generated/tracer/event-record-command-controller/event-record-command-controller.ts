@@ -19,6 +19,7 @@ import type {
   ApiErrorResponse,
   CreateEventRecordCommand,
   CreateEventRecordWorksheetCommand,
+  SendEventRecordEmailCommand,
   UpdateEventRecordCommand,
   UpdateEventRecordWorksheetCommand
 } from '../models';
@@ -285,6 +286,136 @@ export const useCreateEventRecord = <TError = ApiErrorResponse | void,
         TContext
       > => {
       return useMutation(getCreateEventRecordMutationOptions(options), queryClient);
+    }
+    /**
+ * @summary Report event record problem
+ */
+export const reportEventRecordProblem = (
+    id: string,
+    sendEventRecordEmailCommand: SendEventRecordEmailCommand,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<void>(
+      {url: `/v1/event-records/${id}/problem-report`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: sendEventRecordEmailCommand, signal
+    },
+      options);
+    }
+
+
+
+
+export const getReportEventRecordProblemMutationOptions = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportEventRecordProblem>>, TError,{id: string;data: SendEventRecordEmailCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof reportEventRecordProblem>>, TError,{id: string;data: SendEventRecordEmailCommand}, TContext> => {
+
+const mutationKey = ['reportEventRecordProblem'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof reportEventRecordProblem>>, {id: string;data: SendEventRecordEmailCommand}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  reportEventRecordProblem(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ReportEventRecordProblemMutationResult = NonNullable<Awaited<ReturnType<typeof reportEventRecordProblem>>>
+    export type ReportEventRecordProblemMutationBody = SendEventRecordEmailCommand
+    export type ReportEventRecordProblemMutationError = ApiErrorResponse | void
+
+    /**
+ * @summary Report event record problem
+ */
+export const useReportEventRecordProblem = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof reportEventRecordProblem>>, TError,{id: string;data: SendEventRecordEmailCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof reportEventRecordProblem>>,
+        TError,
+        {id: string;data: SendEventRecordEmailCommand},
+        TContext
+      > => {
+      return useMutation(getReportEventRecordProblemMutationOptions(options), queryClient);
+    }
+    /**
+ * @summary Send event record email
+ */
+export const sendEventRecordEmail = (
+    id: string,
+    sendEventRecordEmailCommand: SendEventRecordEmailCommand,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<void>(
+      {url: `/v1/event-records/${id}/email`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: sendEventRecordEmailCommand, signal
+    },
+      options);
+    }
+
+
+
+
+export const getSendEventRecordEmailMutationOptions = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendEventRecordEmail>>, TError,{id: string;data: SendEventRecordEmailCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof sendEventRecordEmail>>, TError,{id: string;data: SendEventRecordEmailCommand}, TContext> => {
+
+const mutationKey = ['sendEventRecordEmail'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof sendEventRecordEmail>>, {id: string;data: SendEventRecordEmailCommand}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  sendEventRecordEmail(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SendEventRecordEmailMutationResult = NonNullable<Awaited<ReturnType<typeof sendEventRecordEmail>>>
+    export type SendEventRecordEmailMutationBody = SendEventRecordEmailCommand
+    export type SendEventRecordEmailMutationError = ApiErrorResponse | void
+
+    /**
+ * @summary Send event record email
+ */
+export const useSendEventRecordEmail = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendEventRecordEmail>>, TError,{id: string;data: SendEventRecordEmailCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof sendEventRecordEmail>>,
+        TError,
+        {id: string;data: SendEventRecordEmailCommand},
+        TContext
+      > => {
+      return useMutation(getSendEventRecordEmailMutationOptions(options), queryClient);
     }
     /**
  * @summary Create worksheet

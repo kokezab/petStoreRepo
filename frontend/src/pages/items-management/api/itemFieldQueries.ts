@@ -1,14 +1,14 @@
 import { zerocodeRequest } from '@/shared/api';
 import {
-  getGetFieldsQueryKey,
-  useGetFields,
+  getListFieldsQueryKey,
+  useListFields,
 } from '@/shared/api/generated/zerocode/field-definition-controller/field-definition-controller';
 import type { FieldDefinitionResponse } from '@/shared/api/generated/zerocode/models/fieldDefinitionResponse';
 
 import type { ItemField, ItemFieldConstraints } from '../model/itemField';
 
 export const itemFieldKeys = {
-  all: getGetFieldsQueryKey,
+  all: getListFieldsQueryKey,
 };
 
 // Constraints arrive as an open JSON map; keep only the numeric ones the form
@@ -31,7 +31,7 @@ function normalizeItemField(dto: FieldDefinitionResponse): ItemField {
 
 // The custom fields shown as item columns and form inputs, in display order.
 export function useItemFields() {
-  return useGetFields({
+  return useListFields({
     request: zerocodeRequest,
     query: {
       select: (dtos) =>

@@ -35,6 +35,16 @@ export const getDeleteOccurrenceReportMockHandler = (overrideResponse?: void | (
   }, options)
 }
 
+export const getAssignOccurrenceReportAnalysisMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.put>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
+  return http.put('*/v1/occurrence-reports/:id/analysis-assignee', async (info: Parameters<Parameters<typeof http.put>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+
+    return new HttpResponse(null,
+      { status: 200
+      })
+  }, options)
+}
+
 export const getCreateOccurrenceReportMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
   return http.post('*/v1/occurrence-reports', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
   if (typeof overrideResponse === 'function') {await overrideResponse(info); }
@@ -55,6 +65,16 @@ export const getSendOccurrenceReportNotificationMockHandler = (overrideResponse?
   }, options)
 }
 
+export const getSendOccurrenceReportAnalysisMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.post>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
+  return http.post('*/v1/occurrence-reports/:id/analysis/notification', async (info: Parameters<Parameters<typeof http.post>[1]>[0]) => {
+  if (typeof overrideResponse === 'function') {await overrideResponse(info); }
+
+    return new HttpResponse(null,
+      { status: 200
+      })
+  }, options)
+}
+
 export const getRejectVoluntaryOccurrenceReportMockHandler = (overrideResponse?: void | ((info: Parameters<Parameters<typeof http.patch>[1]>[0]) => Promise<void> | void), options?: RequestHandlerOptions) => {
   return http.patch('*/v1/occurrence-reports/:id/voluntary/reject', async (info: Parameters<Parameters<typeof http.patch>[1]>[0]) => {
   if (typeof overrideResponse === 'function') {await overrideResponse(info); }
@@ -67,7 +87,9 @@ export const getRejectVoluntaryOccurrenceReportMockHandler = (overrideResponse?:
 export const getOccurrenceReportCommandControllerMock = () => [
   getUpdateOccurrenceReportMockHandler(),
   getDeleteOccurrenceReportMockHandler(),
+  getAssignOccurrenceReportAnalysisMockHandler(),
   getCreateOccurrenceReportMockHandler(),
   getSendOccurrenceReportNotificationMockHandler(),
+  getSendOccurrenceReportAnalysisMockHandler(),
   getRejectVoluntaryOccurrenceReportMockHandler()
 ]

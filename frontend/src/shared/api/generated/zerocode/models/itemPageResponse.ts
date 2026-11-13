@@ -5,5 +5,11 @@
  * Manage an Item entity and its runtime-defined custom fields.
  * OpenAPI spec version: v1
  */
+import type { ItemResponse } from './itemResponse';
 
-export type UpdateRequestCustomValues = {[key: string]: unknown};
+export interface ItemPageResponse {
+  items?: ItemResponse[];
+  total?: number;
+  page?: number;
+  size?: number;
+}

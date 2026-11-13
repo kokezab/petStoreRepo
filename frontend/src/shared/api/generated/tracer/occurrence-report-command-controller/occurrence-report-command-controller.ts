@@ -17,6 +17,7 @@ import type {
 
 import type {
   ApiErrorResponse,
+  AssignAnalysisCommand,
   CreateOccurrenceReportCommand,
   UpdateOccurrenceReportCommand
 } from '../models';
@@ -29,6 +30,7 @@ type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 
 /**
+ * Setting the report status to Preliminary creates the preliminary analysis and moves the occurrence report to the preliminary analysis created status. Setting it to Closed once the preliminary analysis is sent creates the technical analysis and moves the occurrence report to the technical analysis created status
  * @summary Update occurrence report
  */
 export const updateOccurrenceReport = (
@@ -156,6 +158,71 @@ export const useDeleteOccurrenceReport = <TError = ApiErrorResponse | void,
       return useMutation(getDeleteOccurrenceReportMutationOptions(options), queryClient);
     }
     /**
+ * @summary Assign occurrence report analysis to a responsible person
+ */
+export const assignOccurrenceReportAnalysis = (
+    id: number,
+    assignAnalysisCommand: AssignAnalysisCommand,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<void>(
+      {url: `/v1/occurrence-reports/${id}/analysis-assignee`, method: 'PUT',
+      headers: {'Content-Type': 'application/json', },
+      data: assignAnalysisCommand, signal
+    },
+      options);
+    }
+
+
+
+
+export const getAssignOccurrenceReportAnalysisMutationOptions = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignOccurrenceReportAnalysis>>, TError,{id: number;data: AssignAnalysisCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof assignOccurrenceReportAnalysis>>, TError,{id: number;data: AssignAnalysisCommand}, TContext> => {
+
+const mutationKey = ['assignOccurrenceReportAnalysis'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof assignOccurrenceReportAnalysis>>, {id: number;data: AssignAnalysisCommand}> = (props) => {
+          const {id,data} = props ?? {};
+
+          return  assignOccurrenceReportAnalysis(id,data,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AssignOccurrenceReportAnalysisMutationResult = NonNullable<Awaited<ReturnType<typeof assignOccurrenceReportAnalysis>>>
+    export type AssignOccurrenceReportAnalysisMutationBody = AssignAnalysisCommand
+    export type AssignOccurrenceReportAnalysisMutationError = ApiErrorResponse | void
+
+    /**
+ * @summary Assign occurrence report analysis to a responsible person
+ */
+export const useAssignOccurrenceReportAnalysis = <TError = ApiErrorResponse | void,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof assignOccurrenceReportAnalysis>>, TError,{id: number;data: AssignAnalysisCommand}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof assignOccurrenceReportAnalysis>>,
+        TError,
+        {id: number;data: AssignAnalysisCommand},
+        TContext
+      > => {
+      return useMutation(getAssignOccurrenceReportAnalysisMutationOptions(options), queryClient);
+    }
+    /**
  * @summary Create occurrence report
  */
 export const createOccurrenceReport = (
@@ -220,7 +287,7 @@ export const useCreateOccurrenceReport = <TError = ApiErrorResponse | void,
       return useMutation(getCreateOccurrenceReportMutationOptions(options), queryClient);
     }
     /**
- * @summary Send occurrence report notification to the external system manually
+ * @summary Send the occurrence report initial notification to the external system manually, repeatable even after a successful delivery
  */
 export const sendOccurrenceReportNotification = (
     id: number,
@@ -269,7 +336,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type SendOccurrenceReportNotificationMutationError = ApiErrorResponse | void
 
     /**
- * @summary Send occurrence report notification to the external system manually
+ * @summary Send the occurrence report initial notification to the external system manually, repeatable even after a successful delivery
  */
 export const useSendOccurrenceReportNotification = <TError = ApiErrorResponse | void,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendOccurrenceReportNotification>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customInstance>}
@@ -280,6 +347,69 @@ export const useSendOccurrenceReportNotification = <TError = ApiErrorResponse | 
         TContext
       > => {
       return useMutation(getSendOccurrenceReportNotificationMutationOptions(options), queryClient);
+    }
+    /**
+ * Sends the analysis the occurrence report is currently at - the preliminary one while its report status is Preliminary, the technical one once it is Closed. Restricted to the responsible person the analysis is assigned to, so it needs no dedicated right
+ * @summary Send the occurrence report analysis to the external system, repeatable even after a successful delivery
+ */
+export const sendOccurrenceReportAnalysis = (
+    id: number,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+
+
+      return customInstance<void>(
+      {url: `/v1/occurrence-reports/${id}/analysis/notification`, method: 'POST', signal
+    },
+      options);
+    }
+
+
+
+
+export const getSendOccurrenceReportAnalysisMutationOptions = <TError = ApiErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendOccurrenceReportAnalysis>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof sendOccurrenceReportAnalysis>>, TError,{id: number}, TContext> => {
+
+const mutationKey = ['sendOccurrenceReportAnalysis'];
+const {mutation: mutationOptions, request: requestOptions} = options ?
+      options.mutation && 'mutationKey' in options.mutation && options.mutation.mutationKey ?
+      options
+      : {...options, mutation: {...options.mutation, mutationKey}}
+      : {mutation: { mutationKey, }, request: undefined};
+
+
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof sendOccurrenceReportAnalysis>>, {id: number}> = (props) => {
+          const {id} = props ?? {};
+
+          return  sendOccurrenceReportAnalysis(id,requestOptions)
+        }
+
+
+
+
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type SendOccurrenceReportAnalysisMutationResult = NonNullable<Awaited<ReturnType<typeof sendOccurrenceReportAnalysis>>>
+
+    export type SendOccurrenceReportAnalysisMutationError = ApiErrorResponse
+
+    /**
+ * @summary Send the occurrence report analysis to the external system, repeatable even after a successful delivery
+ */
+export const useSendOccurrenceReportAnalysis = <TError = ApiErrorResponse,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof sendOccurrenceReportAnalysis>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customInstance>}
+ , queryClient?: QueryClient): UseMutationResult<
+        Awaited<ReturnType<typeof sendOccurrenceReportAnalysis>>,
+        TError,
+        {id: number},
+        TContext
+      > => {
+      return useMutation(getSendOccurrenceReportAnalysisMutationOptions(options), queryClient);
     }
     /**
  * @summary Reject voluntary occurrence report

@@ -1,6 +1,7 @@
 import type { Page, Route } from '@playwright/test';
 
 import type { FieldDefinitionResponse } from '@/shared/api/generated/zerocode/models/fieldDefinitionResponse';
+import type { ItemPageResponse } from '@/shared/api/generated/zerocode/models/itemPageResponse';
 import type { ItemResponse } from '@/shared/api/generated/zerocode/models/itemResponse';
 
 import { inventoryCounts, type Order, type Pet, pets } from '../fixtures/pets';
@@ -375,7 +376,8 @@ export async function mockDeleteFieldError(page: Page): Promise<void> {
 // 400 ProblemDetail with an `errors` map keyed by fieldKey (unknown keys,
 // e.g. values of deleted fields, included), PUT is a full replace, and
 // delete is a hard delete answered with 204.
-const ITEMS_PATTERN = '**/api/items';
+// Regex, not a glob: the list GET carries page/sort query params.
+const ITEMS_PATTERN = /\/api\/items(\?.*)?$/;
 const ITEM_BY_ID_PATTERN = '**/api/items/*';
 
 const itemsByPage = new WeakMap<Page, { items: ItemResponse[]; created: ItemResponse[] }>();
@@ -467,6 +469,22 @@ function itemValidationProblem(errors: Record<string, string>) {
 
 const BAD_REQUEST = { status: 400, json: { status: 400, error: 'Bad Request' } };
 
+// Mirrors ItemController.list: zero-based page, size capped at 100, ordered by
+// createdAt (insertion order here) or name, with id as the tie-breaker.
+function pageOfItems(items: ItemResponse[], query: URLSearchParams): ItemPageResponse {
+  const page = Number(query.get('page') ?? 0);
+  const size = Math.min(Number(query.get('size') ?? 20), 100);
+  const sorted =
+    query.get('sortBy') === 'name'
+      ? [...items].sort(
+          (a, b) =>
+            (a.name ?? '').localeCompare(b.name ?? '') || (a.id ?? '').localeCompare(b.id ?? ''),
+        )
+      : [...items];
+  if (query.get('direction') === 'desc') sorted.reverse();
+  return { items: sorted.slice(page * size, (page + 1) * size), total: items.length, page, size };
+}
+
 export async function mockItemApi(page: Page, seed: ItemResponse[]): Promise<void> {
   const items: ItemResponse[] = seed.map((item) => ({ ...item }));
   const created: ItemResponse[] = [];
@@ -489,7 +507,9 @@ export async function mockItemApi(page: Page, seed: ItemResponse[]): Promise<voi
   await page.route(ITEMS_PATTERN, async (route: Route) => {
     const method = route.request().method();
     if (method === 'GET') {
-      await route.fulfill({ json: items });
+      await route.fulfill({
+        json: pageOfItems(items, new URL(route.request().url()).searchParams),
+      });
       return;
     }
     if (method !== 'POST') {
