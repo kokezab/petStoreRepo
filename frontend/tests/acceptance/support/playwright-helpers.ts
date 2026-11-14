@@ -49,6 +49,32 @@ export async function pickAntdTime(scope: Locator, page: Page, label: string, ti
   await expect(dropdown).toHaveCount(0);
 }
 
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+// Typing into a picker that already holds a date (an edit form) leaves the
+// calendar on that date's month, so the typed day may not be shown. Step the
+// calendar with the month arrows until it shows the month of `value`.
+async function showMonthOf(dropdown: Locator, value: string) {
+  const [year, month] = value.split('-').map(Number);
+  const target = year * 12 + (month - 1);
+  const header = dropdown.locator('.ant-picker-header-view');
+  for (let step = 0; step < 240; step++) {
+    const shownYear = Number(
+      await header.getByRole('button', { name: 'Choose a year' }).innerText(),
+    );
+    const shownMonth = MONTHS.indexOf(
+      (await header.getByRole('button', { name: 'Choose a month' }).innerText()).trim(),
+    );
+    const shown = shownYear * 12 + shownMonth;
+    if (shown === target) return;
+    await dropdown
+      .getByRole('button', { name: shown > target ? 'Previous month' : 'Next month' })
+      .click();
+    await expect(header).not.toHaveText(new RegExp(`${MONTHS[shownMonth]}\\s*${shownYear}`));
+  }
+  throw new Error(`Could not move the date picker to ${value}.`);
+}
+
 /**
  * Types a date (or date-time) into an Antd DatePicker and confirms it. Typed
  * text is not committed until confirmed: a DatePicker with showTime has an OK
@@ -57,14 +83,24 @@ export async function pickAntdTime(scope: Locator, page: Page, label: string, ti
  */
 export async function pickAntdDate(scope: Locator, page: Page, label: string, value: string) {
   const input = scope.getByLabel(label, { exact: true });
+  // An Antd Modal focuses itself when its opening animation ends, which blurs
+  // the input and closes a picker opened before then. Wait for it to finish.
+  await expect(page.locator('.ant-modal.ant-zoom-appear, .ant-modal.ant-zoom-enter')).toHaveCount(
+    0,
+  );
   await input.click();
-  await input.fill(value);
   const dropdown = page.locator('.ant-picker-dropdown:visible');
   await expect(dropdown).toBeVisible();
   const ok = dropdown.getByRole('button', { name: 'OK' });
+  // A plain picker that already holds a date (an edit form) doesn't follow
+  // typed text: its calendar stays on (and snaps back to) the held date's
+  // month. Leave the text alone and step the calendar to the day instead.
+  const prefilled = (await ok.count()) === 0 && (await input.inputValue()) !== '';
+  if (!prefilled) await input.fill(value);
   if ((await ok.count()) > 0) {
     await ok.click();
   } else {
+    if (prefilled) await showMonthOf(dropdown, value);
     await dropdown.locator(`td[title="${value}"]`).click();
   }
   await expect(input).toHaveValue(value);

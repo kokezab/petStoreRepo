@@ -1,6 +1,16 @@
 import { useEffect } from 'react';
 
-import { Checkbox, DatePicker, Form, Input, InputNumber, message, Modal, TimePicker } from 'antd';
+import {
+  App,
+  Checkbox,
+  DatePicker,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Modal,
+  TimePicker,
+} from 'antd';
 
 import { getApiErrorMessage, getApiFieldErrors } from '@/shared/lib/api-error';
 import { useLocalization } from '@/shared/lib/i18n';
@@ -10,6 +20,7 @@ import { DATE_FORMAT, fromDatePickerValue, toDatePickerValue } from '../model/da
 import { DATETIME_FORMAT, fromDateTimePickerValue, toDateTimePickerValue } from '../model/dateTime';
 import { buildCustomFieldRules, type ItemField } from '../model/itemField';
 import { type ItemFormValues, toFormValues, toRequestBody } from '../model/itemForm';
+import { findPastDates } from '../model/pastDate';
 import { fromTimePickerValue, TIME_FORMAT, toTimePickerValue } from '../model/time';
 import type { ItemDefinition } from '../model/types';
 
@@ -23,6 +34,7 @@ interface ItemFormModalProps {
 export function ItemFormModal({ open, editing, fields, onClose }: ItemFormModalProps) {
   const { t } = useLocalization();
   const [form] = Form.useForm<ItemFormValues>();
+  const { notification } = App.useApp();
 
   const createMutation = useCreateItemDefinition();
   const updateMutation = useUpdateItemDefinition();
@@ -52,6 +64,15 @@ export function ItemFormModal({ open, editing, fields, onClose }: ItemFormModalP
       } else {
         await createMutation.mutateAsync(body);
         message.success('Item created');
+      }
+      // Warn about past dates only once the save has succeeded. Nothing is
+      // stored: the check runs on the values that were just sent.
+      for (const { label, date } of findPastDates(body.customValues, fields)) {
+        notification.warning({
+          title: `${label} is in the past`,
+          description: `${body.name}: ${label} is set to ${date}.`,
+          placement: 'topRight',
+        });
       }
       onClose();
     } catch (error) {
